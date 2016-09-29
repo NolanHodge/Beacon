@@ -39,6 +39,13 @@
                 android:visibility="visible"
                 android:layout_gravity="center"/>
 
+            <Button
+                android:text="Button"
+                android:onClick="openArrow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/button2" />
+
 
         </LinearLayout>
     </ScrollView>

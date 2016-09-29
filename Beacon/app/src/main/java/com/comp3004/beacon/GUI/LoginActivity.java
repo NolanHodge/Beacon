@@ -207,5 +207,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     }
                 });
     }
+    public void openArrow(View v){
+        startActivity(new Intent(this, ArrowActivity.class));
+    }
 }
 
