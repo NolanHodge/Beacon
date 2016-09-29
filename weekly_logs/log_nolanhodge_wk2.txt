@@ -1,0 +1,7 @@
+Dear Olga,
+
+This week we did back end design for our app.
+
+We made a issue board with three columns TODO/IN PROGRESS/DONE
+
+I am in charge of Database design and creating all the BlankActivities we need to get started on our app.
