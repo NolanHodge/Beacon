@@ -1,6 +1,7 @@
 package com.comp3004.beacon.GUI;
 
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,5 +26,26 @@ public class ArrowActivity extends AppCompatActivity {
 
         TextView distance  = (TextView) findViewById(R.id.txt_distance);
         distance.setText(String.format("%.2f m",results[0]));
+    }
+    private class LocLis implements LocationListener{
+        @Override
+        public void onLocationChanged(Location location) {
+
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+
+        }
     }
 }
