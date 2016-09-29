@@ -34,6 +34,8 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class MainActivity extends AppCompatActivity
@@ -63,7 +65,9 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        final String username = "julian";
 
+        FirebaseMessaging.getInstance().subscribeToTopic("user_"+username);
 
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -76,7 +80,6 @@ public class MainActivity extends AppCompatActivity
         currentBeaconUser = new CurrentBeaconUser(mFirebaseUser, FirebaseInstanceId.getInstance());
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        //System.out.println("ID69420: " + FirebaseInstanceId.getInstance().getToken());
 
         if (mFirebaseUser == null) {
             // Not signed in, launch the Sign In activity
@@ -108,10 +111,18 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
 
-                LocationMessage locationMessage = new
+                /*LocationMessage locationMessage = new
                         LocationMessage(mFirebaseUser.getUid(),mFirebaseUser.getDisplayName(), mFirebaseUser.getPhotoUrl().toString(), "0", "0");
                 mFirebaseDatabaseReference.child(LOCATION_MESSAGE_CHILD)
-                        .push().setValue(locationMessage);
+                        .push().setValue(locationMessage);*/
+                Map notification = new HashMap<>();
+                notification.put("username", username);
+                notification.put("message", "Hey");
+
+                mFirebaseDatabaseReference.child("notificationRequests").push().setValue(notification);
+
+
+
             }
         });
     }
