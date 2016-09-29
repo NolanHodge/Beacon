@@ -15,10 +15,12 @@ public class ArrowActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_arrow);
+
         float[] results = {0};
         double[] location = {45.393614, -75.687776};
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         Location lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
         Location.distanceBetween(location[0], location[1], lastLocation.getLatitude(), lastLocation.getLongitude(), results);
 
         TextView distance  = (TextView) findViewById(R.id.txt_distance);
