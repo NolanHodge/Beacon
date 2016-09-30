@@ -1,51 +1,48 @@
 package com.comp3004.beacon.GUI;
 
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
+import com.comp3004.beacon.LocationManagement.LocationService;
 import com.comp3004.beacon.R;
 
 public class ArrowActivity extends AppCompatActivity {
     LocationManager locationManager;
+    static long MIN_TIME = 5000;
+    static float MIN_DIST = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_arrow);
 
-        float[] results = {0};
-        double[] location = {45.393614, -75.687776};
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        Location lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-        Location.distanceBetween(location[0], location[1], lastLocation.getLatitude(), lastLocation.getLongitude(), results);
 
-        TextView distance  = (TextView) findViewById(R.id.txt_distance);
-        distance.setText(String.format("%.2f m",results[0]));
-    }
-    private class LocLis implements LocationListener{
-        @Override
-        public void onLocationChanged(Location location) {
+        float[] results = {0};
+        Location.distanceBetween(45, -75, 44.98, -75.041, results);
+        TextView textView = (TextView) findViewById(R.id.txt_distance);
+        textView.setText(String.format("%.2f m", results[0]));
 
+        LocationService locationService = new LocationService() {
+            @Override
+            public void onLocationChanged(Location location) {
+                System.out.println("Update Location");
+                float[] results = {0};
+                Location.distanceBetween(45, -75, 44.98, -75.041, results);
+                TextView textView = (TextView) findViewById(R.id.txt_distance);
+                textView.setText(String.format("%.2f m", results[0]));
+            }
+        };
+        try {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DIST, locationService);
+        } catch (SecurityException e) {
+            e.printStackTrace();
         }
 
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
 
-        }
-
-        @Override
-        public void onProviderEnabled(String provider) {
-
-        }
-
-        @Override
-        public void onProviderDisabled(String provider) {
-
-        }
     }
 }

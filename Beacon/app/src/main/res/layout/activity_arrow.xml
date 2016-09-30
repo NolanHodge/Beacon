@@ -12,24 +12,23 @@
     tools:context="com.comp3004.beacon.GUI.ArrowActivity">
 
     <TextView
-        android:text="TextView"
+        android:id="@+id/txt_distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="36dp"
-        android:id="@+id/txt_distance"
-        tools:text="Distance"
+        android:text="Distance"
+        android:textAlignment="center"
         android:textAppearance="@android:style/TextAppearance.Large"
-        android:textStyle="normal|bold"
-        android:textAlignment="center" />
+        android:textStyle="normal|bold" />
 
     <ImageView
+        android:id="@+id/imageView"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:id="@+id/imageView"
+        android:layout_centerVertical="true"
         android:scaleType="fitXY"
         app:srcCompat="@drawable/arw" />
 </RelativeLayout>
