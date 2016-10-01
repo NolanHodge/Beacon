@@ -1,0 +1,8 @@
+Julian Clayton Weekly Log #2 
+-----------------------------------
+-  Created Node.js service to work in conjunction with Firebase Server
+	- This script allows messages to be sent to Firebase then dispatched to another phone, 
+	  allowing for communication between clients. 
+	
+
+
