@@ -17,6 +17,7 @@ import com.google.firebase.messaging.RemoteMessage;
 
 /**
  * Created by julianclayton on 16-09-26.
+ * This deals with INCOMING messages, MessageHandler deals with outgoing.
  */
 public class BeaconFirebaseMessagingService extends FirebaseMessagingService {
 

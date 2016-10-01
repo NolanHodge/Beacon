@@ -3,6 +3,7 @@ package com.comp3004.beacon.GUI;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.comp3004.beacon.Messages.MessageHandler;
 import com.comp3004.beacon.User.BeaconUser;
 import com.comp3004.beacon.Messages.LocationMessage;
 import com.comp3004.beacon.R;
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity
     private GoogleApiClient mGoogleApiClient;
     private FirebaseAnalytics mFirebaseAnalytics;
     private BeaconUser currentBeaconUser;
+    private MessageHandler messageHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +83,7 @@ public class MainActivity extends AppCompatActivity
         currentBeaconUser = new CurrentBeaconUser(mFirebaseUser, FirebaseInstanceId.getInstance());
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        messageHandler = MessageHandler.getInstance();
 
         if (mFirebaseUser == null) {
             // Not signed in, launch the Sign In activity
@@ -110,16 +114,7 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                /*LocationMessage locationMessage = new
-                        LocationMessage(mFirebaseUser.getUid(),mFirebaseUser.getDisplayName(), mFirebaseUser.getPhotoUrl().toString(), "0", "0");
-                mFirebaseDatabaseReference.child(LOCATION_MESSAGE_CHILD)
-                        .push().setValue(locationMessage);*/
-                Map notification = new HashMap<>();
-                notification.put("username", username);
-                notification.put("message", "Hey");
-
-                mFirebaseDatabaseReference.child("notificationRequests").push().setValue(notification);
+                messageHandler.sendBeaconRequest(username);
 
 
 

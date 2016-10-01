@@ -1,6 +1,12 @@
+/*
+BEACON SERVICE 
+Watches Firebase DB and will dispatch the messages accordingly via "topics".
+All individual phones subscribed to a given topic will receive the message. 
+ 
+*/
+
 var firebase = require('firebase');
 var request = require('request');
-// NOLAN
 var API_KEY = "AIzaSyBLHE922C2cB3gNOVFOGVwkAciQyUO1GoA"; //Firebase Cloud Server API key
 
 firebase.initializeApp({
@@ -12,23 +18,36 @@ ref = firebase.database().ref();
 
 function listenForNotificationRequests() {
   console.log("Beacon Service Running!");
-  var requests = ref.child('notificationRequests');
-  requests.on('child_added', function(requestSnapshot) {
+  
+  //Register the different requests here...
+  var notificationRequests = ref.child('notificationRequest');
+  var beaconInvitationRequests = ref.child('beaconRequest');
+  
+  notificationRequests.on('child_added', function(requestSnapshot) {
     var request = requestSnapshot.val();
-    console.log("Message Received");
+    console.log("Notification Message Received");
     sendNotificationToUser(
       request.username, 
-      request.message,
-      function() {
-        requestSnapshot.ref.remove();
-      }
+      request.message
     );
   }, function(error) {
     console.error(error);
   });
+  
+  beaconInvitationRequests.on('child_added', function(requestSnapshot) {
+  	var request = requestSnapshot.val();
+  	console.log("Beacon Invitation Received");
+  	sendNotificationToUser(
+  		request.username,
+  		request.message
+  	);
+  }, function(error) {
+  	console.error(error);
+  });
+  
 };
 
-function sendNotificationToUser(username, message, onSuccess) {
+function sendNotificationToUser(username, message) {
   request({
     url: 'https://fcm.googleapis.com/fcm/send',
     method: 'POST',
@@ -46,10 +65,6 @@ function sendNotificationToUser(username, message, onSuccess) {
     if (error) { console.error(error); console.log(error); }
     else if (response.statusCode >= 400) { 
       console.error('HTTP Error: '+response.statusCode+' - '+response.statusMessage); 
-      console.log('Fuck');
-    }
-    else {
-      onSuccess();
     }
   });
 }
