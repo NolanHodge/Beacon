@@ -1,6 +1,4 @@
-package com.comp3004.beacon.Messages;
-
-import android.app.Notification;
+package com.comp3004.beacon.Networking;
 
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -15,14 +13,14 @@ import java.util.Map;
  *
  * Singleton
  */
-public class MessageHandler {
+public class MessageSenderHandler {
 
-    static MessageHandler  messageHandler;
+    static MessageSenderHandler messageHandler;
 
 
-    public static MessageHandler getInstance() {
+    public static MessageSenderHandler getInstance() {
         if (messageHandler == null) {
-            messageHandler = new MessageHandler();
+            messageHandler = new MessageSenderHandler();
         }
         return messageHandler;
     }
@@ -36,5 +34,15 @@ public class MessageHandler {
 
         FirebaseDatabase.getInstance().getReference().child(MessageTypes.BEACON_REQUEST_MESSAGE).push().setValue(notification);
 
+    }
+
+    /**
+     * This message is sent when the user logs in for the very first time to make an entry for them in the database
+     *
+     */
+    public void sendRegisterUserMessage() {
+        FirebaseDatabase.getInstance().getReference().child(MessageTypes.REGISTER_USER_MESSAGE).push().setValue(
+                new RegisterUserMessage()
+        );
     }
 }
