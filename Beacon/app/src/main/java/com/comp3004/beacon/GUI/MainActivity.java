@@ -3,7 +3,6 @@ package com.comp3004.beacon.GUI;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,11 +11,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
-import com.comp3004.beacon.Messages.MessageHandler;
+import com.comp3004.beacon.Networking.MessageSenderHandler;
 import com.comp3004.beacon.User.BeaconUser;
-import com.comp3004.beacon.Messages.LocationMessage;
 import com.comp3004.beacon.R;
 import com.comp3004.beacon.User.CurrentBeaconUser;
 import com.google.android.gms.common.ConnectionResult;
@@ -32,13 +31,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.RemoteMessage;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class MainActivity extends AppCompatActivity
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -62,7 +56,7 @@ public class MainActivity extends AppCompatActivity
     private GoogleApiClient mGoogleApiClient;
     private FirebaseAnalytics mFirebaseAnalytics;
     private BeaconUser currentBeaconUser;
-    private MessageHandler messageHandler;
+    private MessageSenderHandler messageHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +77,8 @@ public class MainActivity extends AppCompatActivity
         currentBeaconUser = new CurrentBeaconUser(mFirebaseUser, FirebaseInstanceId.getInstance());
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        messageHandler = MessageHandler.getInstance();
+        messageHandler = MessageSenderHandler.getInstance();
+        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
 
         if (mFirebaseUser == null) {
             // Not signed in, launch the Sign In activity
@@ -99,24 +94,26 @@ public class MainActivity extends AppCompatActivity
             }
         }
 
+        MessageSenderHandler.getInstance().sendRegisterUserMessage();
+
         // Define Firebase Remote Config Settings.
         FirebaseRemoteConfigSettings firebaseRemoteConfigSettings =
                 new FirebaseRemoteConfigSettings.Builder()
                         .setDeveloperModeEnabled(true)
                         .build();
 
-        mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
-
+        //GUI
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        Button FriendListButton = (Button) findViewById(R.id.friend_list_test);
+
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 messageHandler.sendBeaconRequest(username);
-
-
+                CurrentBeaconUser.getInstance().isUserRegistered();
 
             }
         });

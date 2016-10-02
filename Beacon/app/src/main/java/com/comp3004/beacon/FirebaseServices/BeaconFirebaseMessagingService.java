@@ -17,7 +17,7 @@ import com.google.firebase.messaging.RemoteMessage;
 
 /**
  * Created by julianclayton on 16-09-26.
- * This deals with INCOMING messages, MessageHandler deals with outgoing.
+ * This deals with INCOMING messages, MessageSenderHandler deals with outgoing.
  */
 public class BeaconFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -25,9 +25,6 @@ public class BeaconFirebaseMessagingService extends FirebaseMessagingService {
 
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
-
-        // TODO(developer): Handle FCM messages here.
-        // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d(TAG, "From: " + remoteMessage.getFrom());
 
         // Check if message contains a data payload.
@@ -45,7 +42,7 @@ public class BeaconFirebaseMessagingService extends FirebaseMessagingService {
     private void sendNotification(String messageBody) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -59,6 +56,6 @@ public class BeaconFirebaseMessagingService extends FirebaseMessagingService {
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        notificationManager.notify(0, notificationBuilder.build());
     }
 }

@@ -1,6 +1,4 @@
-package com.comp3004.beacon.Messages;
-
-import android.net.Uri;
+package com.comp3004.beacon.Networking;
 
 /**
  * Created by julianclayton on 16-09-24.
