@@ -1,0 +1,10 @@
+Beacon - Cameron MacQuarrie - Week 2 (Sept 29-Oct 5) Development log
+
+Created road map to interactions with icons (2 hours)
+- Roadmap.png
+
+Created concept image screens for (1 hour)
+- Log_in.png
+- main_screen.png
+- share_with.png
+- my_beacons.png

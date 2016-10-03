@@ -1,0 +1,14 @@
+Beacon - Cameron MacQuarrie - Week 1 (Sept 19-28) Development log
+
+Created mockup images to be used for project proposal (5 hours)
+- Chat.png
+- Compass.png
+- Create.png
+- Following.png
+- Friends_tap.png
+- Profile.png
+- Public_tap.png
+
+Created application icon to be used in project pitch (1 hour)
+
+- app_icon.png
