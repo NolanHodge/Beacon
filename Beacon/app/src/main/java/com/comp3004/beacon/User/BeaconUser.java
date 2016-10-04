@@ -17,19 +17,19 @@ public class BeaconUser {
     private String userId;
     private String displayName;
     private String userAuthToken;
-    private Uri photoUrl;
+    private String photoUrl;
     private HashMap<String, BeaconUser> friends;
 
     public BeaconUser(FirebaseUser user, FirebaseInstanceId id) {
         userId = user.getUid();
         displayName = user.getDisplayName();
         userAuthToken = id.getToken();
-        photoUrl = user.getPhotoUrl();
+        photoUrl = user.getPhotoUrl().toString();
         friends = new HashMap<String, BeaconUser>();
     }
 
     public BeaconUser() {}
-    public BeaconUser(String userId, String displayName, String userAuthToken, Uri photoUrl) {
+    public BeaconUser(String userId, String displayName, String userAuthToken, String photoUrl) {
         this.userId = userId;
         this.displayName = displayName;
         this.userAuthToken = userAuthToken;
@@ -53,7 +53,7 @@ public class BeaconUser {
     public HashMap getFriends() {
         return friends;
     }
-    public Uri getPhotoUrl() {
+    public String getPhotoUrl() {
         return photoUrl;
     }
 

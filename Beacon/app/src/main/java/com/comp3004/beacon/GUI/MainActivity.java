@@ -112,8 +112,7 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                messageHandler.sendBeaconRequest(username);
-                CurrentBeaconUser.getInstance().isUserRegistered();
+                messageHandler.sendBeaconInvitation(username);
 
             }
         });
