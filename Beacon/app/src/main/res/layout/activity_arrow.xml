@@ -12,24 +12,32 @@
     tools:context="com.comp3004.beacon.GUI.ArrowActivity">
 
     <TextView
-        android:text="TextView"
+        android:id="@+id/txt_distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="36dp"
-        android:id="@+id/txt_distance"
-        tools:text="Distance"
+        android:text="Getting Location..."
+        android:textAlignment="center"
         android:textAppearance="@android:style/TextAppearance.Large"
-        android:textStyle="normal|bold"
-        android:textAlignment="center" />
+        android:textStyle="normal|bold" />
 
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:id="@+id/iv_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:scaleType="matrix"
+        app:srcCompat="@drawable/arw"
+        android:padding="0dp" />
+
+    <ProgressBar
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:id="@+id/imageView"
-        android:scaleType="fitXY"
-        app:srcCompat="@drawable/arw" />
+        android:id="@+id/arrow_prgrs" />
 </RelativeLayout>
