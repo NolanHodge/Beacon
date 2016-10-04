@@ -1,5 +1,9 @@
 package com.comp3004.beacon.Networking;
 
+import android.provider.ContactsContract;
+
+import com.comp3004.beacon.FirebaseServices.DatabaseManager;
+import com.comp3004.beacon.User.CurrentBeaconUser;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
@@ -25,7 +29,7 @@ public class MessageSenderHandler {
         return messageHandler;
     }
 
-    public void sendBeaconRequest(String senderId) {
+    public void sendBeaconInvitation(String senderId) {
 
         //TODO make this a class of BeaconRequest Message not a HashMap
         Map notification = new HashMap<>();
@@ -41,8 +45,12 @@ public class MessageSenderHandler {
      *
      */
     public void sendRegisterUserMessage() {
-        FirebaseDatabase.getInstance().getReference().child(MessageTypes.REGISTER_USER_MESSAGE).push().setValue(
-                new RegisterUserMessage()
-        );
+        if (!DatabaseManager.getInstance().isCurrentUserRegistered()) {
+            FirebaseDatabase.getInstance().getReference().child(MessageTypes.REGISTER_USER_MESSAGE).child(
+                    CurrentBeaconUser.getInstance().getUserId())
+                    .setValue(
+                            new RegisterUserMessage()
+                    );
+        }
     }
 }

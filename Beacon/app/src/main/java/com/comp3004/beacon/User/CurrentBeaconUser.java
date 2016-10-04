@@ -1,7 +1,5 @@
 package com.comp3004.beacon.User;
 
-import android.net.Uri;
-
 import com.comp3004.beacon.FirebaseServices.DatabaseManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -19,6 +17,9 @@ public class CurrentBeaconUser extends BeaconUser {
 
     public CurrentBeaconUser(FirebaseUser user, FirebaseInstanceId id) {
         super(user, id);
+        //getFriends().put("as20830912743982798325", new BeaconUser("1233456", "John Doe", "as20830912743982798325", "www.test.com"));
+
+        //(String userId, String displayName, String userAuthToken, Uri photoUrl)
     }
 
     public static CurrentBeaconUser getInstance() {
@@ -28,13 +29,7 @@ public class CurrentBeaconUser extends BeaconUser {
         return currentBeaconUser;
     }
 
-    public boolean isUserRegistered() {
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-
-        DatabaseManager.getInstance().getCurrentUserEntry();
-        return true;
-    }
 
 
 }

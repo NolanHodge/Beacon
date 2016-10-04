@@ -4,6 +4,7 @@ import android.provider.ContactsContract;
 
 import com.comp3004.beacon.Networking.MessageTypes;
 import com.comp3004.beacon.User.BeaconUser;
+import com.comp3004.beacon.User.CurrentBeaconUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,16 +31,19 @@ public class DatabaseManager {
         return databaseManager;
     }
 
-    public String getCurrentUserEntry() {
-        BeaconUser beaconUser;
-        Query query = databaseReference.child("/"+MessageTypes.REGISTER_USER_MESSAGE);
+    public boolean isCurrentUserRegistered() {
 
+        final BeaconUser[] beaconUser = new BeaconUser[1];
+        final boolean[] found = new boolean[1];
+        found[0] = false;
+        Query query = databaseReference.child("/"+MessageTypes.REGISTER_USER_MESSAGE+"/"+ CurrentBeaconUser.getInstance().getUserId());
 
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                BeaconUser beaconUser = dataSnapshot.getValue(BeaconUser.class);
-                System.out.println("Beacon User: " + beaconUser.getUserId());
+                if (dataSnapshot.exists()) {
+                    found[0] = true; //This is stupid but I can't find a way around it for now
+                }
             }
 
             @Override
@@ -47,6 +51,6 @@ public class DatabaseManager {
 
             }
         });
-        return "";
+        return found[0];
     }
 }

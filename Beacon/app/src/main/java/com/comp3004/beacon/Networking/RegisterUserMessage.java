@@ -19,7 +19,7 @@ public class RegisterUserMessage {
     String displayName;
     String userAuthToken;
     HashMap friends;
-    Uri photoUrl;
+    String photoUrl;
 
     public RegisterUserMessage() {
         BeaconUser currentUser = CurrentBeaconUser.getInstance();
@@ -45,7 +45,7 @@ public class RegisterUserMessage {
         return friends;
     }
 
-    public Uri getPhotoUrl() {
+    public String getPhotoUrl() {
         return photoUrl;
     }
 
