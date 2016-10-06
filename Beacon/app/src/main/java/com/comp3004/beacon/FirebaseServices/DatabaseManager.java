@@ -39,12 +39,12 @@ public class DatabaseManager {
     }
 
     public boolean isCurrentUserRegistered() {
-        query = databaseReference.child("/" + MessageTypes.REGISTER_USER_MESSAGE + "/" + CurrentBeaconUser.getInstance().getUserId());
+        Query query = databaseReference.child("/" + MessageTypes.REGISTER_USER_MESSAGE + "/" + CurrentBeaconUser.getInstance().getUserId());
         query.addValueEventListener(isUserRegisteredDataListener);
         System.out.println("REGISTERED:" + isUserRegisteredDataListener.isUserRegisterd());
         return isUserRegisteredDataListener.isUserRegisterd();
     }
-
+    
     public HashMap getCurrentUsersFriends() {
         Query query = databaseReference.child("/" + MessageTypes.REGISTER_USER_MESSAGE + "/" + CurrentBeaconUser.getInstance().getUserId() + "/" + MessageTypes.FRIENDS_MESSAGE);
         CurrentUsersFriendsDataListener currentUsersFriendsDataListener = new CurrentUsersFriendsDataListener();
