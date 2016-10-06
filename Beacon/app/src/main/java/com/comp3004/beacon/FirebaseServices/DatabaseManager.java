@@ -12,6 +12,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+
 /**
  * Created by julianclayton on 16-10-02.
  */
@@ -19,9 +21,14 @@ public class DatabaseManager {
 
     static DatabaseManager databaseManager;
     DatabaseReference databaseReference;
+    IsUserRegisteredDataListener isUserRegisteredDataListener;
+    Query query;
 
     public DatabaseManager() {
+
         databaseReference = FirebaseDatabase.getInstance().getReference();
+        isUserRegisteredDataListener = IsUserRegisteredDataListener.getInstance();
+
     }
 
     public static DatabaseManager getInstance() {
@@ -32,25 +39,17 @@ public class DatabaseManager {
     }
 
     public boolean isCurrentUserRegistered() {
-
-        final BeaconUser[] beaconUser = new BeaconUser[1];
-        final boolean[] found = new boolean[1];
-        found[0] = false;
-        Query query = databaseReference.child("/"+MessageTypes.REGISTER_USER_MESSAGE+"/"+ CurrentBeaconUser.getInstance().getUserId());
-
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    found[0] = true; //This is stupid but I can't find a way around it for now
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        return found[0];
+        Query query = databaseReference.child("/" + MessageTypes.REGISTER_USER_MESSAGE + "/" + CurrentBeaconUser.getInstance().getUserId());
+        query.addValueEventListener(isUserRegisteredDataListener);
+        System.out.println("REGISTERED:" + isUserRegisteredDataListener.isUserRegisterd());
+        return isUserRegisteredDataListener.isUserRegisterd();
     }
+    
+    public HashMap getCurrentUsersFriends() {
+        Query query = databaseReference.child("/" + MessageTypes.REGISTER_USER_MESSAGE + "/" + CurrentBeaconUser.getInstance().getUserId() + "/" + MessageTypes.FRIENDS_MESSAGE);
+        CurrentUsersFriendsDataListener currentUsersFriendsDataListener = new CurrentUsersFriendsDataListener();
+        query.addValueEventListener(currentUsersFriendsDataListener);
+        return currentUsersFriendsDataListener.getFriends();
+    }
+
 }

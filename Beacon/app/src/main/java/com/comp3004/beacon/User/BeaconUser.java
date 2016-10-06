@@ -19,6 +19,7 @@ public class BeaconUser {
     private String userAuthToken;
     private String photoUrl;
     private HashMap<String, BeaconUser> friends;
+    FirebaseUser firebaseUser;
 
     public BeaconUser(FirebaseUser user, FirebaseInstanceId id) {
         userId = user.getUid();

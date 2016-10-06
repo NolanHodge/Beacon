@@ -22,6 +22,9 @@ public class MessageSenderHandler {
     static MessageSenderHandler messageHandler;
 
 
+    public MessageSenderHandler() {
+        messageHandler = this;
+    }
     public static MessageSenderHandler getInstance() {
         if (messageHandler == null) {
             messageHandler = new MessageSenderHandler();
@@ -45,7 +48,8 @@ public class MessageSenderHandler {
      *
      */
     public void sendRegisterUserMessage() {
-        if (!DatabaseManager.getInstance().isCurrentUserRegistered()) {
+        System.out.println("registered: " +DatabaseManager.getInstance().isCurrentUserRegistered());
+        if (DatabaseManager.getInstance().isCurrentUserRegistered() == false) {
             FirebaseDatabase.getInstance().getReference().child(MessageTypes.REGISTER_USER_MESSAGE).child(
                     CurrentBeaconUser.getInstance().getUserId())
                     .setValue(
