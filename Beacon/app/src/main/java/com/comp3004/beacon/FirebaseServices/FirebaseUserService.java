@@ -8,7 +8,7 @@ import com.google.firebase.auth.AuthCredential;
 public class FirebaseUserService {
 
 
-    FirebaseUserService firebaseUserService;
+    private FirebaseUserService firebaseUserService;
 
     public FirebaseUserService getInstance() {
         if (firebaseUserService == null) {

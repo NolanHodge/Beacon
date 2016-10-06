@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.comp3004.beacon.FirebaseServices.DatabaseManager;
 import com.comp3004.beacon.Networking.MessageSenderHandler;
 import com.comp3004.beacon.User.BeaconUser;
 import com.comp3004.beacon.R;
@@ -96,6 +97,8 @@ public class MainActivity extends AppCompatActivity
 
         MessageSenderHandler.getInstance().sendRegisterUserMessage();
 
+        System.out.println("FRIENDS: " + DatabaseManager.getInstance().getCurrentUsersFriends());
+
         // Define Firebase Remote Config Settings.
         FirebaseRemoteConfigSettings firebaseRemoteConfigSettings =
                 new FirebaseRemoteConfigSettings.Builder()
@@ -143,6 +146,9 @@ public class MainActivity extends AppCompatActivity
                                 e.getMessage());
                     }
                 });
+
+        //MessageSenderHandler.getInstance().sendRegisterUserMessage();
+
     }
 
     @Override

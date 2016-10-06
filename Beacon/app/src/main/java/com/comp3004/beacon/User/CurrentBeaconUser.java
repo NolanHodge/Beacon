@@ -18,7 +18,7 @@ public class CurrentBeaconUser extends BeaconUser {
     public CurrentBeaconUser(FirebaseUser user, FirebaseInstanceId id) {
         super(user, id);
         //getFriends().put("as20830912743982798325", new BeaconUser("1233456", "John Doe", "as20830912743982798325", "www.test.com"));
-
+        currentBeaconUser = this;
         //(String userId, String displayName, String userAuthToken, Uri photoUrl)
     }
 
@@ -28,8 +28,4 @@ public class CurrentBeaconUser extends BeaconUser {
         }
         return currentBeaconUser;
     }
-
-
-
-
 }

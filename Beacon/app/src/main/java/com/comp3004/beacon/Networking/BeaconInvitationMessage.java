@@ -6,4 +6,7 @@ package com.comp3004.beacon.Networking;
  * Message is for sending an invitation t
  */
 public class BeaconInvitationMessage {
+
+
+
 }
