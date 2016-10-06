@@ -15,4 +15,6 @@
     </string>
     <string name="login_greeting">Hello</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="facebook_app_id">156151978174865</string>
+    <string name="title_activity_maps">Map</string>
 </resources>
