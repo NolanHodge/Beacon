@@ -3,13 +3,12 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorPrimary</item>
 
 
-        <item name="android:color">@color/land</item>
-        <item name="android:colorPrimaryDark">@color/texty</item>
+        <item name="android:color">@color/colorPrimary</item>
         <item name="homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
     </style>
 
@@ -34,7 +33,7 @@
 
     <style name="LoginTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="windowActionBar">false</item>
-        <item name="android:colorPrimaryDark">#000000</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     </style>
 
     <style name="TitleBarTextColor" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
@@ -42,8 +41,11 @@
     </style>
 
     <style name="buttonStyle" parent="Widget.AppCompat.Button">
-        <item name="android:minHeight">30dp</item>
+        <item name="android:minHeight">50dp</item>
+        <item name="android:padding">10dp</item>
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
-
+    <style name="login" parent="com_facebook_button">
+        <item name="android:text">Sign In</item>
+    </style>
 </resources>

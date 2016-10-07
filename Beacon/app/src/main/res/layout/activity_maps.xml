@@ -9,21 +9,24 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="50dp"
         tools:context="com.comp3004.beacon.GUI.MapsActivity" />
 
     <ImageButton
-        android:src="@drawable/ic_arrow_back_white_24dp"
+        android:id="@+id/ibutton1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true" />
+        android:layout_alignParentRight="true"
+        android:alpha="40"
+        android:src="@drawable/ic_arrow_back_white_24dp" />
 
     <ImageButton
-        android:src="@drawable/ic_arrow_back_white_24dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true" />
+        android:layout_toLeftOf="@+id/ibutton1"
+        android:layout_toStartOf="@+id/ibutton1"
+        android:alpha="40"
+        android:src="@drawable/ic_arrow_back_white_24dp" />
 
 </RelativeLayout>

@@ -349,13 +349,5 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mFirebaseAuth.removeAuthStateListener(mAuthListener);
         }
     }
-
-    public void openArrow(View v) {
-        startActivity(new Intent(this, ArrowActivity.class));
-    }
-
-    public void openMap(View v) {
-        startActivity(new Intent(this, MapsActivity.class));
-    }
 }
 
