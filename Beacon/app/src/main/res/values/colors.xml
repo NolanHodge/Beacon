@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#3fb557</color>
+    <color name="colorPrimaryDark">#347e2a</color>
+    <color name="colorAccent">#53ff40</color>
+    <color name="black_overlay">#66000000</color>
+    <color name="land">#0ac6c6</color>
+    <color name="bar">#3347cc</color>
+    <color name="casino">#12e97c</color>
+    <color name="restaurant">#f12933</color>
+    <color name="nightclub">#a534dd</color>
+    <color name="cancel">#fb1303</color>
+    <color name="texty">#04a3a3</color>
+    <color name="touch">#dedede</color>
+    <color name="star">#fff23c</color>
 </resources>
