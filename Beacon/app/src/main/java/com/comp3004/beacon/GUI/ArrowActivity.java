@@ -4,7 +4,6 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.Animation;
@@ -17,9 +16,17 @@ import com.comp3004.beacon.LocationManagement.LocationService;
 import com.comp3004.beacon.R;
 
 public class ArrowActivity extends AppCompatActivity {
-    int prev = 0;
+    private float prev,destination = 0;
     static long MIN_TIME = 10000;
     static float MIN_DIST = 1;
+    static String NORTH = "North";
+    static String NORTHEAST = "Northeast";
+    static String NORTHWEST = "Northwest";
+    static String EAST = "East";
+    static String SOUTHEAST = "Southeast";
+    static String WEST = "West";
+    static String SOUTHWEST = "Southwest";
+    static String SOUTH = "South";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,10 +35,11 @@ public class ArrowActivity extends AppCompatActivity {
 
 
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        new test().execute();
+        new test().execute(); //start the test
         LocationService locationService = new LocationService() {
             @Override
             public void onLocationChanged(Location location) {
+                //when the location is obtained then rotate the arrow
                 findViewById(R.id.arrow_prgrs).setVisibility(View.INVISIBLE);
                 System.out.println("Update Location");
 
@@ -45,21 +53,21 @@ public class ArrowActivity extends AppCompatActivity {
 
                 String b;
                 if (compass_bearing >= 65 && compass_bearing < 115) {
-                    b = "East";
+                    b = EAST;
                 } else if (compass_bearing >= 115 && compass_bearing < 155) {
-                    b = "Southeast";
+                    b = SOUTHEAST;
                 } else if (compass_bearing >= 155 && compass_bearing < 205) {
-                    b = "South";
+                    b = SOUTH;
                 } else if (compass_bearing >= 205 && compass_bearing < 245) {
-                    b = "Southwest";
+                    b = SOUTHWEST;
                 } else if (compass_bearing >= 245 && compass_bearing < 295) {
-                    b = "West";
+                    b = WEST;
                 } else if (compass_bearing >= 295 && compass_bearing < 335) {
-                    b = "Northwest";
+                    b = NORTHWEST;
                 } else if (compass_bearing >= 335 || compass_bearing < 25) {
-                    b = "North";
+                    b = NORTH;
                 } else if (compass_bearing >= 25 && compass_bearing < 65) {
-                    b = "Northeast";
+                    b = NORTHEAST;
                 } else {
                     b = "NA";
                 }
@@ -108,7 +116,7 @@ public class ArrowActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                Thread.sleep(2000);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -119,7 +127,6 @@ public class ArrowActivity extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
 
             findViewById(R.id.arrow_prgrs).setVisibility(View.INVISIBLE);
-            System.out.println("Update Location");
 
             final float[] results = new float[3];
             Location location = new Location("");
@@ -151,17 +158,32 @@ public class ArrowActivity extends AppCompatActivity {
             } else {
                 b = "NA";
             }
-            String s = results[0] > 1100 ? String.format("%.1f km\n%s", results[0] / 1000, b) : String.format("%.1f m\n%s", results[0], b);
+            String s = results[0] > 1100 ? String.format("%.1f km\n%s", results[0] / 1000, b) : String.format("%.0f m\n%s", results[0], b);
 
             TextView textView = (TextView) findViewById(R.id.txt_distance);
             textView.setText(s);
 
-            final ImageView imageView = (ImageView) findViewById(R.id.iv_arrow);
-            System.out.println(imageView.getRotation());
-            RotateAnimation anim = new RotateAnimation(prev, compass_bearing, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
 
+            final ImageView imageView = (ImageView) findViewById(R.id.iv_arrow);
+
+            if (Math.abs(prev - results[1]) <= 180) {
+                destination = results[1];
+            } else {
+                if (prev < 0) {
+                    destination = (results[1] - 360) % 360;
+                } else {
+                    destination = (results[1] + 360) % 360;
+                }
+                if (Math.abs(destination - prev) > 180)
+                    System.out.println(Math.abs(destination - prev) + " " + destination + " " + prev);
+
+            }
+
+            RotateAnimation anim = new RotateAnimation(prev, destination, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
             anim.setInterpolator(new LinearInterpolator());
             anim.setDuration(1000);
+            anim.setFillAfter(true);
+            anim.setFillEnabled(true);
             anim.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
@@ -170,9 +192,10 @@ public class ArrowActivity extends AppCompatActivity {
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    prev = compass_bearing;
-                    imageView.setAnimation(null);
-                    imageView.setRotation(compass_bearing);
+                    if (destination > 180) prev = destination - 360;
+                    if (destination < -180) prev = destination + 360;
+                    else prev = destination;
+                    System.out.println(prev);
                     new test().execute();
                 }
 

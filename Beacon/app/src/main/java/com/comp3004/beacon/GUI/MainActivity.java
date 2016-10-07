@@ -165,4 +165,13 @@ public class MainActivity extends AppCompatActivity
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
+
+
+    public void openArrow(View v) {
+        startActivity(new Intent(this, ArrowActivity.class));
+    }
+
+    public void openMap(View v) {
+        startActivity(new Intent(this, MapsActivity.class));
+    }
 }
