@@ -6,6 +6,11 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+
+        <item name="android:color">@color/land</item>
+        <item name="android:colorPrimaryDark">@color/texty</item>
+        <item name="homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -18,5 +23,27 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
+
+    <style name="FacebookLoginButton">
+        <item name="android:textSize">13dp</item>
+        <item name="android:background">@drawable/com_facebook_button_background</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+    </style>
+
+    <style name="LoginTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="android:colorPrimaryDark">#000000</item>
+    </style>
+
+    <style name="TitleBarTextColor" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">#fafafa</item>
+    </style>
+
+    <style name="buttonStyle" parent="Widget.AppCompat.Button">
+        <item name="android:minHeight">30dp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
 
 </resources>

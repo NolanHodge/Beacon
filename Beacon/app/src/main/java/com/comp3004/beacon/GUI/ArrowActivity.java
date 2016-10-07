@@ -16,7 +16,7 @@ import com.comp3004.beacon.LocationManagement.LocationService;
 import com.comp3004.beacon.R;
 
 public class ArrowActivity extends AppCompatActivity {
-    float prev = 0;
+    private float prev,destination = 0;
     static long MIN_TIME = 10000;
     static float MIN_DIST = 1;
     static String NORTH = "North";
@@ -166,7 +166,6 @@ public class ArrowActivity extends AppCompatActivity {
 
             final ImageView imageView = (ImageView) findViewById(R.id.iv_arrow);
 
-            final float destination;
             if (Math.abs(prev - results[1]) <= 180) {
                 destination = results[1];
             } else {

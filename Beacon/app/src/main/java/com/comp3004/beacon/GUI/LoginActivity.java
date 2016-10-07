@@ -1,17 +1,21 @@
 package com.comp3004.beacon.GUI;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.os.AsyncTask;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
-import com.comp3004.beacon.FbStuff;
-import com.comp3004.beacon.MapsActivity;
 import com.comp3004.beacon.R;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -19,27 +23,16 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.google.android.gms.common.SignInButton;
-import android.os.Build;
-import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.view.View;
-
-import static android.Manifest.permission.READ_CONTACTS;
-import android.content.Intent;
-import android.util.Log;
-import android.widget.Toast;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -50,39 +43,19 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import static android.Manifest.permission.READ_CONTACTS;
 
-import java.io.IOException;
-
+/**
+ * A login screen that offers login via google
+ * TODO Facebook
+ */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
+
+    private CallbackManager callbackManager;
 
     private AccessTokenTracker mTokenTracker;
     private ProfileTracker mProfileTracker;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private FirebaseAuth mAuth;
-    CallbackManager callbackManager;
-
-    private FacebookCallback<LoginResult> mFacebookCallback = new FacebookCallback<LoginResult>() {
-        @Override
-        public void onSuccess(final LoginResult loginResult) {
-
-            AccessToken accessToken = loginResult.getAccessToken();
-            handleFacebookAccessToken(accessToken);
-        }
-
-
-        @Override
-        public void onCancel() {
-            Log.d("Facebook", "Cancelled");
-        }
-
-        @Override
-        public void onError(FacebookException e) {
-            Log.d("Facebook", "Error " + e);
-        }
-    };
-
 
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
@@ -98,13 +71,30 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private static final int REQUEST_READ_CONTACTS = 0;
 
+    private FacebookCallback<LoginResult> mFacebookCallback = new FacebookCallback<LoginResult>() {
+        @Override
+        public void onSuccess(final LoginResult loginResult) {
+
+            AccessToken accessToken = loginResult.getAccessToken();
+            handleFacebookAccessToken(accessToken);
+        }
+
+        @Override
+        public void onCancel() {
+            Log.d("Facebook", "Cancelled");
+        }
+
+        @Override
+        public void onError(FacebookException e) {
+            Log.d("Facebook", "Error " + e);
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(this);
-
-//        startActivity(new Intent(this, FbStuff.class));
         setContentView(R.layout.activity_login);
 
         //Fields
@@ -127,11 +117,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         // Initialize FirebaseAuth
         mFirebaseAuth = FirebaseAuth.getInstance();
-
-
-
-        setContentView(R.layout.activity_login);
-        mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -155,16 +140,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mProfileTracker.startTracking();
 
         if (AccessToken.getCurrentAccessToken() != null && Profile.getCurrentProfile() != null) {
-
-            final SharedPreferences settings = getSharedPreferences("MyPrefsFile", 0);
-            if(settings.getBoolean("autocheckin", true)){
-                //startService(new Intent(this, MyService.class));
-            }
-
-            //startService(new Intent(this, MsgService.class));
             startActivity(new Intent(this, MainActivity.class));
-
-            finish();
+            //finish();
         }
 
         callbackManager = CallbackManager.Factory.create();
@@ -175,8 +152,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mTokenTracker.startTracking();
         mProfileTracker.startTracking();
+        // Callback registration
+
 
     }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -190,6 +170,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
+
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         // An unresolvable error has occurred and Google APIs (including Sign-In) will not
@@ -202,6 +183,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        callbackManager.onActivityResult(requestCode, resultCode, data);
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
@@ -214,8 +196,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 Log.e(TAG, "Google Sign In failed.");
             }
         }
-
-        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
 
@@ -273,11 +253,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {}
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    }
 
 
     @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {}
+    public void onLoaderReset(Loader<Cursor> cursorLoader) {
+    }
 
 
     private interface ProfileQuery {
@@ -302,20 +284,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             Toast.LENGTH_SHORT).show();
                 } else {
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                    finish();
+                    //finish();
                 }
             }
         });
     }
-    public void openArrow(View v){
-        startActivity(new Intent(this, MapsActivity.class));
-    }
+
 
     private void handleFacebookAccessToken(AccessToken token) {
         Log.d("", "handleFacebookAccessToken:" + token);
 
         final AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
-        mAuth.signInWithCredential(credential)
+        mFirebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -356,7 +336,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     protected void onStart() {
         super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
+        mFirebaseAuth.addAuthStateListener(mAuthListener);
+
     }
 
     @Override
@@ -365,8 +346,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mTokenTracker.stopTracking();
         mProfileTracker.stopTracking();
         if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
+            mFirebaseAuth.removeAuthStateListener(mAuthListener);
         }
+    }
+
+    public void openArrow(View v) {
+        startActivity(new Intent(this, ArrowActivity.class));
+    }
+
+    public void openMap(View v) {
+        startActivity(new Intent(this, MapsActivity.class));
     }
 }
 
