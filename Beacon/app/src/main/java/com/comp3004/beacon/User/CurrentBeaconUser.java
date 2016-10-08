@@ -14,11 +14,13 @@ import com.google.firebase.iid.FirebaseInstanceId;
 public class CurrentBeaconUser extends BeaconUser {
 
     static CurrentBeaconUser currentBeaconUser;
+    private boolean registered;
 
     public CurrentBeaconUser(FirebaseUser user, FirebaseInstanceId id) {
         super(user, id);
-        //getFriends().put("as20830912743982798325", new BeaconUser("1233456", "John Doe", "as20830912743982798325", "www.test.com"));
+        getFriends().put("as20830912743982798325", new BeaconUser("1233456", "John Doe", "as20830912743982798325", "www.test.com"));
         currentBeaconUser = this;
+        registered = false;
         //(String userId, String displayName, String userAuthToken, Uri photoUrl)
     }
 
@@ -27,5 +29,13 @@ public class CurrentBeaconUser extends BeaconUser {
             currentBeaconUser = new CurrentBeaconUser(FirebaseAuth.getInstance().getCurrentUser(), FirebaseInstanceId.getInstance());
         }
         return currentBeaconUser;
+    }
+
+    public void setIsRegistered(boolean reg) {
+        registered = reg;
+    }
+
+    public boolean isRegistered() {
+        return registered;
     }
 }

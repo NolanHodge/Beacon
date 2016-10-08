@@ -42,7 +42,7 @@ public class DatabaseManager {
     }
     
     public HashMap getCurrentUsersFriends() {
-        Query query = databaseReference.child("/" + MessageTypes.REGISTER_USER_MESSAGE + "/" + CurrentBeaconUser.getInstance().getUserId() + "/" + MessageTypes.FRIENDS_MESSAGE);
+        Query query = databaseReference.child("/" + MessageTypes.REGISTER_USER_MESSAGE + "/" + CurrentBeaconUser.getInstance().getUserId());
         CurrentUsersFriendsDataListener currentUsersFriendsDataListener = new CurrentUsersFriendsDataListener();
         query.addValueEventListener(currentUsersFriendsDataListener);
         return currentUsersFriendsDataListener.getFriends();
