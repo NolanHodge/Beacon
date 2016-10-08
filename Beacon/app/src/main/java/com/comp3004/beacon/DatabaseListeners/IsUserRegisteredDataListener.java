@@ -1,8 +1,13 @@
 package com.comp3004.beacon.DatabaseListeners;
 
+import com.comp3004.beacon.Networking.MessageSenderHandler;
+import com.comp3004.beacon.Networking.MessageTypes;
+import com.comp3004.beacon.Networking.RegisterUserMessage;
 import com.comp3004.beacon.User.BeaconUser;
+import com.comp3004.beacon.User.CurrentBeaconUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 /**
@@ -13,21 +18,18 @@ public class IsUserRegisteredDataListener implements ValueEventListener {
     static boolean exists;
 
     private static IsUserRegisteredDataListener isUserRegisteredDataListener;
-    public IsUserRegisteredDataListener() {
-        isUserRegisteredDataListener = this;
-    }
-    public static IsUserRegisteredDataListener getInstance() {
-        if (isUserRegisteredDataListener == null) {
-            isUserRegisteredDataListener = new IsUserRegisteredDataListener();
-        }
-        return isUserRegisteredDataListener;
-    }
+
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {
 
-            this.exists = dataSnapshot.exists(); //This is stupid but I can't find a way around it for now
-            BeaconUser beaconUser = dataSnapshot.getValue(BeaconUser.class);
-            System.out.println("EXISTS" + exists);
+            if (dataSnapshot.exists() == false) {
+                System.out.println("User exists in database");
+                FirebaseDatabase.getInstance().getReference().child(MessageTypes.REGISTER_USER_MESSAGE).child(
+                        CurrentBeaconUser.getInstance().getUserId())
+                        .setValue(
+                                new RegisterUserMessage()
+                        );
+            }
     }
 
     @Override

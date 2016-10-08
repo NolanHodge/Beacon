@@ -17,13 +17,10 @@ public class DatabaseManager {
 
     static DatabaseManager databaseManager;
     DatabaseReference databaseReference;
-    IsUserRegisteredDataListener isUserRegisteredDataListener;
     Query query;
 
     public DatabaseManager() {
-
         databaseReference = FirebaseDatabase.getInstance().getReference();
-        isUserRegisteredDataListener = IsUserRegisteredDataListener.getInstance();
 
     }
 
@@ -34,11 +31,10 @@ public class DatabaseManager {
         return databaseManager;
     }
 
-    public boolean isCurrentUserRegistered() {
+    public void isCurrentUserRegistered() {
         Query query = databaseReference.child("/" + MessageTypes.REGISTER_USER_MESSAGE + "/" + CurrentBeaconUser.getInstance().getUserId());
+        IsUserRegisteredDataListener isUserRegisteredDataListener = new IsUserRegisteredDataListener();
         query.addValueEventListener(isUserRegisteredDataListener);
-        System.out.println("REGISTERED:" + isUserRegisteredDataListener.isUserRegisterd());
-        return isUserRegisteredDataListener.isUserRegisterd();
     }
     
     public HashMap getCurrentUsersFriends() {
