@@ -15,7 +15,7 @@ public class FriendListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_friend_list);
 
 
-       // DatabaseManager.getInstance().getCurrentUsersFriends();
+        DatabaseManager.getInstance().getCurrentUsersFriends();
 
         
     }

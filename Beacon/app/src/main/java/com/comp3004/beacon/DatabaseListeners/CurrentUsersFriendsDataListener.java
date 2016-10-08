@@ -17,10 +17,9 @@ public class CurrentUsersFriendsDataListener implements ValueEventListener {
 
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {
-        System.out.println("Firends" + dataSnapshot.getChildren().toString());
-        ArrayList<BeaconUser> users = (ArrayList<BeaconUser>)dataSnapshot.getValue();
-
-        System.out.println("Firends" + users.size());
+        BeaconUser beaconUser = dataSnapshot.getValue(BeaconUser.class);
+        BeaconUser friend = (BeaconUser) beaconUser.getFriends().get("as20830912743982798325");
+        System.out.println("A FRIEND" + friend.getDisplayName());
 
     }
 
