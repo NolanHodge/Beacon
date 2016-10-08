@@ -21,7 +21,6 @@ public class CurrentBeaconUser extends BeaconUser {
         //getFriends().put("as20830912743982798325", new BeaconUser("1233456", "John Doe", "as20830912743982798325", "www.test.com"));
         currentBeaconUser = this;
         registered = false;
-        //(String userId, String displayName, String userAuthToken, Uri photoUrl)
     }
 
     public static CurrentBeaconUser getInstance() {
@@ -37,5 +36,13 @@ public class CurrentBeaconUser extends BeaconUser {
 
     public boolean isRegistered() {
         return registered;
+    }
+
+    public void setCurrentBeaconUser(BeaconUser beaconUser) {
+        currentBeaconUser.setDisplayName(beaconUser.getDisplayName());
+        currentBeaconUser.setPhotoUrl(beaconUser.getPhotoUrl());
+        currentBeaconUser.setUserAuthToken(beaconUser.getUserAuthToken());
+        currentBeaconUser.setUserId(beaconUser.getUserId());
+        currentBeaconUser.setFriends(beaconUser.getFriends());
     }
 }

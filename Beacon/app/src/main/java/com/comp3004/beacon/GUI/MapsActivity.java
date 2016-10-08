@@ -9,10 +9,8 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.comp3004.beacon.FirebaseServices.DatabaseManager;
@@ -37,7 +35,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
@@ -103,6 +100,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         MessageSenderHandler.getInstance().sendRegisterUserMessage();
+        DatabaseManager.getInstance().loadCurrentUser();
+
+
 
         // Define Firebase Remote Config Settings.
         FirebaseRemoteConfigSettings firebaseRemoteConfigSettings =
@@ -112,7 +112,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         //GUI
         FloatingActionButton messageButton = (FloatingActionButton) findViewById(R.id.message_button);
-        Button FriendListButton = (Button) findViewById(R.id.friend_list_test);
 
 
         messageButton.setOnClickListener(new View.OnClickListener() {

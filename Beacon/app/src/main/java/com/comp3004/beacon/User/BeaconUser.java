@@ -16,6 +16,7 @@ public class BeaconUser {
 
     private String userId;
     private String displayName;
+
     private String userAuthToken;
     private String photoUrl;
     private HashMap<String, BeaconUser> friends;
@@ -56,6 +57,26 @@ public class BeaconUser {
     }
     public String getPhotoUrl() {
         return photoUrl;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public void setUserAuthToken(String userAuthToken) {
+        this.userAuthToken = userAuthToken;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
+
+    public void setFriends(HashMap<String, BeaconUser> friends) {
+        this.friends = friends;
     }
 
 }

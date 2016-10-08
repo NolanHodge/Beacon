@@ -1,6 +1,7 @@
 package com.comp3004.beacon.DatabaseListeners;
 
 import com.comp3004.beacon.User.BeaconUser;
+import com.comp3004.beacon.User.CurrentBeaconUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -18,9 +19,7 @@ public class CurrentUsersFriendsDataListener implements ValueEventListener {
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {
         BeaconUser beaconUser = dataSnapshot.getValue(BeaconUser.class);
-        BeaconUser friend = (BeaconUser) beaconUser.getFriends().get("as20830912743982798325");
-        System.out.println("A FRIEND" + friend.getDisplayName());
-
+        CurrentBeaconUser.getInstance().setCurrentBeaconUser(beaconUser);
     }
 
     @Override

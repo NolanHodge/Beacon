@@ -36,8 +36,8 @@ public class DatabaseManager {
         IsUserRegisteredDataListener isUserRegisteredDataListener = new IsUserRegisteredDataListener();
         query.addValueEventListener(isUserRegisteredDataListener);
     }
-    
-    public HashMap getCurrentUsersFriends() {
+
+    public HashMap loadCurrentUser() {
         Query query = databaseReference.child("/" + MessageTypes.REGISTER_USER_MESSAGE + "/" + CurrentBeaconUser.getInstance().getUserId());
         CurrentUsersFriendsDataListener currentUsersFriendsDataListener = new CurrentUsersFriendsDataListener();
         query.addValueEventListener(currentUsersFriendsDataListener);
