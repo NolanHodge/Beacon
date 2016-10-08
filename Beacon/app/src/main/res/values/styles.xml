@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorPrimary</item>
+        <item name="buttonStyle">@style/buttonStyle</item>
 
 
         <item name="android:color">@color/colorPrimary</item>
@@ -41,8 +42,8 @@
     </style>
 
     <style name="buttonStyle" parent="Widget.AppCompat.Button">
-        <item name="android:minHeight">50dp</item>
-        <item name="android:padding">10dp</item>
+        <item name="android:minHeight">30dp</item>
+        <item name="android:background">@drawable/hollow_btn</item>
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
     <style name="login" parent="com_facebook_button">

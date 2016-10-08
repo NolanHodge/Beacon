@@ -13,9 +13,9 @@
     tools:showIn="@layout/activity_main">
 
     <Button
-        style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="10dp"
         android:text="Friend List Test"
         android:id="@+id/friend_list_test"
         android:layout_alignParentBottom="true"
@@ -30,7 +30,8 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:onClick="openArrow"
-        android:text="Arrow" />
+        android:text="Arrow"
+        android:layout_margin="5dp" />
 
     <Button
         android:id="@+id/mapBtn"
@@ -39,7 +40,8 @@
         android:layout_below="@id/arwBtn"
         android:layout_centerInParent="true"
         android:onClick="openMap"
-        android:text="Map" />
+        android:text="Map"
+        android:layout_margin="5dp" />
 
 
 </RelativeLayout>
