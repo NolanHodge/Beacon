@@ -1,4 +1,4 @@
-package com.comp3004.beacon.FirebaseServices;
+package com.comp3004.beacon.DatabaseListeners;
 
 import com.comp3004.beacon.User.BeaconUser;
 import com.google.firebase.database.DataSnapshot;

@@ -37,21 +37,6 @@
         android:layout_centerHorizontal="true"
         android:gravity="center" />
 
-    <Button
-        android:id="@+id/arwBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:onClick="openArrow"
-        android:text="Arrow" />
 
-    <Button
-        android:id="@+id/mapBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/arwBtn"
-        android:layout_centerInParent="true"
-        android:onClick="openMap"
-        android:text="Map" />
 
 </RelativeLayout>
