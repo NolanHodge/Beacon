@@ -105,8 +105,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         MessageSenderHandler.getInstance().sendRegisterUserMessage();
 
-        System.out.println("FRIENDS: " + DatabaseManager.getInstance().getCurrentUsersFriends());
-
         // Define Firebase Remote Config Settings.
         FirebaseRemoteConfigSettings firebaseRemoteConfigSettings =
                 new FirebaseRemoteConfigSettings.Builder()
@@ -155,7 +153,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     }
                 });
 
-        MessageSenderHandler.getInstance().sendRegisterUserMessage();
     }
 
 

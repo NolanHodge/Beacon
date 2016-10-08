@@ -5,6 +5,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -16,7 +17,11 @@ public class CurrentUsersFriendsDataListener implements ValueEventListener {
 
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {
-        System.out.println("burf" + dataSnapshot.getChildren().toString());
+        System.out.println("Firends" + dataSnapshot.getChildren().toString());
+        ArrayList<BeaconUser> users = (ArrayList<BeaconUser>)dataSnapshot.getValue();
+
+        System.out.println("Firends" + users.size());
+
     }
 
     @Override
