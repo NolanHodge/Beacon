@@ -1,16 +1,12 @@
 package com.comp3004.beacon.FirebaseServices;
 
-import android.provider.ContactsContract;
-
+import com.comp3004.beacon.DatabaseListeners.CurrentUsersFriendsDataListener;
+import com.comp3004.beacon.DatabaseListeners.IsUserRegisteredDataListener;
 import com.comp3004.beacon.Networking.MessageTypes;
-import com.comp3004.beacon.User.BeaconUser;
 import com.comp3004.beacon.User.CurrentBeaconUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 

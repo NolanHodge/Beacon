@@ -71,26 +71,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private static final int REQUEST_READ_CONTACTS = 0;
 
-    private FacebookCallback<LoginResult> mFacebookCallback = new FacebookCallback<LoginResult>() {
-        @Override
-        public void onSuccess(final LoginResult loginResult) {
-
-            AccessToken accessToken = loginResult.getAccessToken();
-            handleFacebookAccessToken(accessToken);
-        }
-
-        @Override
-        public void onCancel() {
-            Log.d("Facebook", "Cancelled");
-        }
-
-        @Override
-        public void onError(FacebookException e) {
-            Log.d("Facebook", "Error " + e);
-        }
-    };
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -283,8 +263,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     Toast.makeText(LoginActivity.this, "Authentication failed.",
                             Toast.LENGTH_SHORT).show();
                 } else {
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                    //finish();
+                    startActivity(new Intent(LoginActivity.this, MapsActivity.class));
+
                 }
             }
         });
@@ -349,6 +329,24 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mFirebaseAuth.removeAuthStateListener(mAuthListener);
         }
     }
+    private FacebookCallback<LoginResult> mFacebookCallback = new FacebookCallback<LoginResult>() {
+        @Override
+        public void onSuccess(final LoginResult loginResult) {
+
+            AccessToken accessToken = loginResult.getAccessToken();
+            handleFacebookAccessToken(accessToken);
+        }
+
+        @Override
+        public void onCancel() {
+            Log.d("Facebook", "Cancelled");
+        }
+
+        @Override
+        public void onError(FacebookException e) {
+            Log.d("Facebook", "Error " + e);
+        }
+    };
 
     public void openArrow(View v) {
         startActivity(new Intent(this, ArrowActivity.class));

@@ -82,17 +82,17 @@ public class MainActivity extends AppCompatActivity
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
 
         if (mFirebaseUser == null) {
-            // Not signed in, launch the Sign In activity
-            startActivity(new Intent(this, LoginActivity.class));
-            finish();
-            return;
-        } else {
-            mUsername = mFirebaseUser.getDisplayName();
-            if (mFirebaseUser.getPhotoUrl() != null) {
-                mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
-                Toast.makeText(MainActivity.this, getString(R.string.login_greeting) + " " + currentBeaconUser.getDisplayName(),
-                        Toast.LENGTH_SHORT).show();
-            }
+                // Not signed in, launch the Sign In activity
+                startActivity(new Intent(this, LoginActivity.class));
+                finish();
+                return;
+            } else {
+                mUsername = mFirebaseUser.getDisplayName();
+                if (mFirebaseUser.getPhotoUrl() != null) {
+                    mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
+                    Toast.makeText(MainActivity.this, getString(R.string.login_greeting) + " " + currentBeaconUser.getDisplayName(),
+                            Toast.LENGTH_SHORT).show();
+                }
         }
 
         MessageSenderHandler.getInstance().sendRegisterUserMessage();
