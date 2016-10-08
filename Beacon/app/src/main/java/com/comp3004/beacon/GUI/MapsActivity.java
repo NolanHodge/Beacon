@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.comp3004.beacon.FirebaseServices.DatabaseManager;
 import com.comp3004.beacon.LocationManagement.LocationService;
 import com.comp3004.beacon.Networking.MessageSenderHandler;
+import com.comp3004.beacon.Networking.SubscriptionHandler;
 import com.comp3004.beacon.R;
 import com.comp3004.beacon.User.BeaconUser;
 import com.comp3004.beacon.User.CurrentBeaconUser;
@@ -59,7 +60,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private SharedPreferences mSharedPreferences;
     private String mUsername;
     private String mPhotoUrl;
-
+    SubscriptionHandler subscriptionHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,10 +70,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-        final String username = "julian";
-
-        FirebaseMessaging.getInstance().subscribeToTopic("user_" + username);
 
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -87,6 +84,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         messageHandler = MessageSenderHandler.getInstance();
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
+
+       subscriptionHandler = SubscriptionHandler.getInstance();
 
 
         if (mFirebaseUser == null) {
@@ -122,7 +121,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         messageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                messageHandler.sendBeaconInvitation(username);
+                messageHandler.sendBeaconInvitation("global"); //This is just for testing purposes...
+
+                startActivity(new Intent(MapsActivity.this, FriendListActivity.class));
+
 
             }
         });
@@ -153,7 +155,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     }
                 });
 
-        //MessageSenderHandler.getInstance().sendRegisterUserMessage();
+        MessageSenderHandler.getInstance().sendRegisterUserMessage();
     }
 
 
