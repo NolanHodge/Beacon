@@ -48,13 +48,7 @@ public class MessageSenderHandler {
      *
      */
     public void sendRegisterUserMessage() {
-        System.out.println("registered: " +DatabaseManager.getInstance().isCurrentUserRegistered());
-        if (DatabaseManager.getInstance().isCurrentUserRegistered() == false) {
-            FirebaseDatabase.getInstance().getReference().child(MessageTypes.REGISTER_USER_MESSAGE).child(
-                    CurrentBeaconUser.getInstance().getUserId())
-                    .setValue(
-                            new RegisterUserMessage()
-                    );
-        }
+        DatabaseManager.getInstance().isCurrentUserRegistered();
+
     }
 }

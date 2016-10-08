@@ -96,7 +96,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         } else {
             mUsername = mFirebaseUser.getDisplayName();
             if (mFirebaseUser.getPhotoUrl() != null) {
-                mPhotoUrl = mFirebaseUser.getPhotoUrl().toString();
                 Toast.makeText(MapsActivity.this, getString(R.string.login_greeting) + " " + currentBeaconUser.getDisplayName(),
                         Toast.LENGTH_SHORT).show();
             }
