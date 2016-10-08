@@ -65,9 +65,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         final String username = "julian";
 
-        FirebaseMessaging.getInstance().subscribeToTopic("user_"+username);
-
-
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Set default username is anonymous.
@@ -110,6 +107,9 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         Button FriendListButton = (Button) findViewById(R.id.friend_list_test);
+
+        FirebaseMessaging.getInstance().subscribeToTopic("user_"+username);
+        FirebaseMessaging.getInstance().subscribeToTopic("beacon_"+ currentBeaconUser.getUserId());
 
 
         fab.setOnClickListener(new View.OnClickListener() {
