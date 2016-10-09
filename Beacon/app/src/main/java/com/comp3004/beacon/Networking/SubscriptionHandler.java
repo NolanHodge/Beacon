@@ -1,5 +1,8 @@
 package com.comp3004.beacon.Networking;
 
+import android.database.CursorIndexOutOfBoundsException;
+
+import com.comp3004.beacon.User.CurrentBeaconUser;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 /**
@@ -10,7 +13,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
  */
 public class SubscriptionHandler {
 
-    String global = "global";
+    String GLOBAL_MESSAGE = "global";
 
     private static SubscriptionHandler subscriptionHandler;
 
@@ -21,7 +24,9 @@ public class SubscriptionHandler {
         this.firebaseMessaging = firebaseMessaging;
 
         //Default subscriptions here
-        FirebaseMessaging.getInstance().subscribeToTopic("user_" + global);
+        FirebaseMessaging.getInstance().subscribeToTopic("user_" + GLOBAL_MESSAGE);
+        FirebaseMessaging.getInstance().subscribeToTopic("beaconRequests_" + CurrentBeaconUser.getInstance().getUserId());
+        FirebaseMessaging.getInstance().subscribeToTopic("messageRequests_" + CurrentBeaconUser.getInstance().getUserId());
 
     }
 

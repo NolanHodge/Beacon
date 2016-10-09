@@ -37,8 +37,10 @@ function listenForNotificationRequests() {
   beaconInvitationRequests.on('child_added', function(requestSnapshot) {
   	var request = requestSnapshot.val();
   	console.log("Beacon Invitation Received");
+  	console.log(request.senderId);
+  	console.log(request.message);
   	sendNotificationToUser(
-  		request.username,
+  		request.senderId,
   		request.message
   	);
   }, function(error) {
@@ -47,7 +49,7 @@ function listenForNotificationRequests() {
   
 };
 
-function sendNotificationToUser(username, message) {
+function sendNotificationToUser(senderId, message) {
   request({
     url: 'https://fcm.googleapis.com/fcm/send',
     method: 'POST',
@@ -59,7 +61,7 @@ function sendNotificationToUser(username, message) {
       notification: {
         title: message
       },
-      to : '/topics/user_'+username
+      to : '/topics/beaconRequests_'+senderId
     })
   }, function(error, response, body) {
     if (error) { console.error(error); console.log(error); }

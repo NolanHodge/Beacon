@@ -8,6 +8,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.comp3004.beacon.GUI.MapsActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -34,6 +35,7 @@ public class BeaconFirebaseMessagingService extends FirebaseMessagingService {
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
         }
+
     }
 
 
