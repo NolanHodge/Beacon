@@ -117,8 +117,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         messageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                messageHandler.sendBeaconInvitation("global"); //This is just for testing purposes...
-
                 startActivity(new Intent(MapsActivity.this, FriendListActivity.class));
 
 

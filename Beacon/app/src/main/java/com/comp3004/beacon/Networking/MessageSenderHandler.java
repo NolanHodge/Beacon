@@ -32,17 +32,30 @@ public class MessageSenderHandler {
         return messageHandler;
     }
 
-    public void sendBeaconInvitation(String senderId) {
+    public void sendBeaconRequest(String senderId) {
 
         //TODO make this a class of BeaconRequest Message not a HashMap
+        String beaconMessage = CurrentBeaconUser.getInstance().getDisplayName() + " wants you to follow their Beacon!";
         Map notification = new HashMap<>();
-        notification.put("username", senderId);
-        notification.put("message", "Hey");
+        notification.put("senderId", senderId);
+        notification.put("message", beaconMessage);
+        notification.put("from",CurrentBeaconUser.getInstance().getUserId());
 
         FirebaseDatabase.getInstance().getReference().child(MessageTypes.BEACON_REQUEST_MESSAGE).push().setValue(notification);
 
     }
+    /*
+    public void sendBeaconRequest(String senderId) {
 
+        Map beaconRequest = new HashMap<>();
+        String beaconMessage = CurrentBeaconUser.getInstance().getDisplayName() + " wants you to follow their Beacon!";
+        //BeaconInvitationMessage beaconInvitationMessage = new BeaconInvitationMessage(senderId, beaconMessage);
+        beaconRequest.put("username", senderId);
+        beaconRequest.put("senderId", senderId);
+        beaconRequest.put("message", beaconMessage);
+        FirebaseDatabase.getInstance().getReference().child(MessageTypes.BEACON_REQUEST_MESSAGE).push().setValue(beaconMessage);
+    }
+*/
     /**
      * This message is sent when the user logs in for the very first time to make an entry for them in the database
      *
