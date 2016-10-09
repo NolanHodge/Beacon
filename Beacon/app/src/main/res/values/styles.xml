@@ -34,7 +34,7 @@
 
     <style name="LoginTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="windowActionBar">false</item>
-        <item name="android:colorPrimaryDark">#000000</item>
+        <item name="android:colorPrimaryDark">@color/colorPrimary</item>
     </style>
 
     <style name="TitleBarTextColor" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
