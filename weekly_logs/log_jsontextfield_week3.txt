@@ -1,0 +1,5 @@
+worked on rotating arrow to the shortest distance: 6 hours, ongoing
+added facebook login button: 20 minutes
+changed app icon: 5 minutes
+discussed with group on duties for upcoming week: 1 hour
+reduced the amount of dependencies the app needs and decreased the size of the app: 10 minutes
