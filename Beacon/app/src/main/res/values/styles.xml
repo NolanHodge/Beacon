@@ -9,7 +9,6 @@
 
 
         <item name="android:color">@color/land</item>
-        <item name="android:colorPrimaryDark">@color/texty</item>
         <item name="homeAsUpIndicator">@drawable/ic_arrow_back_white_24dp</item>
     </style>
 
@@ -34,7 +33,7 @@
 
     <style name="LoginTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="windowActionBar">false</item>
-        <item name="android:colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     </style>
 
     <style name="TitleBarTextColor" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
