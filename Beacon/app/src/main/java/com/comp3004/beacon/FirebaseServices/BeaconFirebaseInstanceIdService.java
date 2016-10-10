@@ -20,8 +20,7 @@ public class BeaconFirebaseInstanceIdService extends FirebaseInstanceIdService {
      */
     @Override
     public void onTokenRefresh() {
-        // If you need to handle the generation of a token, initially or
-        // after a refresh this is where you should do that.
+
         String token = FirebaseInstanceId.getInstance().getToken();
         Log.d(TAG, "FCM Token: " + token);
 

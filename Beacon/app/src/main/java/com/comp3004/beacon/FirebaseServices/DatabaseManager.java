@@ -1,5 +1,6 @@
 package com.comp3004.beacon.FirebaseServices;
 
+import com.comp3004.beacon.DatabaseListeners.BeaconRequestDataListener;
 import com.comp3004.beacon.DatabaseListeners.CurrentUsersFriendsDataListener;
 import com.comp3004.beacon.DatabaseListeners.IsUserRegisteredDataListener;
 import com.comp3004.beacon.Networking.MessageTypes;
@@ -21,7 +22,9 @@ public class DatabaseManager {
 
     public DatabaseManager() {
         databaseReference = FirebaseDatabase.getInstance().getReference();
-
+        query = databaseReference.child("/" + CurrentBeaconUser.getInstance().getUserId() + "_beaconRequests");
+        BeaconRequestDataListener beaconRequestDataListener = new BeaconRequestDataListener();
+        query.addChildEventListener(beaconRequestDataListener);
     }
 
     public static DatabaseManager getInstance() {

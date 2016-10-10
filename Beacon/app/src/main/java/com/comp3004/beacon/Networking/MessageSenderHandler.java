@@ -33,8 +33,6 @@ public class MessageSenderHandler {
     }
 
     public void sendBeaconRequest(String senderId) {
-
-        //TODO make this a class of BeaconRequest Message not a HashMap
         String beaconMessage = CurrentBeaconUser.getInstance().getDisplayName() + " wants you to follow their Beacon!";
         Map notification = new HashMap<>();
         notification.put("senderId", senderId);
@@ -43,6 +41,9 @@ public class MessageSenderHandler {
 
         FirebaseDatabase.getInstance().getReference().child(MessageTypes.BEACON_REQUEST_MESSAGE).push().setValue(notification);
 
+        BeaconInvitationMessage beaconInvitationMessage = new BeaconInvitationMessage(senderId, beaconMessage);
+
+        FirebaseDatabase.getInstance().getReference().child("/" + senderId + "_beaconRequests").push().setValue(beaconInvitationMessage); //Notification
     }
     /*
     public void sendBeaconRequest(String senderId) {

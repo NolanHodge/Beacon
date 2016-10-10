@@ -1,5 +1,6 @@
 package com.comp3004.beacon.GUI;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
@@ -9,15 +10,18 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.comp3004.beacon.FirebaseServices.DatabaseManager;
 import com.comp3004.beacon.LocationManagement.LocationService;
+import com.comp3004.beacon.Networking.CurrentBeaconInvitationHandler;
 import com.comp3004.beacon.Networking.MessageSenderHandler;
 import com.comp3004.beacon.Networking.SubscriptionHandler;
 import com.comp3004.beacon.R;
+import com.comp3004.beacon.User.Beacon;
 import com.comp3004.beacon.User.BeaconUser;
 import com.comp3004.beacon.User.CurrentBeaconUser;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -63,6 +67,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -73,7 +78,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Set default username is anonymous.
         mUsername = ANONYMOUS;
-
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         currentBeaconUser = new CurrentBeaconUser(mFirebaseUser, FirebaseInstanceId.getInstance());
@@ -102,6 +106,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         MessageSenderHandler.getInstance().sendRegisterUserMessage();
         DatabaseManager.getInstance().loadCurrentUser();
 
+        if (CurrentBeaconInvitationHandler.getInstance().currentInvitationExists()) {
+            CurrentBeaconInvitationHandler.getInstance().setCurrentInvitationExists(false);
+            openBeaconInvitationDialog();
+
+        }
 
 
         // Define Firebase Remote Config Settings.
@@ -149,6 +158,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     }
                 });
 
+    }
+    private  void openBeaconInvitationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final CurrentBeaconInvitationHandler currentBeaconInvitationHandler = CurrentBeaconInvitationHandler.getInstance();
+        builder.setMessage(currentBeaconInvitationHandler.getMessage());
+        builder.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                Beacon beacon = new Beacon(currentBeaconInvitationHandler);
+                currentBeaconUser.getBeacons().put(beacon.getSenderId(), beacon);
+                startActivity(new Intent(MapsActivity.this, ArrowActivity.class));
+
+            }
+        });
+        builder.setNegativeButton("Decline", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                CurrentBeaconInvitationHandler.getInstance().setCurrentInvitationExists(false);
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
 

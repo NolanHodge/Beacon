@@ -2,6 +2,7 @@ package com.comp3004.beacon.User;
 
 import android.net.Uri;
 
+import com.comp3004.beacon.Networking.CurrentBeaconInvitationHandler;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
 
@@ -20,6 +21,8 @@ public class BeaconUser {
     private String userAuthToken;
     private String photoUrl;
     private HashMap<String, BeaconUser> friends;
+    private HashMap<String, Beacon> beacons;
+
     FirebaseUser firebaseUser;
 
     public BeaconUser(FirebaseUser user, FirebaseInstanceId id) {
@@ -28,9 +31,11 @@ public class BeaconUser {
         userAuthToken = id.getToken();
         photoUrl = user.getPhotoUrl().toString();
         friends = new HashMap<String, BeaconUser>();
+        beacons = new HashMap<String, Beacon>();
     }
 
     public BeaconUser() {}
+
     public BeaconUser(String userId, String displayName, String userAuthToken, String photoUrl) {
         this.userId = userId;
         this.displayName = displayName;
@@ -77,6 +82,14 @@ public class BeaconUser {
 
     public void setFriends(HashMap<String, BeaconUser> friends) {
         this.friends = friends;
+    }
+
+    public HashMap<String, Beacon> getBeacons() {
+        return beacons;
+    }
+
+    public void setBeacons(HashMap<String, Beacon> beacons) {
+        this.beacons = beacons;
     }
 
 }
