@@ -9,10 +9,16 @@ public class BeaconInvitationMessage {
 
     String message;
     String senderId;
+    long timestamp;
+    String lat;
+    String lon;
 
+
+    public BeaconInvitationMessage() {}
     public BeaconInvitationMessage(String senderId, String message) {
         this.message = message;
         this.senderId = senderId;
+        this.timestamp = System.currentTimeMillis();
     }
 
     public String getMessage() {
@@ -29,5 +35,29 @@ public class BeaconInvitationMessage {
 
     public void setSenderId(String senderId) {
         this.senderId = senderId;
+    }
+
+    public String getLon() {
+        return lon;
+    }
+
+    public void setLon(String lon) {
+        this.lon = lon;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 }

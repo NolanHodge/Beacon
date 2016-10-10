@@ -1,16 +1,10 @@
 package com.comp3004.beacon.FirebaseServices;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
-import android.media.RingtoneManager;
-import android.net.Uri;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.comp3004.beacon.GUI.MapsActivity;
+import com.comp3004.beacon.Networking.CurrentBeaconInvitationHandler;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -21,9 +15,8 @@ import com.google.firebase.messaging.RemoteMessage;
 public class BeaconFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFMService";
-
+    public MapsActivity activity;
     public void onMessageReceived(RemoteMessage remoteMessage) {
-
         Log.d(TAG, "From: " + remoteMessage.getFrom());
 
         // Check if message contains a data payload.
@@ -36,9 +29,22 @@ public class BeaconFirebaseMessagingService extends FirebaseMessagingService {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
         }
 
+
+        CurrentBeaconInvitationHandler.getInstance().setCurrentInvitationExists(true);
+        Intent dialogIntent = new Intent(this, MapsActivity.class);
+        dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(dialogIntent);
+
+
     }
 
+    public void startActivityB() {
+        Intent dialogIntent = new Intent(this, MapsActivity.class);
+        dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(dialogIntent);
+    }
 
+/*
     private void sendNotification(String messageBody) {
         Intent intent = new Intent(this, MapsActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -57,5 +63,5 @@ public class BeaconFirebaseMessagingService extends FirebaseMessagingService {
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.notify(0, notificationBuilder.build());
-    }
+    }*/
 }
