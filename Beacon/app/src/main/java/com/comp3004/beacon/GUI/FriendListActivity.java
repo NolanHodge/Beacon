@@ -1,7 +1,11 @@
 package com.comp3004.beacon.GUI;
 
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -54,14 +58,35 @@ public class FriendListActivity extends AppCompatActivity {
 
     private void registerFriendsListviewCallback() {
         friendsListView = (ListView) findViewById(R.id.friendListView);
+        final Context context = this;
 
-        friendsListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
+        friendsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                MessageSenderHandler.getInstance().sendBeaconRequest(friendsList.get(position).getUserId());
+                AlertDialog alertDialog;
+                BeaconUser selectedBeaconUser = friendsList.get(position);
+                showBeaconOptionDialog(selectedBeaconUser, position);
             }
         });
     }
 
+    public void showBeaconOptionDialog(BeaconUser beaconUser, final int userIndex) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Send " + beaconUser.getDisplayName() + " a....")
+                .setItems(new String[]{"Beacon", "Message", "Cancel"}, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                MessageSenderHandler.getInstance().sendBeaconRequest(friendsList.get(userIndex).getUserId());
+                                break;
+                            case 1:
+                                break; //TODO Sends message;
+                            case 2:
+                                break;
+                        }
+                    }
+                });
+        builder.create().show();
+    }
 }

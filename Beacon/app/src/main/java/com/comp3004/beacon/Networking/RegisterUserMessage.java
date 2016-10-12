@@ -20,6 +20,7 @@ public class RegisterUserMessage {
     String userAuthToken;
     HashMap friends;
     String photoUrl;
+    long timestamp;
 
     public RegisterUserMessage() {
         BeaconUser currentUser = CurrentBeaconUser.getInstance();
@@ -28,6 +29,7 @@ public class RegisterUserMessage {
         this.userAuthToken = currentUser.getUserAuthToken();
         this.friends = currentUser.getFriends();
         this.photoUrl = currentUser.getPhotoUrl();
+        this.timestamp = System.currentTimeMillis();
     }
 
     public String getDisplayName() {
