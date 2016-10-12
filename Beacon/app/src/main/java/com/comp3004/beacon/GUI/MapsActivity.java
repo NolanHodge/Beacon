@@ -1,15 +1,19 @@
 package com.comp3004.beacon.GUI;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
@@ -29,6 +33,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -86,7 +91,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         messageHandler = MessageSenderHandler.getInstance();
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
 
-       subscriptionHandler = SubscriptionHandler.getInstance();
+        subscriptionHandler = SubscriptionHandler.getInstance();
 
 
         if (mFirebaseUser == null) {
@@ -159,7 +164,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 });
 
     }
-    private  void openBeaconInvitationDialog() {
+
+    private void openBeaconInvitationDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final CurrentBeaconInvitationHandler currentBeaconInvitationHandler = CurrentBeaconInvitationHandler.getInstance();
         builder.setMessage(currentBeaconInvitationHandler.getMessage());
@@ -182,7 +188,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -194,21 +199,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        LocationService locationService = new LocationService() {
-            @Override
-            public void onLocationChanged(Location location) {
-                LatLng currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
-
-                mMap.addMarker(new MarkerOptions().position(currentLocation));
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
-
-            }
-        };
-        try {
-            ((LocationManager) getSystemService(LOCATION_SERVICE)).requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 2, locationService);
-        } catch (SecurityException e) {
+        //Requesting permission
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
+
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        Location current = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+        mMap = googleMap;
+        mMap.setMyLocationEnabled(true);
+
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(current.getLatitude(), current.getLongitude())).zoom(13).build();
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
     }
 }
