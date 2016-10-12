@@ -41,22 +41,11 @@ public class MessageSenderHandler {
 
         FirebaseDatabase.getInstance().getReference().child(MessageTypes.BEACON_REQUEST_MESSAGE).push().setValue(notification);
 
-        BeaconInvitationMessage beaconInvitationMessage = new BeaconInvitationMessage(senderId, beaconMessage);
+        BeaconInvitationMessage beaconInvitationMessage = new BeaconInvitationMessage(senderId, beaconMessage, "0.000", "0.000");
 
         FirebaseDatabase.getInstance().getReference().child("/" + senderId + "_beaconRequests").push().setValue(beaconInvitationMessage); //Notification
     }
-    /*
-    public void sendBeaconRequest(String senderId) {
 
-        Map beaconRequest = new HashMap<>();
-        String beaconMessage = CurrentBeaconUser.getInstance().getDisplayName() + " wants you to follow their Beacon!";
-        //BeaconInvitationMessage beaconInvitationMessage = new BeaconInvitationMessage(senderId, beaconMessage);
-        beaconRequest.put("username", senderId);
-        beaconRequest.put("senderId", senderId);
-        beaconRequest.put("message", beaconMessage);
-        FirebaseDatabase.getInstance().getReference().child(MessageTypes.BEACON_REQUEST_MESSAGE).push().setValue(beaconMessage);
-    }
-*/
     /**
      * This message is sent when the user logs in for the very first time to make an entry for them in the database
      *

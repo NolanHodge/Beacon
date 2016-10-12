@@ -15,10 +15,12 @@ public class BeaconInvitationMessage {
 
 
     public BeaconInvitationMessage() {}
-    public BeaconInvitationMessage(String senderId, String message) {
+    public BeaconInvitationMessage(String senderId, String message, String lat, String lon) {
         this.message = message;
         this.senderId = senderId;
         this.timestamp = System.currentTimeMillis();
+        this.lon = lon;
+        this.lat = lat;
     }
 
     public String getMessage() {
