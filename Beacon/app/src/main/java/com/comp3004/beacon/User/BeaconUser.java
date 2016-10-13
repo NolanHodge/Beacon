@@ -21,7 +21,7 @@ public class BeaconUser {
     private String userAuthToken;
     private String photoUrl;
     private HashMap<String, BeaconUser> friends;
-    private HashMap<String, Beacon> beacons;
+    protected HashMap<String, Beacon> beacons;
 
     FirebaseUser firebaseUser;
 
@@ -42,6 +42,7 @@ public class BeaconUser {
         this.userAuthToken = userAuthToken;
         this.photoUrl = photoUrl;
         friends = new HashMap<String, BeaconUser>();
+        beacons = new HashMap<String, Beacon>();
 
     }
     public String getDisplayName() {
@@ -92,4 +93,7 @@ public class BeaconUser {
         this.beacons = beacons;
     }
 
+    public void addBeacon(Beacon beacon) {
+        beacons.put(beacon.getSenderId(), beacon);
+    }
 }

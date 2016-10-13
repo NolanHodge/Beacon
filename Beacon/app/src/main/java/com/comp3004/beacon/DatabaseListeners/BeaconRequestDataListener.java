@@ -25,6 +25,8 @@ public class BeaconRequestDataListener implements ChildEventListener {
         currentBeaconInvititationHandler.setTimestamp(beaconInvitationMessage.getTimestamp());
 
 
+
+
     }
 
     @Override
