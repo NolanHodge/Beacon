@@ -206,7 +206,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //Requesting permission
 
         for (Beacon beacon : CurrentBeaconUser.getInstance().getBeacons().values()) {
-            System.out.println("julian" + beacon.getSenderId());
+            System.out.println(beacon.getSenderId());
         }
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
