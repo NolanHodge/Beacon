@@ -13,7 +13,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
  */
 public class CurrentBeaconUser extends BeaconUser {
 
-    static CurrentBeaconUser currentBeaconUser;
+    static CurrentBeaconUser currentBeaconUser = null;
     private boolean registered;
 
     public CurrentBeaconUser(FirebaseUser user, FirebaseInstanceId id) {
@@ -45,4 +45,5 @@ public class CurrentBeaconUser extends BeaconUser {
         currentBeaconUser.setUserId(beaconUser.getUserId());
         currentBeaconUser.setFriends(beaconUser.getFriends());
     }
+
 }

@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.CursorIndexOutOfBoundsException;
 import android.location.Location;
 import android.location.LocationManager;
 import android.preference.PreferenceManager;
@@ -61,7 +62,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
     private GoogleApiClient mGoogleApiClient;
     private FirebaseAnalytics mFirebaseAnalytics;
-    private BeaconUser currentBeaconUser;
+    private CurrentBeaconUser currentBeaconUser;
     private MessageSenderHandler messageHandler;
     private SharedPreferences mSharedPreferences;
     private String mUsername;
@@ -85,7 +86,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mUsername = ANONYMOUS;
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
-        currentBeaconUser = new CurrentBeaconUser(mFirebaseUser, FirebaseInstanceId.getInstance());
+        currentBeaconUser = CurrentBeaconUser.getInstance();
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         messageHandler = MessageSenderHandler.getInstance();
@@ -171,9 +172,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         builder.setMessage(currentBeaconInvitationHandler.getMessage());
         builder.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
+
                 Beacon beacon = new Beacon(currentBeaconInvitationHandler);
-                currentBeaconUser.getBeacons().put(beacon.getSenderId(), beacon);
+                CurrentBeaconUser.getInstance().addBeacon(beacon);
                 startActivity(new Intent(MapsActivity.this, ArrowActivity.class));
+
 
             }
         });
@@ -199,7 +202,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
         //Requesting permission
+
+        for (Beacon beacon : CurrentBeaconUser.getInstance().getBeacons().values()) {
+            System.out.println("julian" + beacon.getSenderId());
+        }
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
@@ -212,6 +220,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(current.getLatitude(), current.getLongitude())).zoom(13).build();
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
+       //Add Beacon markers to the map
+        for (String key : currentBeaconUser.getBeacons().keySet()) {
+            LatLng position = new LatLng(Double.parseDouble(currentBeaconUser.getBeacons().get(key).getLat()),Double.parseDouble(currentBeaconUser.getBeacons().get(key).getLon()));
+            mMap.addMarker(new MarkerOptions()
+                    .title("Beacon")
+                    .snippet("Will put user name here soon")
+                    .position(position))
+                    .setDraggable(true);
+        }
 
     }
 }

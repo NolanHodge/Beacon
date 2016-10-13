@@ -1,10 +1,15 @@
 package com.comp3004.beacon.GUI;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -72,13 +77,18 @@ public class FriendListActivity extends AppCompatActivity {
 
     public void showBeaconOptionDialog(BeaconUser beaconUser, final int userIndex) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
+        final Context context = this;
         builder.setTitle("Send " + beaconUser.getDisplayName() + " a....")
                 .setItems(new String[]{"Beacon", "Message", "Cancel"}, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case 0:
-                                MessageSenderHandler.getInstance().sendBeaconRequest(friendsList.get(userIndex).getUserId());
+                                LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+                                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                                    return;
+                                }
+                                Location current = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                                MessageSenderHandler.getInstance().sendBeaconRequest(friendsList.get(userIndex).getUserId(), current);
                                 break;
                             case 1:
                                 break; //TODO Sends message;
