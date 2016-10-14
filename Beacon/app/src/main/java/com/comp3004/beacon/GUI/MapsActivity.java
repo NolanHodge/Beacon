@@ -213,7 +213,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        Location current = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        Location current = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER) == null ?
+                locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER) :
+                locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
         mMap = googleMap;
         mMap.setMyLocationEnabled(true);
@@ -221,9 +223,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(current.getLatitude(), current.getLongitude())).zoom(13).build();
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
-       //Add Beacon markers to the map
+        //Add Beacon markers to the map
         for (String key : currentBeaconUser.getBeacons().keySet()) {
-            LatLng position = new LatLng(Double.parseDouble(currentBeaconUser.getBeacons().get(key).getLat()),Double.parseDouble(currentBeaconUser.getBeacons().get(key).getLon()));
+            LatLng position = new LatLng(Double.parseDouble(currentBeaconUser.getBeacons().get(key).getLat()), Double.parseDouble(currentBeaconUser.getBeacons().get(key).getLon()));
             mMap.addMarker(new MarkerOptions()
                     .title("Beacon")
                     .snippet("Will put user name here soon")
