@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.CursorIndexOutOfBoundsException;
 import android.location.Location;
 import android.location.LocationManager;
 import android.preference.PreferenceManager;
@@ -21,13 +20,11 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.comp3004.beacon.FirebaseServices.DatabaseManager;
-import com.comp3004.beacon.LocationManagement.LocationService;
 import com.comp3004.beacon.Networking.CurrentBeaconInvitationHandler;
 import com.comp3004.beacon.Networking.MessageSenderHandler;
 import com.comp3004.beacon.Networking.SubscriptionHandler;
 import com.comp3004.beacon.R;
 import com.comp3004.beacon.User.Beacon;
-import com.comp3004.beacon.User.BeaconUser;
 import com.comp3004.beacon.User.CurrentBeaconUser;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -44,7 +41,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
@@ -174,8 +170,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onClick(DialogInterface dialog, int id) {
 
                 Beacon beacon = new Beacon(currentBeaconInvitationHandler);
-                CurrentBeaconUser.getInstance().addBeacon(beacon);
-                startActivity(new Intent(MapsActivity.this, ArrowActivity.class));
+                CurrentBeaconUser.getInstance().addBeacon(beacon);;
+
+
+                Intent intent = new Intent(MapsActivity.this, ArrowActivity.class);
+                intent.putExtra("CURRENT_BEACON_ID", beacon.getFromUserId());
+                startActivity(intent);
 
 
             }
@@ -206,7 +206,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //Requesting permission
 
         for (Beacon beacon : CurrentBeaconUser.getInstance().getBeacons().values()) {
-            System.out.println(beacon.getSenderId());
+            System.out.println(beacon.getFromUserId());
         }
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);

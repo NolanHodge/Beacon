@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.comp3004.beacon.LocationManagement.LocationService;
 import com.comp3004.beacon.R;
+import com.comp3004.beacon.User.Beacon;
+import com.comp3004.beacon.User.CurrentBeaconUser;
 
 public class ArrowActivity extends AppCompatActivity {
     private float prev,destination = 0;
@@ -28,10 +30,20 @@ public class ArrowActivity extends AppCompatActivity {
     static String SOUTHWEST = "Southwest";
     static String SOUTH = "South";
 
+    static final String beaconKey = "CURRENT_BEACON_ID";
+    private Beacon followingBeacon;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_arrow);
+
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            String beaconId = extras.getString(beaconKey);
+            followingBeacon = CurrentBeaconUser.getInstance().getBeacons().get(beaconId);
+            //The key argument here must match that used in the other activity
+        }
 
 
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -47,8 +59,8 @@ public class ArrowActivity extends AppCompatActivity {
 
                 double rand1 = (Math.random() / 10 - .05);
                 double rand2 = (Math.random() / 10 - .05);
-
-                Location.distanceBetween(location.getLatitude(), location.getLongitude(), location.getLatitude() + rand1, location.getLongitude() + rand2, results);
+                System.out.println("Long " + followingBeacon.getLon() + "Lat: " + followingBeacon.getLat());
+                Location.distanceBetween(location.getLatitude(), location.getLongitude(), Double.parseDouble(followingBeacon.getLat()) + rand1, Double.parseDouble(followingBeacon.getLon()) + rand2, results);
                 final int compass_bearing = (int) (results[2] + 360) % 360;
 
                 String b;
@@ -103,7 +115,7 @@ public class ArrowActivity extends AppCompatActivity {
             }
         };
         try {
-            //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DIST, locationService);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DIST, locationService);
         } catch (SecurityException e) {
             e.printStackTrace();
         }
@@ -135,7 +147,7 @@ public class ArrowActivity extends AppCompatActivity {
             double rand1 = (Math.random() / 10 - .05);
             double rand2 = (Math.random() / 10 - .05);
 
-            Location.distanceBetween(location.getLatitude(), location.getLongitude(), location.getLatitude() + rand1, location.getLongitude() + rand2, results);
+            Location.distanceBetween(location.getLatitude(), location.getLongitude(),  Double.parseDouble(followingBeacon.getLat()), Double.parseDouble(followingBeacon.getLon()) , results);
             final int compass_bearing = (int) (results[2] + 360) % 360;
 
             String b;

@@ -7,20 +7,22 @@ import com.comp3004.beacon.Networking.CurrentBeaconInvitationHandler;
  */
 public class Beacon {
 
-    String senderId;
+    String fromUserId;
+    String toUserId;
     String lat;
     String lon;
 
     public Beacon() {}
 
     public Beacon(CurrentBeaconInvitationHandler currentBeaconInvitationHandler) {
-        senderId = currentBeaconInvitationHandler.getSenderId();
+        fromUserId = currentBeaconInvitationHandler.getFromUserId();
+        toUserId = currentBeaconInvitationHandler.getToUserId();
         lat = currentBeaconInvitationHandler.getLat();
         lon = currentBeaconInvitationHandler.getLon();
 
     }
     public Beacon(String followingUid, String lat, String lon) {
-        this.senderId = followingUid;
+        this.fromUserId = followingUid;
         this.lat = lat;
         this.lon = lon;
 
@@ -40,8 +42,15 @@ public class Beacon {
     public void setLon(String lon) {
         this.lon = lon;
     }
-    public String getSenderId() {
-        return senderId;
+    public String getFromUserId() {
+        return fromUserId;
+    }
+
+    public String getToUserId() {
+        return toUserId;
+    }
+    public void setToUserId(String toUserId) {
+        this.toUserId = toUserId;
     }
 
 }

@@ -8,19 +8,21 @@ package com.comp3004.beacon.Networking;
 public class BeaconInvitationMessage {
 
     String message;
-    String senderId;
+    String toUserId;
+    String fromUserId;
     long timestamp;
     String lat;
     String lon;
 
 
     public BeaconInvitationMessage() {}
-    public BeaconInvitationMessage(String senderId, String message, String lat, String lon) {
+    public BeaconInvitationMessage(String toUserId, String fromUserId, String message, String lat, String lon) {
         this.message = message;
-        this.senderId = senderId;
+        this.toUserId = toUserId;
         this.timestamp = System.currentTimeMillis();
         this.lon = lon;
         this.lat = lat;
+        this.fromUserId = fromUserId;
     }
 
     public String getMessage() {
@@ -31,12 +33,12 @@ public class BeaconInvitationMessage {
         this.message = message;
     }
 
-    public String getSenderId() {
-        return senderId;
+    public String getToUserId() {
+        return toUserId;
     }
 
-    public void setSenderId(String senderId) {
-        this.senderId = senderId;
+    public void setToUserId(String toUserId) {
+        this.toUserId = toUserId;
     }
 
     public String getLon() {
@@ -61,5 +63,13 @@ public class BeaconInvitationMessage {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getFromUserId() {
+        return fromUserId;
+    }
+
+    public void setFromUserId(String fromUserId) {
+        this.fromUserId = fromUserId;
     }
 }

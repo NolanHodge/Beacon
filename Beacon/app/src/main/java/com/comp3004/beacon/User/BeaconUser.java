@@ -1,13 +1,8 @@
 package com.comp3004.beacon.User;
 
-import android.net.Uri;
-
-import com.comp3004.beacon.Networking.CurrentBeaconInvitationHandler;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
 
-import java.net.URI;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -94,6 +89,7 @@ public class BeaconUser {
     }
 
     public void addBeacon(Beacon beacon) {
-        beacons.put(beacon.getSenderId(), beacon);
+        System.out.println("From 1 " + beacon.getFromUserId());
+        beacons.put(beacon.getFromUserId(), beacon);
     }
 }

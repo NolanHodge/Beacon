@@ -21,9 +21,9 @@ public class BeaconRequestDataListener implements ChildEventListener {
         currentBeaconInvititationHandler.setLat(beaconInvitationMessage.getLat());
         currentBeaconInvititationHandler.setLon(beaconInvitationMessage.getLon());
         currentBeaconInvititationHandler.setMessage(beaconInvitationMessage.getMessage());
-        currentBeaconInvititationHandler.setSenderId(beaconInvitationMessage.getSenderId());
+        currentBeaconInvititationHandler.setToUserId(beaconInvitationMessage.getToUserId());
         currentBeaconInvititationHandler.setTimestamp(beaconInvitationMessage.getTimestamp());
-
+        currentBeaconInvititationHandler.setFromUserId(beaconInvitationMessage.getFromUserId());
 
 
 
