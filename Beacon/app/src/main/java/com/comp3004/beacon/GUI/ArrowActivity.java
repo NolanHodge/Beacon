@@ -19,7 +19,7 @@ import com.comp3004.beacon.User.CurrentBeaconUser;
 
 public class ArrowActivity extends AppCompatActivity {
     private float prev,destination = 0;
-    static long MIN_TIME = 10000;
+    static long MIN_TIME = 1000;
     static float MIN_DIST = 1;
     static String NORTH = "North";
     static String NORTHEAST = "Northeast";
@@ -47,7 +47,6 @@ public class ArrowActivity extends AppCompatActivity {
 
 
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        new test().execute(); //start the test
         LocationService locationService = new LocationService() {
             @Override
             public void onLocationChanged(Location location) {
@@ -56,11 +55,9 @@ public class ArrowActivity extends AppCompatActivity {
                 System.out.println("Update Location");
 
                 final float[] results = new float[3];
-
-                double rand1 = (Math.random() / 10 - .05);
-                double rand2 = (Math.random() / 10 - .05);
                 System.out.println("Long " + followingBeacon.getLon() + "Lat: " + followingBeacon.getLat());
-                Location.distanceBetween(location.getLatitude(), location.getLongitude(), Double.parseDouble(followingBeacon.getLat()) + rand1, Double.parseDouble(followingBeacon.getLon()) + rand2, results);
+                Location.distanceBetween(location.getLatitude(), location.getLongitude(), Double.parseDouble(followingBeacon.getLat()), Double.parseDouble(followingBeacon.getLon()), results);
+
                 final int compass_bearing = (int) (results[2] + 360) % 360;
 
                 String b;
@@ -88,12 +85,27 @@ public class ArrowActivity extends AppCompatActivity {
                 TextView textView = (TextView) findViewById(R.id.txt_distance);
                 textView.setText(s);
 
+
                 final ImageView imageView = (ImageView) findViewById(R.id.iv_arrow);
 
+                if (Math.abs(prev - results[1]) <= 180) {
+                    destination = results[1];
+                } else {
+                    if (prev < 0) {
+                        destination = (results[1] - 360) % 360;
+                    } else {
+                        destination = (results[1] + 360) % 360;
+                    }
+                    if (Math.abs(destination - prev) > 180)
+                        System.out.println(Math.abs(destination - prev) + " " + destination + " " + prev);
 
-                final RotateAnimation anim = new RotateAnimation(0, results[1], Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+                }
+
+                RotateAnimation anim = new RotateAnimation(prev, destination, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
                 anim.setInterpolator(new LinearInterpolator());
-                anim.setDuration(1400);
+                anim.setDuration(700);
+                anim.setFillAfter(true);
+                anim.setFillEnabled(true);
                 anim.setAnimationListener(new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
@@ -102,8 +114,10 @@ public class ArrowActivity extends AppCompatActivity {
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
-                        imageView.setAnimation(null);
-                        imageView.setRotation(results[1]);
+                        if (destination > 180) prev = destination - 360;
+                        if (destination < -180) prev = destination + 360;
+                        else prev = destination;
+                        System.out.println(prev);
                     }
 
                     @Override
@@ -111,11 +125,12 @@ public class ArrowActivity extends AppCompatActivity {
 
                     }
                 });
+
                 imageView.startAnimation(anim);
             }
         };
         try {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, MIN_TIME, MIN_DIST, locationService);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME, MIN_DIST, locationService);
         } catch (SecurityException e) {
             e.printStackTrace();
         }
