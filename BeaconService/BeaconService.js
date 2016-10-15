@@ -37,10 +37,10 @@ function listenForNotificationRequests() {
   beaconInvitationRequests.on('child_added', function(requestSnapshot) {
   	var request = requestSnapshot.val();
   	console.log("Beacon Invitation Received");
-  	console.log(request.senderId);
+  	console.log(request.toUserId);
   	console.log(request.message);
   	sendNotificationToUser(
-  		request.senderId,
+  		request.toUserId,
   		request.message
   	);
   }, function(error) {

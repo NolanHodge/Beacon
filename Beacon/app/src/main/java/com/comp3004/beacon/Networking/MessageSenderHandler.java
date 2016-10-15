@@ -40,9 +40,10 @@ public class MessageSenderHandler {
     }
 
     public void sendBeaconRequest(String senderId, Location current) {
+        CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
         String beaconMessage = CurrentBeaconUser.getInstance().getDisplayName() + " wants you to follow their Beacon!";
         Map notification = new HashMap<>();
-        notification.put("senderId", senderId);
+        notification.put("toUserId", senderId);
         notification.put("message", beaconMessage);
         notification.put("from", CurrentBeaconUser.getInstance().getUserId());
 
@@ -50,7 +51,9 @@ public class MessageSenderHandler {
 
         FirebaseDatabase.getInstance().getReference().child(MessageTypes.BEACON_REQUEST_MESSAGE).push().setValue(notification);
 
-        BeaconInvitationMessage beaconInvitationMessage = new BeaconInvitationMessage(senderId, beaconMessage, Double.toString(current.getLatitude()), Double.toString(current.getLongitude()));
+
+        System.out.println();
+        BeaconInvitationMessage beaconInvitationMessage = new BeaconInvitationMessage(senderId, CurrentBeaconUser.getInstance().getUserId(), beaconMessage, Double.toString(current.getLatitude()), Double.toString(current.getLongitude()));
 
         FirebaseDatabase.getInstance().getReference().child("/" + senderId + "_beaconRequests").push().setValue(beaconInvitationMessage); //Notification
     }

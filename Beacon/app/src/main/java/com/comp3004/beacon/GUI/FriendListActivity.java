@@ -87,7 +87,9 @@ public class FriendListActivity extends AppCompatActivity {
                                 if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                                     return;
                                 }
-                                Location current = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                                Location current = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER) == null ?
+                                        locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER) :
+                                        locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                                 MessageSenderHandler.getInstance().sendBeaconRequest(friendsList.get(userIndex).getUserId(), current);
                                 break;
                             case 1:
