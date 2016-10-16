@@ -14,8 +14,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
+import com.comp3004.beacon.FirebaseServices.DatabaseManager;
 import com.comp3004.beacon.Networking.MessageSenderHandler;
 import com.comp3004.beacon.R;
 import com.comp3004.beacon.User.Beacon;
@@ -42,6 +44,9 @@ public class BeaconsListActivity extends AppCompatActivity {
 
         CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
 
+
+
+
         if (currentBeaconUser.getBeacons() != null) {
             for (Object key : CurrentBeaconUser.getInstance().getBeacons().keySet()) {
                 BeaconUser bc = (BeaconUser) CurrentBeaconUser.getInstance().getFriends().get(key);
@@ -51,6 +56,7 @@ public class BeaconsListActivity extends AppCompatActivity {
         }
         populateBeaconsListView();
         registerBeaconsListviewCallback();
+
     }
 
     private void populateBeaconsListView() {
@@ -72,7 +78,6 @@ public class BeaconsListActivity extends AppCompatActivity {
     }
     public void showBeaconOptionDialog(final Beacon beacon, final int index) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        final Context context = this;
         builder
                 .setItems(new String[]{"Track", "Delete", "Cancel"}, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -85,7 +90,11 @@ public class BeaconsListActivity extends AppCompatActivity {
                             case 1:
                                 CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
                                 currentBeaconUser.getBeacons().remove(beacon.getFromUserId());
+                                DatabaseManager.getInstance().removeBeaconFromDb(beacon.getBeaconId());
                                 startActivity(getIntent());
+                                beaconUsernames.remove(index);
+                                beaconsList.remove(index);
+                                beaconsListView.invalidate();
                                 break;
                             case 2:
                                 break;

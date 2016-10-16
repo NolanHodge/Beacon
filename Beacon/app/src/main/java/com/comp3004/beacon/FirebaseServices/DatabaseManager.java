@@ -40,11 +40,20 @@ public class DatabaseManager {
         query.addValueEventListener(isUserRegisteredDataListener);
     }
 
-    public HashMap loadCurrentUser() {
+    public void loadCurrentUser() {
         Query query = databaseReference.child("/" + MessageTypes.REGISTER_USER_MESSAGE + "/" + CurrentBeaconUser.getInstance().getUserId());
         CurrentUsersFriendsDataListener currentUsersFriendsDataListener = new CurrentUsersFriendsDataListener();
         query.addValueEventListener(currentUsersFriendsDataListener);
-        return currentUsersFriendsDataListener.getFriends();
+    }
+
+    public void loadCurrentBeacons() {
+        CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
+        Query query = databaseReference.child("/" + CurrentBeaconUser.getInstance().getUserId() + "_beaconRequests");
+    }
+
+    public void removeBeaconFromDb(String beaconId) {
+        DatabaseReference dbNode = FirebaseDatabase.getInstance().getReference().getRoot().child("/" + CurrentBeaconUser.getInstance().getUserId() + "_beaconRequests/" + beaconId);
+        dbNode.removeValue();
     }
 
 

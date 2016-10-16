@@ -177,7 +177,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onClick(DialogInterface dialog, int id) {
 
                 Beacon beacon = new Beacon(currentBeaconInvitationHandler);
-                CurrentBeaconUser.getInstance().addBeacon(beacon);;
+                CurrentBeaconUser.getInstance().addBeacon(beacon);
 
 
                 Intent intent = new Intent(MapsActivity.this, ArrowActivity.class);
@@ -190,6 +190,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         builder.setNegativeButton("Decline", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 CurrentBeaconInvitationHandler.getInstance().setCurrentInvitationExists(false);
+                DatabaseManager.getInstance().removeBeaconFromDb(CurrentBeaconInvitationHandler.getInstance().getBeaconId());
+
             }
         });
 

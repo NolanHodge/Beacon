@@ -7,6 +7,7 @@ package com.comp3004.beacon.Networking;
  */
 public class BeaconInvitationMessage {
 
+    String beaconId;
     String message;
     String toUserId;
     String fromUserId;
@@ -72,4 +73,13 @@ public class BeaconInvitationMessage {
     public void setFromUserId(String fromUserId) {
         this.fromUserId = fromUserId;
     }
+
+    public String getBeaconId() {
+        return beaconId;
+    }
+
+    public void setBeaconId(String beaconId) {
+        this.beaconId = beaconId;
+    }
+
 }
