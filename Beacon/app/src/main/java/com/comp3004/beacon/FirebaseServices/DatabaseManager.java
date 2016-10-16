@@ -47,4 +47,5 @@ public class DatabaseManager {
         return currentUsersFriendsDataListener.getFriends();
     }
 
+
 }

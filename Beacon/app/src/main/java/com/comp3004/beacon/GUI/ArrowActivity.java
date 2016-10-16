@@ -52,10 +52,8 @@ public class ArrowActivity extends AppCompatActivity {
             public void onLocationChanged(Location location) {
                 //when the location is obtained then rotate the arrow
                 findViewById(R.id.arrow_prgrs).setVisibility(View.INVISIBLE);
-                System.out.println("Update Location");
 
                 final float[] results = new float[3];
-                System.out.println("Long " + followingBeacon.getLon() + "Lat: " + followingBeacon.getLat());
                 Location.distanceBetween(location.getLatitude(), location.getLongitude(), Double.parseDouble(followingBeacon.getLat()), Double.parseDouble(followingBeacon.getLon()), results);
 
                 final int compass_bearing = (int) (results[2] + 360) % 360;
