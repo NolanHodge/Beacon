@@ -22,6 +22,7 @@ function listenForNotificationRequests() {
   //Register the different requests here...
   var notificationRequests = ref.child('notificationRequest');
   var beaconInvitationRequests = ref.child('beaconRequest');
+  var messageRequests = ref.child('messageRequests');
   
   notificationRequests.on('child_added', function(requestSnapshot) {
     var request = requestSnapshot.val();
@@ -38,8 +39,7 @@ function listenForNotificationRequests() {
   	var request = requestSnapshot.val();
   	console.log("Beacon Invitation Received");
   	console.log(request.toUserId);
-  	console.log(request.message);
-  	sendNotificationToUser(
+  	sendBeaconToUser(
   		request.toUserId,
   		request.message
   	);
@@ -47,9 +47,21 @@ function listenForNotificationRequests() {
   	console.error(error);
   });
   
+  messageRequests.on('child_added', function(requestSnapshot) {
+  	var request = requestSnapshot.val();
+  	console.log('Message received');
+  	console.log(request.toUserId);
+  	sendMessageToUser(
+  		request.toUserId,
+  		request.message	
+  	);
+  }, function(error) {
+  	console.error(error);
+  });
+  
 };
 
-function sendNotificationToUser(senderId, message) {
+function sendBeaconToUser(senderId, message) {
   request({
     url: 'https://fcm.googleapis.com/fcm/send',
     method: 'POST',
@@ -62,6 +74,28 @@ function sendNotificationToUser(senderId, message) {
         title: message
       },
       to : '/topics/beaconRequests_'+senderId
+    })
+  }, function(error, response, body) {
+    if (error) { console.error(error); console.log(error); }
+    else if (response.statusCode >= 400) { 
+      console.error('HTTP Error: '+response.statusCode+' - '+response.statusMessage); 
+    }
+  });
+}
+
+function sendMessageToUser(senderId, message) {
+	request({
+   	 url: 'https://fcm.googleapis.com/fcm/send',
+   	 method: 'POST',
+   	 headers: {
+      'Content-Type' :' application/json',
+      'Authorization': 'key='+API_KEY
+    },
+    body: JSON.stringify({
+      notification: {
+        title: message
+      },
+      to : '/topics/messages_'+senderId
     })
   }, function(error, response, body) {
     if (error) { console.error(error); console.log(error); }

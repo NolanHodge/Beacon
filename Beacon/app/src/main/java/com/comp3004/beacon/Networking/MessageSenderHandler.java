@@ -41,11 +41,11 @@ public class MessageSenderHandler {
 
     public void sendBeaconRequest(String senderId, Location current) {
         CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
-        String beaconMessage = CurrentBeaconUser.getInstance().getDisplayName() + " wants you to follow their Beacon!";
+        String beaconMessage = currentBeaconUser.getDisplayName() + " wants you to follow their Beacon!";
         Map notification = new HashMap<>();
         notification.put("toUserId", senderId);
         notification.put("message", beaconMessage);
-        notification.put("from", CurrentBeaconUser.getInstance().getUserId());
+        notification.put("from", currentBeaconUser.getUserId());
 
         new LatLng(current.getLatitude(), current.getLongitude());
 
@@ -53,15 +53,28 @@ public class MessageSenderHandler {
 
         BeaconInvitationMessage beaconInvitationMessage = new BeaconInvitationMessage(senderId, CurrentBeaconUser.getInstance().getUserId(), beaconMessage, Double.toString(current.getLatitude()), Double.toString(current.getLongitude()));
 
-        FirebaseDatabase.getInstance().getReference().child("/" + senderId + "_beaconRequests").push().setValue(beaconInvitationMessage); //Notification
+        FirebaseDatabase.getInstance().getReference().child("/" + senderId + "_beaconRequests").push().setValue(beaconInvitationMessage);
     }
 
+    public void sendMessage(String toUserId, String message) {
+
+        CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
+        Map notification = new HashMap<>();
+        notification.put("toUserId", toUserId);
+        notification.put("message", message);
+        notification.put("from", currentBeaconUser.getUserId());
+
+        FirebaseDatabase.getInstance().getReference().child(MessageTypes.MESSAGE_REQUEST).push().setValue(notification);
+
+        ChatMessage chatMessage = new ChatMessage(toUserId, currentBeaconUser.getUserId(), message);
+
+        FirebaseDatabase.getInstance().getReference().child("/" + toUserId + "_messageRequests/" + toUserId + "_" + currentBeaconUser.getUserId()).push().setValue(chatMessage);
+    }
     /**
      * This message is sent when the user logs in for the very first time to make an entry for them in the database
      *
      */
     public void sendRegisterUserMessage() {
         DatabaseManager.getInstance().isCurrentUserRegistered();
-
     }
 }
