@@ -123,7 +123,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         //GUI
         FloatingActionButton messageButton = (FloatingActionButton) findViewById(R.id.message_button);
-
+        FloatingActionButton beaconsButton = (FloatingActionButton) findViewById(R.id.beacons_button);
 
         messageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,6 +131,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 startActivity(new Intent(MapsActivity.this, FriendListActivity.class));
 
 
+            }
+        });
+
+        beaconsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MapsActivity.this, BeaconsListActivity.class));
             }
         });
     }
