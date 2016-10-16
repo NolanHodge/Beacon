@@ -93,7 +93,8 @@ public class FriendListActivity extends AppCompatActivity {
                                 MessageSenderHandler.getInstance().sendBeaconRequest(friendsList.get(userIndex).getUserId(), current);
                                 break;
                             case 1:
-                                break; //TODO Sends message;
+                                MessageSenderHandler.getInstance().sendMessage(friendsList.get(userIndex).getUserId(), "Hey mate");
+                                break;
                             case 2:
                                 break;
                         }
