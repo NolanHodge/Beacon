@@ -4,6 +4,7 @@ import android.database.CursorIndexOutOfBoundsException;
 import android.provider.ContactsContract;
 
 import com.comp3004.beacon.FirebaseServices.DatabaseManager;
+import com.comp3004.beacon.Networking.MailBox;
 import com.comp3004.beacon.Networking.SubscriptionHandler;
 import com.comp3004.beacon.User.CurrentBeaconUser;
 import com.google.firebase.database.ChildEventListener;
@@ -22,9 +23,9 @@ public class NewMessageThreadListener implements ChildEventListener {
         CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
 
         String dbPath = "/" + currentBeaconUser.getUserId() + "_messageRequests/" + dataSnapshot.getKey();
-        System.out.println("Subscribed to " + dbPath);
         DatabaseManager.getInstance().createMessageThreadListener(dbPath);
         SubscriptionHandler.getInstance().subscribeToTopic(dataSnapshot.getKey());
+        MailBox.getInstance().createNewMessageThread(dataSnapshot.getKey());
     }
 
     @Override

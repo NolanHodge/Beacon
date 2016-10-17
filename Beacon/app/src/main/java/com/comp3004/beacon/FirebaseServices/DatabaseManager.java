@@ -69,4 +69,11 @@ public class DatabaseManager {
         query.addChildEventListener(messageThreadListener);
     }
 
+    public void getMessagesFromDb() {
+        query = databaseReference.child("/" + CurrentBeaconUser.getInstance().getUserId() + "_messageRequests");
+        BeaconRequestDataListener beaconRequestDataListener = new BeaconRequestDataListener();
+        query.addChildEventListener(beaconRequestDataListener);
+
+    }
+
 }

@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -33,14 +34,18 @@ public class FriendListActivity extends AppCompatActivity {
     ArrayList<String> userNames;
     ListView friendsListView;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_list);
 
+        DatabaseManager.getInstance().subscribeToMessageThread();
+
         friendsList = new ArrayList<BeaconUser>();
         userNames = new ArrayList<String>();
         friendsListView = (ListView) findViewById(R.id.friendListView);
+        FloatingActionButton messageButton = (FloatingActionButton) findViewById(R.id.message_friends_button);
 
         //Add friends to list for GUI
         if (CurrentBeaconUser.getInstance().getFriends() != null) {
@@ -50,6 +55,16 @@ public class FriendListActivity extends AppCompatActivity {
                 userNames.add(beaconUser.getDisplayName());
             }
         }
+
+        messageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(FriendListActivity.this, ChatMessageThreadsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
         populateFriendsListView();
         registerFriendsListviewCallback();
 
