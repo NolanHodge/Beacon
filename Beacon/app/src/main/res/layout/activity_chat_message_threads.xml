@@ -10,14 +10,7 @@
     tools:context="com.comp3004.beacon.GUI.ChatMessageThreadsActivity">
 
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/message_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_dialog_email" />
+
 
     <ListView
         android:layout_width="wrap_content"

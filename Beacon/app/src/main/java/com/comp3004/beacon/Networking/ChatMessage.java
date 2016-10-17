@@ -9,14 +9,17 @@ public class ChatMessage {
     String toUserId;
     String message;
     long timeStamp;
+    String messageId;
+    String threadId;
 
     public ChatMessage() {}
 
-    public ChatMessage(String toUserId, String fromUserId, String message) {
+    public ChatMessage(String toUserId, String fromUserId, String message, String threadId) {
         this.fromUserId = fromUserId;
         this.toUserId = toUserId;
         this.message = message;
         this.timeStamp = System.currentTimeMillis();
+        this.threadId = threadId;
     }
 
     public String getFromUserId() {
@@ -49,6 +52,17 @@ public class ChatMessage {
 
     public void setTimeStamp(long timeStamp) {
         this.timeStamp = timeStamp;
+    }
+
+    public void setMessageId(String messageId) {
+        this.messageId = messageId;
+    }
+    public String getThreadId() {
+        return threadId;
+    }
+
+    public void setThreadId(String threadId) {
+        this.threadId = threadId;
     }
 
 }

@@ -129,8 +129,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MapsActivity.this, FriendListActivity.class));
-
-
             }
         });
 
@@ -211,6 +209,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        DatabaseManager.getInstance().loadCurrentUser();
+
         CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
         //Requesting permission
 
@@ -233,14 +233,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
         //Add Beacon markers to the map
-        for (String key : currentBeaconUser.getBeacons().keySet()) {
-            LatLng position = new LatLng(Double.parseDouble(currentBeaconUser.getBeacons().get(key).getLat()), Double.parseDouble(currentBeaconUser.getBeacons().get(key).getLon()));
+        for (Beacon beacon : currentBeaconUser.getBeacons().values()) {
+            LatLng position = new LatLng(Double.parseDouble(beacon.getLat()), Double.parseDouble(beacon.getLon()));
+            String userId = beacon.getFromUserId();
+
             mMap.addMarker(new MarkerOptions()
                     .title("Beacon")
-                    .snippet("Will put user name here soon")
+                    .snippet(currentBeaconUser.getFriend(userId).getDisplayName())
                     .position(position))
                     .setDraggable(true);
         }
+    }
+
+    public void putBeaconOnMap() {
 
     }
 }
