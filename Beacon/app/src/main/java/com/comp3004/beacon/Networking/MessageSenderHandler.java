@@ -58,16 +58,19 @@ public class MessageSenderHandler {
 
     public void sendMessage(String toUserId, String message) {
         CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
-        String threadId = toUserId + "_" + currentBeaconUser.getUserId();
+        String threadIdOne = toUserId + "_" + currentBeaconUser.getUserId();
+        String threadIdTwo = currentBeaconUser.getUserId() + "_" + toUserId;
         Map notification = new HashMap<>();
         notification.put("toUserId", toUserId);
         notification.put("message", message);
         notification.put("from", currentBeaconUser.getUserId());
 
         FirebaseDatabase.getInstance().getReference().child(MessageTypes.MESSAGE_REQUEST).push().setValue(notification);
-        ChatMessage chatMessage = new ChatMessage(toUserId, currentBeaconUser.getUserId(), message, threadId);
+        ChatMessage chatMessage = new ChatMessage(toUserId, currentBeaconUser.getUserId(), message, threadIdOne);
 
-        FirebaseDatabase.getInstance().getReference().child("/" + toUserId + "_messageRequests/" + threadId).push().setValue(chatMessage);
+        FirebaseDatabase.getInstance().getReference().child("/" + toUserId + "_messageRequests/" + threadIdOne).push().setValue(chatMessage);
+        FirebaseDatabase.getInstance().getReference().child("/" + currentBeaconUser.getUserId()+ "_messageRequests/" + threadIdTwo).push().setValue(chatMessage);
+
     }
     /**
      * This message is sent when the user logs in for the very first time to make an entry for them in the database

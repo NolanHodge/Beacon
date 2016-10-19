@@ -26,7 +26,9 @@ import com.comp3004.beacon.User.BeaconUser;
 import com.comp3004.beacon.User.CurrentBeaconUser;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class FriendListActivity extends AppCompatActivity {
 
@@ -51,8 +53,10 @@ public class FriendListActivity extends AppCompatActivity {
         if (CurrentBeaconUser.getInstance().getFriends() != null) {
             for (Object key : CurrentBeaconUser.getInstance().getFriends().keySet()) {
                 BeaconUser beaconUser = (BeaconUser) CurrentBeaconUser.getInstance().getFriends().get(key);
-                friendsList.add(beaconUser);
-                userNames.add(beaconUser.getDisplayName());
+                if (!beaconUser.getUserId().equals(CurrentBeaconUser.getInstance().getUserId())) {
+                    friendsList.add(beaconUser);
+                    userNames.add(beaconUser.getDisplayName());
+                }
             }
         }
 
@@ -108,7 +112,12 @@ public class FriendListActivity extends AppCompatActivity {
                                 MessageSenderHandler.getInstance().sendBeaconRequest(friendsList.get(userIndex).getUserId(), current);
                                 break;
                             case 1:
-                                MessageSenderHandler.getInstance().sendMessage(friendsList.get(userIndex).getUserId(), "Hey mate");
+                                MessageSenderHandler.getInstance().sendMessage(friendsList.get(userIndex).getUserId(), "Has started a chat");
+                                /* TODO Start the Chat Activity
+                                Intent intent = new Intent(FriendListActivity.this, ChatActivity.class);
+                                intent.putExtra("CHAT_ID", CurrentBeaconUser.getInstance().getDisplayName() + "_" + friendsList.get(userIndex).getUserId());
+                                intent.putExtra("CHAT_PARTICIPANT", friendsList.get(userIndex).getUserId());
+                                startActivity(intent);*/
                                 break;
                             case 2:
                                 break;

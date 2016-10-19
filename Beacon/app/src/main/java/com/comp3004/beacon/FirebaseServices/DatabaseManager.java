@@ -23,6 +23,7 @@ public class DatabaseManager {
     static DatabaseManager databaseManager;
     DatabaseReference databaseReference;
     Query query;
+    private String messageThreadIdHolder;
 
     public DatabaseManager() {
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -74,6 +75,10 @@ public class DatabaseManager {
         BeaconRequestDataListener beaconRequestDataListener = new BeaconRequestDataListener();
         query.addChildEventListener(beaconRequestDataListener);
 
+    }
+
+    public void setMessageThreadIdHolder(String threadId) {
+        messageThreadIdHolder = threadId;
     }
 
 }

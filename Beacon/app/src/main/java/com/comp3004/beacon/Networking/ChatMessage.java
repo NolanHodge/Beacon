@@ -65,4 +65,7 @@ public class ChatMessage {
         this.threadId = threadId;
     }
 
+    public String getMessageId() {
+        return messageId;
+    }
 }

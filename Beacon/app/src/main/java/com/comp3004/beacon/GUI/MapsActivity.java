@@ -25,6 +25,7 @@ import com.comp3004.beacon.Networking.MessageSenderHandler;
 import com.comp3004.beacon.Networking.SubscriptionHandler;
 import com.comp3004.beacon.R;
 import com.comp3004.beacon.User.Beacon;
+import com.comp3004.beacon.User.BeaconUser;
 import com.comp3004.beacon.User.CurrentBeaconUser;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -213,6 +214,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
         //Requesting permission
+        for (Object beaconUserKey : currentBeaconUser.getFriends().keySet()) {
+            BeaconUser beaconUser = currentBeaconUser.getFriend((String) beaconUserKey);
+            System.out.println("Beacon User " + beaconUser.getUserId());
+        }
 
         for (Beacon beacon : CurrentBeaconUser.getInstance().getBeacons().values()) {
             System.out.println(beacon.getFromUserId());
