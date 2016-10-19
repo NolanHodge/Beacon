@@ -42,7 +42,6 @@ public class ArrowActivity extends AppCompatActivity {
         if (extras != null) {
             String beaconId = extras.getString(beaconKey);
             followingBeacon = CurrentBeaconUser.getInstance().getBeacons().get(beaconId);
-            //The key argument here must match that used in the other activity
         }
 
 
