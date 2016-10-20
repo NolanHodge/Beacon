@@ -231,8 +231,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         mMap.setMyLocationEnabled(true);
 
-         CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(current.getLatitude(), current.getLongitude())).zoom(13).build();
-         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(new LatLng(current.getLatitude(), current.getLongitude()))
+                .zoom(13)
+                .build();
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
         //Add Beacon markers to the map
         for (Beacon beacon : currentBeaconUser.getBeacons().values()) {
@@ -245,6 +248,38 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .position(position))
                     .setDraggable(true);
         }
+        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(LatLng latLng) {
+                mMap.addMarker(new MarkerOptions().position(latLng));
+                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+                mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
+                    @Override
+                    public void onCameraIdle() {
+                        AlertDialog dialog = new AlertDialog.Builder(MapsActivity.this)
+                                .setTitle("Create a Beacon")
+                                .setMessage("Would you like to create a becon here?")
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        //put code for making a beacon here
+                                    }
+                                })
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        mMap.clear();
+                                        dialog.cancel(); //could've left this empty
+                                    }
+                                })
+                                .show();
+
+                        mMap.setOnCameraIdleListener(null);
+                    }
+                });
+
+            }
+        });
     }
 
     public void putBeaconOnMap() {
