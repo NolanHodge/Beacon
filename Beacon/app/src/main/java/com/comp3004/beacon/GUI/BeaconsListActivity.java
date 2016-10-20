@@ -1,24 +1,15 @@
 package com.comp3004.beacon.GUI;
 
-import android.Manifest;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationManager;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
-
 import com.comp3004.beacon.FirebaseServices.DatabaseManager;
-import com.comp3004.beacon.Networking.MessageSenderHandler;
 import com.comp3004.beacon.R;
 import com.comp3004.beacon.User.Beacon;
 import com.comp3004.beacon.User.BeaconUser;
@@ -84,13 +75,14 @@ public class BeaconsListActivity extends AppCompatActivity {
                         switch (which) {
                             case 0:
                                 Intent intent = new Intent(BeaconsListActivity.this, ArrowActivity.class);
-                                intent.putExtra("CURRENT_BEACON_ID", beacon.getFromUserId());
+                                intent.putExtra(ArrowActivity.CURRENT_BEACON_ID_KEY, beacon.getFromUserId());
                                 startActivity(intent);
                                 break;
                             case 1:
                                 CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
                                 currentBeaconUser.getBeacons().remove(beacon.getFromUserId());
                                 DatabaseManager.getInstance().removeBeaconFromDb(beacon.getBeaconId());
+                                finish();
                                 startActivity(getIntent());
                                 beaconUsernames.remove(index);
                                 beaconsList.remove(index);
