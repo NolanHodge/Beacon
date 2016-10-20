@@ -219,9 +219,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             System.out.println("Beacon User " + beaconUser.getUserId());
         }
 
-        for (Beacon beacon : CurrentBeaconUser.getInstance().getBeacons().values()) {
-            System.out.println(beacon.getFromUserId());
-        }
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
@@ -234,8 +231,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         mMap.setMyLocationEnabled(true);
 
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(current.getLatitude(), current.getLongitude())).zoom(13).build();
-        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+         CameraPosition cameraPosition = new CameraPosition.Builder().target(new LatLng(current.getLatitude(), current.getLongitude())).zoom(13).build();
+         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
         //Add Beacon markers to the map
         for (Beacon beacon : currentBeaconUser.getBeacons().values()) {

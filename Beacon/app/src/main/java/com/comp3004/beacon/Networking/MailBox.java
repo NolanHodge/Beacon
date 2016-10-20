@@ -71,11 +71,15 @@ public class MailBox {
                 return (int) (o1.getTimeStamp() - o2.getTimeStamp());
             }
         });
-        Set<ChatMessage> hs = new HashSet<>();
-        hs.addAll(combinedThread);
-        combinedThread.clear();
-        combinedThread.addAll(hs);
-        return combinedThread;
+
+        Set<String> hs = new HashSet<>();
+        ArrayList<ChatMessage> combinedThread2 = new ArrayList<>();
+        
+        for (ChatMessage chatMessage : combinedThread)
+            if (hs.add(String.valueOf(chatMessage.getTimeStamp())))
+                combinedThread2.add(chatMessage);
+
+        return combinedThread2;
 
     }
 
