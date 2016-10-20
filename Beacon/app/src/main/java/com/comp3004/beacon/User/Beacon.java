@@ -7,11 +7,11 @@ import com.comp3004.beacon.Networking.CurrentBeaconInvitationHandler;
  */
 public class Beacon {
 
-    String beaconId;
-    String fromUserId;
-    String toUserId;
-    String lat;
-    String lon;
+    private String beaconId;
+    private String fromUserId;
+    private String toUserId;
+    private String lat;
+    private String lon;
 
 
     public Beacon() {}

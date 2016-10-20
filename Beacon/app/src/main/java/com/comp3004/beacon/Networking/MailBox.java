@@ -48,6 +48,10 @@ public class MailBox {
         return inbox;
     }
 
+    public void initializeThread(String threadId) {
+        inbox.put(threadId, new ArrayList<ChatMessage>());
+        inbox.put(reverseChatId(threadId), new ArrayList<ChatMessage>());
+    }
     public ArrayList<ChatMessage> getChatThread(String id) {
 
         ArrayList<ChatMessage> thread1;

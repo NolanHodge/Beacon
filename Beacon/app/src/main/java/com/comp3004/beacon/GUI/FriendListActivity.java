@@ -1,14 +1,12 @@
 package com.comp3004.beacon.GUI;
 
 import android.Manifest;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
-import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -18,17 +16,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
 import com.comp3004.beacon.FirebaseServices.DatabaseManager;
+import com.comp3004.beacon.Networking.MailBox;
 import com.comp3004.beacon.Networking.MessageSenderHandler;
 import com.comp3004.beacon.R;
 import com.comp3004.beacon.User.BeaconUser;
 import com.comp3004.beacon.User.CurrentBeaconUser;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+
 
 public class FriendListActivity extends AppCompatActivity {
 
@@ -112,12 +107,15 @@ public class FriendListActivity extends AppCompatActivity {
                                 MessageSenderHandler.getInstance().sendBeaconRequest(friendsList.get(userIndex).getUserId(), current);
                                 break;
                             case 1:
-                                MessageSenderHandler.getInstance().sendMessage(friendsList.get(userIndex).getUserId(), "Has started a chat");
-                                /* TODO Start the Chat Activity
+                                String chatId = CurrentBeaconUser.getInstance().getUserId() + "_" + friendsList.get(userIndex).getUserId();
+                                if (!MailBox.getInstance().getInbox().containsKey(chatId)) {
+                                    MailBox.getInstance().initializeThread(chatId);
+                                    MessageSenderHandler.getInstance().sendMessage(friendsList.get(userIndex).getUserId(), "Has started a chat");
+                                }
                                 Intent intent = new Intent(FriendListActivity.this, ChatActivity.class);
-                                intent.putExtra("CHAT_ID", CurrentBeaconUser.getInstance().getDisplayName() + "_" + friendsList.get(userIndex).getUserId());
+                                intent.putExtra("CHAT_ID", CurrentBeaconUser.getInstance().getUserId() + "_" + friendsList.get(userIndex).getUserId());
                                 intent.putExtra("CHAT_PARTICIPANT", friendsList.get(userIndex).getUserId());
-                                startActivity(intent);*/
+                                startActivity(intent);
                                 break;
                             case 2:
                                 break;

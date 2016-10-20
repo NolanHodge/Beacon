@@ -1,25 +1,23 @@
 package com.comp3004.beacon.GUI;
 
-import android.provider.ContactsContract;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-
-import com.comp3004.beacon.FirebaseServices.DatabaseManager;
 import com.comp3004.beacon.Networking.ChatMessage;
 import com.comp3004.beacon.Networking.MailBox;
 import com.comp3004.beacon.Networking.MessageSenderHandler;
 import com.comp3004.beacon.R;
 import com.comp3004.beacon.User.BeaconUser;
 import com.comp3004.beacon.User.CurrentBeaconUser;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,13 +25,17 @@ import java.util.Map;
 public class ChatActivity extends AppCompatActivity {
 
     ArrayList<ChatMessage> chatThread;
-    ArrayList<ChatMessage> chatThread2;
-    ArrayList<ChatMessage> combinedChatThread;
+
 
     ListView chatListView;
     EditText chatTextbox;
     Button sendButton;
     String otherChatParticipantId;
+    private BroadcastReceiver broadcastReceiver;
+    static final public String UPDATE_MESSAGE_THREAD = "UPDATE_MESSAGE_THREAD";
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,11 +48,9 @@ public class ChatActivity extends AppCompatActivity {
 
         if (extras != null) {
             String chatId = extras.getString("CHAT_ID");
-            chatThread = (ArrayList<ChatMessage>) MailBox.getInstance().getChatThread(chatId);
+            chatThread = MailBox.getInstance().getChatThread(chatId);
             otherChatParticipantId = extras.getString("CHAT_PARTICIPANT");
         }
-
-
 
 
         sendButton.setOnClickListener(new View.OnClickListener() {
@@ -64,6 +64,33 @@ public class ChatActivity extends AppCompatActivity {
 
         populateFriendsListView();
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().equals(UPDATE_MESSAGE_THREAD ))
+                {
+                    finish();
+                    startActivity(getIntent());
+                }
+            }
+        };
+
+        IntentFilter filter = new IntentFilter( UPDATE_MESSAGE_THREAD );
+        registerReceiver(broadcastReceiver, filter);
+    }
+
+
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+        unregisterReceiver(broadcastReceiver);
+    }
+
     private void populateFriendsListView() {
         CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
         List<Map<String, String>> data = new ArrayList<Map<String, String>>();
@@ -87,5 +114,6 @@ public class ChatActivity extends AppCompatActivity {
 
         chatListView.setAdapter(simpleAdapter);
     }
+
 
 }

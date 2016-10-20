@@ -29,8 +29,7 @@ public class ArrowActivity extends AppCompatActivity {
     static String WEST = "West";
     static String SOUTHWEST = "Southwest";
     static String SOUTH = "South";
-
-    static final String beaconKey = "CURRENT_BEACON_ID";
+    public static String CURRENT_BEACON_ID_KEY = "CURRENT_BEACON_ID";
     private Beacon followingBeacon;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +39,7 @@ public class ArrowActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            String beaconId = extras.getString(beaconKey);
+            String beaconId = extras.getString(CURRENT_BEACON_ID_KEY);
             followingBeacon = CurrentBeaconUser.getInstance().getBeacons().get(beaconId);
         }
 

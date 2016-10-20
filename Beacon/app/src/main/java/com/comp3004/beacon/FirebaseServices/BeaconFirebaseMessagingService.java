@@ -1,9 +1,14 @@
 package com.comp3004.beacon.FirebaseServices;
 
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.location.LocationManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.comp3004.beacon.GUI.ChatActivity;
 import com.comp3004.beacon.GUI.MapsActivity;
+import com.comp3004.beacon.Networking.ChatMessage;
 import com.comp3004.beacon.Networking.CurrentBeaconInvitationHandler;
 import com.comp3004.beacon.User.CurrentBeaconUser;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -19,6 +24,10 @@ public class BeaconFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFMService";
     public MapsActivity activity;
+
+
+
+
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Log.d(TAG, "From: " + remoteMessage.getFrom());
         // Check if message contains a data payload.
@@ -41,8 +50,13 @@ public class BeaconFirebaseMessagingService extends FirebaseMessagingService {
 
         if (remoteMessage.getFrom().equals("/topics/messages_" + CurrentBeaconUser.getInstance().getUserId())) {
             DatabaseManager.getInstance().subscribeToMessageThread();
+            Intent broadcastIntent = new Intent();
+            broadcastIntent.setAction(ChatActivity.UPDATE_MESSAGE_THREAD);
+
+            sendBroadcast(broadcastIntent);
+
+
         }
-
-
     }
+
 }
