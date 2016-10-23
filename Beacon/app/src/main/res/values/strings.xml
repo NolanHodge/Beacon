@@ -17,4 +17,11 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="facebook_app_id">156151978174865</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_chat">Chat</string>
+    <string name="title_activity_chat_message_threads">Conversations</string>
+    <string name="title_activity_login">Login</string>
+    <string name="title_activity_track">Track</string>
+    <string name="title_activity_beacons_list">Following</string>
+    <string name="title_activity_friend_list">Friends List</string>
+
 </resources>

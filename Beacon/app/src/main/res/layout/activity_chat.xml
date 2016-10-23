@@ -1,35 +1,39 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:android1="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent"
+     >
 
     <ListView
         android:id="@+id/chatListView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" >
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/chatEditText"
+        android:divider="@null"
+        android:dividerHeight="0dp">
 
     </ListView>
 
     <EditText
         android:id="@+id/chatEditText"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
+        android:layout_alignParentStart="true"
+        android:hint="Enter Here..."
+        android:layout_toLeftOf="@+id/sendChatMessageButton"
+        android:layout_toStartOf="@+id/sendChatMessageButton" />
 
     <Button
         android:id="@+id/sendChatMessageButton"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/chatEditText"
-        android:layout_alignBottom="@+id/chatEditText"
-        android:layout_alignRight="@+id/chatEditText"
-        android:background="@drawable/forward_arrow_button_next_right_media_mail" />
+        android:background="@android:drawable/ic_menu_send"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
