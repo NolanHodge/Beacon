@@ -2,7 +2,7 @@ package com.comp3004.beacon.DatabaseListeners;
 
 import com.comp3004.beacon.Networking.BeaconInvitationMessage;
 import com.comp3004.beacon.Networking.CurrentBeaconInvitationHandler;
-import com.comp3004.beacon.User.Beacon;
+import com.comp3004.beacon.User.PrivateBeacon;
 import com.comp3004.beacon.User.CurrentBeaconUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -28,9 +28,9 @@ public class BeaconRequestDataListener implements ChildEventListener {
         currentBeaconInvititationHandler.setFromUserId(beaconInvitationMessage.getFromUserId());
         currentBeaconInvititationHandler.setBeaconId(dataSnapshot.getKey());
 
-        Beacon beacon = new Beacon(currentBeaconInvititationHandler);
-        beacon.setBeaconId(dataSnapshot.getKey());
-        CurrentBeaconUser.getInstance().getBeacons().put(beacon.getFromUserId(), beacon);
+        PrivateBeacon privateBeacon = new PrivateBeacon(currentBeaconInvititationHandler);
+        privateBeacon.setBeaconId(dataSnapshot.getKey());
+        CurrentBeaconUser.getInstance().getBeacons().put(privateBeacon.getFromUserId(), privateBeacon);
 
 
 

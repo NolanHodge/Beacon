@@ -12,11 +12,10 @@ public class BeaconUser {
 
     private String userId;
     private String displayName;
-
     private String userAuthToken;
     private String photoUrl;
     private HashMap<String, BeaconUser> friends;
-    protected HashMap<String, Beacon> beacons;
+    protected HashMap<String, PrivateBeacon> beacons;
 
     FirebaseUser firebaseUser;
 
@@ -26,7 +25,7 @@ public class BeaconUser {
         userAuthToken = id.getToken();
         photoUrl = user.getPhotoUrl().toString();
         friends = new HashMap<String, BeaconUser>();
-        beacons = new HashMap<String, Beacon>();
+        beacons = new HashMap<String, PrivateBeacon>();
     }
 
     public BeaconUser() {}
@@ -37,7 +36,7 @@ public class BeaconUser {
         this.userAuthToken = userAuthToken;
         this.photoUrl = photoUrl;
         friends = new HashMap<String, BeaconUser>();
-        beacons = new HashMap<String, Beacon>();
+        beacons = new HashMap<String, PrivateBeacon>();
 
     }
     public String getDisplayName() {
@@ -80,16 +79,15 @@ public class BeaconUser {
         this.friends = friends;
     }
 
-    public HashMap<String, Beacon> getBeacons() {
+    public HashMap<String, PrivateBeacon> getBeacons() {
         return beacons;
     }
 
-    public void setBeacons(HashMap<String, Beacon> beacons) {
+    public void setBeacons(HashMap<String, PrivateBeacon> beacons) {
         this.beacons = beacons;
     }
 
-    public void addBeacon(Beacon beacon) {
-        System.out.println("From 1 " + beacon.getFromUserId());
-        beacons.put(beacon.getFromUserId(), beacon);
+    public void addBeacon(PrivateBeacon privateBeacon) {
+        beacons.put(privateBeacon.getFromUserId(), privateBeacon);
     }
 }

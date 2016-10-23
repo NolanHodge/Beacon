@@ -15,7 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
-
 import com.comp3004.beacon.R;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;

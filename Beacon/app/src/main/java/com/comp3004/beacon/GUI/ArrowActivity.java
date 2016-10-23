@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.comp3004.beacon.LocationManagement.LocationService;
 import com.comp3004.beacon.R;
-import com.comp3004.beacon.User.Beacon;
+import com.comp3004.beacon.User.PrivateBeacon;
 import com.comp3004.beacon.User.CurrentBeaconUser;
 
 public class ArrowActivity extends AppCompatActivity {
@@ -30,7 +30,7 @@ public class ArrowActivity extends AppCompatActivity {
     static String SOUTHWEST = "Southwest";
     static String SOUTH = "South";
     public static String CURRENT_BEACON_ID_KEY = "CURRENT_BEACON_ID";
-    private Beacon followingBeacon;
+    private PrivateBeacon followingBeacon;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

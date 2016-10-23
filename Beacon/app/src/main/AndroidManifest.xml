@@ -68,7 +68,8 @@
             android:name=".GUI.MapsActivity"
             android:label="@string/title_activity_maps" />
         <activity android:name=".GUI.BeaconsListActivity" />
-        <activity android:name=".GUI.ChatMessageThreadsActivity"></activity>
+        <activity android:name=".GUI.ChatMessageThreadsActivity" />
+        <activity android:name=".GUI.PublicBeaconsActivity"></activity>
     </application>
 
 </manifest>

@@ -23,8 +23,9 @@ import com.comp3004.beacon.FirebaseServices.DatabaseManager;
 import com.comp3004.beacon.Networking.CurrentBeaconInvitationHandler;
 import com.comp3004.beacon.Networking.MessageSenderHandler;
 import com.comp3004.beacon.Networking.SubscriptionHandler;
+
 import com.comp3004.beacon.R;
-import com.comp3004.beacon.User.Beacon;
+import com.comp3004.beacon.User.PrivateBeacon;
 import com.comp3004.beacon.User.BeaconUser;
 import com.comp3004.beacon.User.CurrentBeaconUser;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -44,6 +45,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+
+import java.security.PublicKey;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -125,6 +128,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //GUI
         FloatingActionButton messageButton = (FloatingActionButton) findViewById(R.id.message_button);
         FloatingActionButton beaconsButton = (FloatingActionButton) findViewById(R.id.beacons_button);
+        FloatingActionButton publicBeaconsButton = (FloatingActionButton) findViewById(R.id.public_beacons_button);
 
         messageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,6 +141,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MapsActivity.this, BeaconsListActivity.class));
+            }
+        });
+
+        publicBeaconsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MapsActivity.this, PublicBeaconsActivity.class));
             }
         });
     }
@@ -175,12 +186,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         builder.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
 
-                Beacon beacon = new Beacon(currentBeaconInvitationHandler);
-                CurrentBeaconUser.getInstance().addBeacon(beacon);
+                PrivateBeacon privateBeacon = new PrivateBeacon(currentBeaconInvitationHandler);
+                CurrentBeaconUser.getInstance().addBeacon(privateBeacon);
 
 
                 Intent intent = new Intent(MapsActivity.this, ArrowActivity.class);
-                intent.putExtra("CURRENT_BEACON_ID", beacon.getFromUserId());
+                intent.putExtra("CURRENT_BEACON_ID", privateBeacon.getFromUserId());
                 startActivity(intent);
 
 
@@ -214,17 +225,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
         //Requesting permission
-        for (Object beaconUserKey : currentBeaconUser.getFriends().keySet()) {
-            BeaconUser beaconUser = currentBeaconUser.getFriend((String) beaconUserKey);
-            System.out.println("Beacon User " + beaconUser.getUserId());
-        }
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
 
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        Location current = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER) == null ?
+        final Location current = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER) == null ?
                 locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER) :
                 locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
@@ -237,10 +244,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .build();
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
-        //Add Beacon markers to the map
-        for (Beacon beacon : currentBeaconUser.getBeacons().values()) {
-            LatLng position = new LatLng(Double.parseDouble(beacon.getLat()), Double.parseDouble(beacon.getLon()));
-            String userId = beacon.getFromUserId();
+        //Add PrivateBeacon markers to the map
+        for (PrivateBeacon privateBeacon : currentBeaconUser.getBeacons().values()) {
+            LatLng position = new LatLng(Double.parseDouble(privateBeacon.getLat()), Double.parseDouble(privateBeacon.getLon()));
+            String userId = privateBeacon.getFromUserId();
 
             mMap.addMarker(new MarkerOptions()
                     .title("Beacon")
@@ -248,21 +255,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .position(position))
                     .setDraggable(true);
         }
+
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
-            public void onMapLongClick(LatLng latLng) {
+            public void onMapLongClick(final LatLng latLng) {
                 mMap.addMarker(new MarkerOptions().position(latLng));
                 mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
                 mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
                     @Override
                     public void onCameraIdle() {
                         AlertDialog dialog = new AlertDialog.Builder(MapsActivity.this)
-                                .setTitle("Create a Beacon")
-                                .setMessage("Would you like to create a becon here?")
+                                .setTitle("Create a Public Beacon")
+                                .setMessage("Would you like to create a beacon here?")
                                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        //put code for making a beacon here
+                                        MessageSenderHandler.getInstance().sendPublicBeacon(latLng);
                                     }
                                 })
                                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -280,9 +288,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         });
-    }
-
-    public void putBeaconOnMap() {
-
     }
 }
