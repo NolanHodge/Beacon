@@ -8,11 +8,9 @@ import android.graphics.Paint;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.GridLayout;
+import android.view.MotionEvent;
 import android.widget.TextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -61,6 +59,15 @@ public class ChatActivity extends AppCompatActivity {
             otherChatParticipantId = extras.getString("CHAT_PARTICIPANT");
         }
 
+        chatListView.setOnTouchListener(new View.OnTouchListener() {
+
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                    return true; // Indicates that this has been handled by you and will not be forwarded further.
+                }
+                return false;
+            }
+        });
 
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,8 +77,6 @@ public class ChatActivity extends AppCompatActivity {
                 startActivity(getIntent());
             }
         });
-
-
 
         populateFriendsListView();
     }
@@ -106,11 +111,9 @@ public class ChatActivity extends AppCompatActivity {
         List<Map<String, String>> userAndMessage = new ArrayList<Map<String, String>>();
         chatListView = (ListView) findViewById(R.id.chatListView);
 
-
         for (ChatMessage chatMessage : chatThread) {
             //otherChatParticipantId = chatMessage.getFromUserId();
             Map<String, String> userAndMesMap = new HashMap<String, String>(2);
-            System.out.println("From:" + chatMessage.getFromUserId());
             BeaconUser friend = currentBeaconUser.getFriend(chatMessage.getFromUserId());
             if (!friend.getDisplayName().equals(CurrentBeaconUser.getInstance().getDisplayName())) chatWith = friend.getDisplayName();
             userAndMesMap.put("username", friend.getDisplayName());
@@ -129,22 +132,23 @@ public class ChatActivity extends AppCompatActivity {
                 View view = super.getView(position, convertView, parent);
                 TextView text1 = (TextView) view.findViewById(android.R.id.text1);
                 TextView text2 = (TextView) view.findViewById(android.R.id.text2);
-                if (text1.getText().equals(CurrentBeaconUser.getInstance().getDisplayName()) && text1 != null)
+                if (text1.getText().equals(CurrentBeaconUser.getInstance().getDisplayName()))
                 {
                     text2.getLayoutParams().width = -500;
                     text2.setTextColor(Color.WHITE);
 
                     LayoutParams layout = (LayoutParams)text2.getLayoutParams();
-
                     layout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
                     text2.setLayoutParams(layout);
+
                 }
                 else
                 {
                     text2.getLayoutParams().width = -500;
-                    text2.setBackgroundColor(Color.GRAY);
+                    //text2.setBackgroundColor(Color.GRAY);
                     text2.setTextColor(Color.WHITE);
                 }
+
                 text1.setText("");
                 return view;
             }
@@ -152,8 +156,7 @@ public class ChatActivity extends AppCompatActivity {
 
         chatListView.setAdapter(simpleAdapter);
 
-        chatListView.setSelection(simpleAdapter.getCount() - 1);
-
         setTitle("Chat with " + chatWith);
     }
+
 }
