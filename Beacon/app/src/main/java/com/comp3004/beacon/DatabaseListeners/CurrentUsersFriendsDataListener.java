@@ -14,7 +14,6 @@ import java.util.HashMap;
  */
 public class CurrentUsersFriendsDataListener implements ValueEventListener {
 
-    HashMap friends;
 
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -27,7 +26,4 @@ public class CurrentUsersFriendsDataListener implements ValueEventListener {
 
     }
 
-    public HashMap getFriends() {
-        return friends;
-    }
 }

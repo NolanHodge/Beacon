@@ -14,16 +14,17 @@ public class BeaconInvitationMessage {
     long timestamp;
     String lat;
     String lon;
-
+    boolean publicBeacon;
 
     public BeaconInvitationMessage() {}
-    public BeaconInvitationMessage(String toUserId, String fromUserId, String message, String lat, String lon) {
+    public BeaconInvitationMessage(String toUserId, String fromUserId, String message, String lat, String lon, boolean publicBeacon) {
         this.message = message;
         this.toUserId = toUserId;
         this.timestamp = System.currentTimeMillis();
         this.lon = lon;
         this.lat = lat;
         this.fromUserId = fromUserId;
+        this.publicBeacon = publicBeacon;
     }
 
     public String getMessage() {
@@ -80,6 +81,15 @@ public class BeaconInvitationMessage {
 
     public void setBeaconId(String beaconId) {
         this.beaconId = beaconId;
+    }
+
+
+    public boolean isPublicBeacon() {
+        return publicBeacon;
+    }
+
+    public void setPublicBeacon(boolean publicBeacon) {
+        this.publicBeacon = publicBeacon;
     }
 
 }

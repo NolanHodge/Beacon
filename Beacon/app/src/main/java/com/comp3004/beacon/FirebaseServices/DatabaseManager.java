@@ -1,13 +1,13 @@
 package com.comp3004.beacon.FirebaseServices;
 
-import android.database.CursorIndexOutOfBoundsException;
-
 import com.comp3004.beacon.DatabaseListeners.BeaconRequestDataListener;
 import com.comp3004.beacon.DatabaseListeners.CurrentUsersFriendsDataListener;
 import com.comp3004.beacon.DatabaseListeners.IsUserRegisteredDataListener;
 import com.comp3004.beacon.DatabaseListeners.MessageThreadListener;
 import com.comp3004.beacon.DatabaseListeners.NewMessageThreadListener;
+import com.comp3004.beacon.DatabaseListeners.PublicBeaconListener;
 import com.comp3004.beacon.Networking.MessageTypes;
+import com.comp3004.beacon.User.PrivateBeacon;
 import com.comp3004.beacon.User.CurrentBeaconUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -23,14 +23,15 @@ public class DatabaseManager {
     static DatabaseManager databaseManager;
     DatabaseReference databaseReference;
     Query query;
-    private String messageThreadIdHolder;
+
+    HashMap<String, PrivateBeacon> publicBeacons;
 
     public DatabaseManager() {
         databaseReference = FirebaseDatabase.getInstance().getReference();
         query = databaseReference.child("/" + CurrentBeaconUser.getInstance().getUserId() + "_beaconRequests");
         BeaconRequestDataListener beaconRequestDataListener = new BeaconRequestDataListener();
         query.addChildEventListener(beaconRequestDataListener);
-
+        publicBeacons = new HashMap<>();
     }
 
     public static DatabaseManager getInstance() {
@@ -50,6 +51,7 @@ public class DatabaseManager {
         Query query = databaseReference.child("/" + MessageTypes.REGISTER_USER_MESSAGE + "/" + CurrentBeaconUser.getInstance().getUserId());
         CurrentUsersFriendsDataListener currentUsersFriendsDataListener = new CurrentUsersFriendsDataListener();
         query.addValueEventListener(currentUsersFriendsDataListener);
+        loadPublicBeacons();
     }
 
     public void removeBeaconFromDb(String beaconId) {
@@ -77,8 +79,19 @@ public class DatabaseManager {
 
     }
 
-    public void setMessageThreadIdHolder(String threadId) {
-        messageThreadIdHolder = threadId;
+    public void loadPublicBeacons() {
+        query = databaseReference.child("/publicBeacons");
+        PublicBeaconListener publicBeaconListener = new PublicBeaconListener();
+        query.addChildEventListener(publicBeaconListener);
+
     }
+
+    public void createPublicBeacon(PrivateBeacon privateBeacon) {
+        databaseReference.child("/publicBeacons").push().setValue(privateBeacon);
+    }
+
+
+
+
 
 }

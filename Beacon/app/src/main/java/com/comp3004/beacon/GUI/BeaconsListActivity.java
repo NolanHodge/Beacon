@@ -11,7 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import com.comp3004.beacon.FirebaseServices.DatabaseManager;
 import com.comp3004.beacon.R;
-import com.comp3004.beacon.User.Beacon;
+import com.comp3004.beacon.User.PrivateBeacon;
 import com.comp3004.beacon.User.BeaconUser;
 import com.comp3004.beacon.User.CurrentBeaconUser;
 
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 public class BeaconsListActivity extends AppCompatActivity {
 
-    ArrayList<Beacon> beaconsList;
+    ArrayList<PrivateBeacon> beaconsList;
     ArrayList<String> beaconUsernames;
     ListView beaconsListView;
 
@@ -28,7 +28,7 @@ public class BeaconsListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(com.comp3004.beacon.R.layout.activity_beacons_list);
 
-        beaconsList = new ArrayList<Beacon>();
+        beaconsList = new ArrayList<PrivateBeacon>();
         beaconUsernames = new ArrayList<String>();
 
         beaconsListView = (ListView) findViewById(R.id.beaconsListView);
@@ -62,12 +62,12 @@ public class BeaconsListActivity extends AppCompatActivity {
         beaconsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Beacon selectedBeacon = beaconsList.get(position);
-                showBeaconOptionDialog(selectedBeacon, position);
+                PrivateBeacon selectedPrivateBeacon = beaconsList.get(position);
+                showBeaconOptionDialog(selectedPrivateBeacon, position);
             }
         });
     }
-    public void showBeaconOptionDialog(final Beacon beacon, final int index) {
+    public void showBeaconOptionDialog(final PrivateBeacon privateBeacon, final int index) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder
                 .setItems(new String[]{"Track", "Delete", "Cancel"}, new DialogInterface.OnClickListener() {
@@ -75,13 +75,13 @@ public class BeaconsListActivity extends AppCompatActivity {
                         switch (which) {
                             case 0:
                                 Intent intent = new Intent(BeaconsListActivity.this, ArrowActivity.class);
-                                intent.putExtra(ArrowActivity.CURRENT_BEACON_ID_KEY, beacon.getFromUserId());
+                                intent.putExtra(ArrowActivity.CURRENT_BEACON_ID_KEY, privateBeacon.getFromUserId());
                                 startActivity(intent);
                                 break;
                             case 1:
                                 CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
-                                currentBeaconUser.getBeacons().remove(beacon.getFromUserId());
-                                DatabaseManager.getInstance().removeBeaconFromDb(beacon.getBeaconId());
+                                currentBeaconUser.getBeacons().remove(privateBeacon.getFromUserId());
+                                DatabaseManager.getInstance().removeBeaconFromDb(privateBeacon.getBeaconId());
                                 finish();
                                 startActivity(getIntent());
                                 beaconUsernames.remove(index);

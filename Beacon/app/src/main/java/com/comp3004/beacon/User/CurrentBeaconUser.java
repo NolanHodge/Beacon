@@ -1,11 +1,10 @@
 package com.comp3004.beacon.User;
 
-import com.comp3004.beacon.FirebaseServices.DatabaseManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
+
+import java.util.HashMap;
 
 /**
  * The Current User is just a BeaconUser singleton so that the information remains static and can
@@ -45,5 +44,7 @@ public class CurrentBeaconUser extends BeaconUser {
         currentBeaconUser.setUserId(beaconUser.getUserId());
         currentBeaconUser.setFriends(beaconUser.getFriends());
     }
+
+
 
 }
