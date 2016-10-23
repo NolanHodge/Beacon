@@ -94,7 +94,6 @@ public class ChatActivity extends AppCompatActivity {
         registerReceiver(broadcastReceiver, filter);
     }
 
-
     @Override
     protected void onStop()
     {
@@ -130,11 +129,13 @@ public class ChatActivity extends AppCompatActivity {
                 View view = super.getView(position, convertView, parent);
                 TextView text1 = (TextView) view.findViewById(android.R.id.text1);
                 TextView text2 = (TextView) view.findViewById(android.R.id.text2);
-                if (text1.getText().equals(CurrentBeaconUser.getInstance().getDisplayName()))
+                if (text1.getText().equals(CurrentBeaconUser.getInstance().getDisplayName()) && text1 != null)
                 {
                     text2.getLayoutParams().width = -500;
                     text2.setTextColor(Color.WHITE);
+
                     LayoutParams layout = (LayoutParams)text2.getLayoutParams();
+
                     layout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
                     text2.setLayoutParams(layout);
                 }
