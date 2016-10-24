@@ -12,7 +12,10 @@
         android:layout_alignParentTop="true"
         android:layout_above="@+id/chatEditText"
         android:divider="@null"
-        android:dividerHeight="0dp">
+        android:dividerHeight="0dp"
+        android:stackFromBottom="true"
+        android:transcriptMode="alwaysScroll"
+        >
 
     </ListView>
 

@@ -18,7 +18,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_dialog_email" />
+        android:src="@drawable/friends"
+        />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/beacons_button"
@@ -27,7 +28,9 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="@dimen/fab_margin"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:src="@drawable/tower_icon_1"
+        />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/public_beacons_button"
@@ -36,6 +39,7 @@
         android:layout_alignParentTop="true"
         android:layout_margin="@dimen/fab_margin"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        />
 
 </RelativeLayout>
