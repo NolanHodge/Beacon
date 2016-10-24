@@ -11,10 +11,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
 import com.comp3004.beacon.R;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -49,7 +51,6 @@ import static android.Manifest.permission.READ_CONTACTS;
  * TODO Facebook
  */
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
-
     private CallbackManager callbackManager;
 
     private AccessTokenTracker mTokenTracker;
@@ -69,6 +70,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
+    private static final int PERMISSION_LOCATION_REQUEST_CODE = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,10 +113,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         };
 
-
         setupTokenTracker();
         setupProfileTracker();
-
         mTokenTracker.startTracking();
         mProfileTracker.startTracking();
 
@@ -128,11 +128,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         loginButton.registerCallback(callbackManager, mFacebookCallback);
         loginButton.setReadPermissions("public_profile, user_friends");
 
-
-        mTokenTracker.startTracking();
-        mProfileTracker.startTracking();
-        // Callback registration
-
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISSION_LOCATION_REQUEST_CODE);
+        }
 
     }
 
@@ -211,7 +212,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 populateAutoComplete();
             }
+        } else if (requestCode == PERMISSION_LOCATION_REQUEST_CODE) {
+            // If request is cancelled, the result arrays are empty.
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            } else {
+                finish();
+            }
         }
+
+        // other 'case' lines to check for other
+        // permissions this app might request
     }
 
 
@@ -315,6 +325,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     protected void onStart() {
         super.onStart();
+
         mFirebaseAuth.addAuthStateListener(mAuthListener);
 
     }
@@ -328,6 +339,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mFirebaseAuth.removeAuthStateListener(mAuthListener);
         }
     }
+
     private FacebookCallback<LoginResult> mFacebookCallback = new FacebookCallback<LoginResult>() {
         @Override
         public void onSuccess(final LoginResult loginResult) {
@@ -346,13 +358,5 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             Log.d("Facebook", "Error " + e);
         }
     };
-
-    public void openArrow(View v) {
-        startActivity(new Intent(this, ArrowActivity.class));
-    }
-
-    public void openMap(View v) {
-        startActivity(new Intent(this, MapsActivity.class));
-    }
 }
 
