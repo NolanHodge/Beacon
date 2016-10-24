@@ -155,7 +155,6 @@ public class ChatActivity extends AppCompatActivity {
         };
 
         chatListView.setAdapter(simpleAdapter);
-
         setTitle("Chat with " + chatWith);
     }
 
