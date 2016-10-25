@@ -13,9 +13,11 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.comp3004.beacon.FirebaseServices.DatabaseManager;
 import com.comp3004.beacon.Networking.MessageSenderHandler;
@@ -61,7 +63,26 @@ public class PublicBeaconsActivity extends AppCompatActivity {
 
     private void populateBeaconsListView() {
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, beaconUsernames);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, beaconUsernames){
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+
+                TextView text1 = (TextView) view.findViewById(android.R.id.text1);
+
+                if((position % 2) == 1)
+                {
+                    view.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
+                    text1.setTextColor(getContext().getResources().getColor(android.R.color.white));
+                }
+                else{
+                    view.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
+                    text1.setTextColor(getContext().getResources().getColor(android.R.color.white));
+                }
+
+                return view;
+            }
+        };
         publicBeaconsListView.setAdapter(adapter);
 
     }

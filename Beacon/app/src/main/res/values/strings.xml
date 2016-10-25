@@ -23,5 +23,6 @@
     <string name="title_activity_track">Track</string>
     <string name="title_activity_beacons_list">Following</string>
     <string name="title_activity_friend_list">Friends List</string>
+    <string name="title_activity_public">Public Beacons</string>
 
 </resources>

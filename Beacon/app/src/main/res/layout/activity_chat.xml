@@ -2,7 +2,7 @@
     xmlns:android1="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-     >
+    android:background="@color/background_color">
 
     <ListView
         android:id="@+id/chatListView"
@@ -26,7 +26,10 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/white"
         android:hint="Enter Here..."
+        android:shadowColor="@android:color/white"
         android:layout_toLeftOf="@+id/sendChatMessageButton"
         android:layout_toStartOf="@+id/sendChatMessageButton" />
 

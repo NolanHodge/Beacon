@@ -74,7 +74,10 @@
             android:name=".GUI.MapsActivity"
             android:label="@string/title_activity_maps" />
 
-        <activity android:name=".GUI.PublicBeaconsActivity"></activity>
+        <activity
+            android:name=".GUI.PublicBeaconsActivity"
+            android:label="@string/title_activity_public">
+        </activity>
 
         <activity
             android:name=".GUI.BeaconsListActivity"

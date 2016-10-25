@@ -13,9 +13,12 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+
 import com.comp3004.beacon.FirebaseServices.DatabaseManager;
 import com.comp3004.beacon.Networking.MailBox;
 import com.comp3004.beacon.Networking.MessageSenderHandler;
@@ -71,10 +74,28 @@ public class FriendListActivity extends AppCompatActivity {
 
     private void populateFriendsListView() {
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, userNames);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, userNames) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+
+                TextView text1 = (TextView) view.findViewById(android.R.id.text1);
+
+                if((position % 2) == 1)
+                {
+                    view.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
+                    text1.setTextColor(getContext().getResources().getColor(android.R.color.white));
+                }
+                else{
+                    view.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
+                    text1.setTextColor(getContext().getResources().getColor(android.R.color.white));
+                }
+
+                return view;
+            }
+        };
         friendsListView.setAdapter(adapter);
     }
-
     private void registerFriendsListviewCallback() {
         friendsListView = (ListView) findViewById(R.id.friendListView);
         final Context context = this;
@@ -92,7 +113,7 @@ public class FriendListActivity extends AppCompatActivity {
     public void showBeaconOptionDialog(BeaconUser beaconUser, final int userIndex) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final Context context = this;
-        builder.setTitle("Send " + beaconUser.getDisplayName() + " a....")
+        builder.setTitle("Send " + beaconUser.getDisplayName())
                 .setItems(new String[]{"Beacon", "Message", "Cancel"}, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {

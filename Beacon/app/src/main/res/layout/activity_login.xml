@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark"
-    tools:context=".GUI.LoginActivity">
+    tools:context=".GUI.LoginActivity"
+    android:background="#3D9A3D"
+    >
 
     <!-- Login progress -->
     <ProgressBar
@@ -22,7 +23,8 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_margin="20dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:id="@+id/linearLayout">
 
 
         <com.google.android.gms.common.SignInButton
@@ -51,25 +53,29 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
         android:gravity="center"
         android:padding="10dp"
         android:fontFamily="sans-serif-light"
-        android:text="Find and meet up with your friends"
+        android:text="Where are your friends?"
         android:textColor="#ffffff"
-        android:textSize="25sp" />
+        android:textSize="20sp"
+        android:layout_marginBottom="49dp"
+        android:layout_above="@+id/linearLayout"
+        android:layout_centerHorizontal="true" />
 
-    <ImageView
-        android:id="@+id/imageView"
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:padding="10dp"
+        android:fontFamily="sans-serif-light"
+        android:text="Beacon."
+        android:textColor="#ffffff"
+        android:textSize="45sp"
+        android:id="@+id/textView2"
+        android:layout_marginTop="64dp"
         android:layout_below="@+id/login_progress"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="87dp"
-        app:srcCompat="@mipmap/ic_launcher"
-        android:adjustViewBounds="false" />
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>
