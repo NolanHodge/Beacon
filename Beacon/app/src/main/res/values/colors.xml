@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3fb557</color>
+    <color name="colorPrimary">#32a149</color>
     <color name="colorPrimaryDark">#347e2a</color>
     <color name="colorAccent">#53ff40</color>
     <color name="black_overlay">#66000000</color>
@@ -13,4 +13,7 @@
     <color name="texty">#04a3a3</color>
     <color name="touch">#dedede</color>
     <color name="star">#fff23c</color>
+    <color name="dark_green">#006400</color>
+    <color name="button_green">#58DD58</color>
+    <color name="background_color">#3d3d3d</color>
 </resources>

@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.comp3004.beacon.FirebaseServices.DatabaseManager;
 import com.comp3004.beacon.Networking.ChatMessage;
@@ -48,7 +50,7 @@ public class ChatMessageThreadsActivity extends AppCompatActivity {
                     List<String> chatParticipantIds = Arrays.asList(thread.get(0).getThreadId().split("_"));
 
                     BeaconUser chatParticipant = (BeaconUser) currentBeaconUser.getFriends().get(chatParticipantIds.get(1));
-                    String chatTitle = "Chat with " + chatParticipant.getDisplayName();
+                    String chatTitle = chatParticipant.getDisplayName();
                     if (!chatParticipant.getUserId().equals(currentBeaconUser.getUserId())) {
                         chatTitles.add(chatTitle);
                         chatIds.add((String) key);
@@ -61,7 +63,27 @@ public class ChatMessageThreadsActivity extends AppCompatActivity {
    }
     private void populateFriendsListView() {
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, chatTitles);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, chatTitles){
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+
+                TextView text1 = (TextView) view.findViewById(android.R.id.text1);
+
+                if((position % 2) == 1)
+                {
+                    view.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
+                    text1.setTextColor(getContext().getResources().getColor(android.R.color.white));
+                }
+                else{
+                    view.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
+                    text1.setTextColor(getContext().getResources().getColor(android.R.color.white));
+                }
+
+                return view;
+            }
+        };
+
         conversationsListView.setAdapter(adapter);
     }
 
