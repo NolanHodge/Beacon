@@ -35,4 +35,8 @@ public class PublicBeaconHandler {
     public HashMap getBeacons() {
         return beacons;
     }
+
+    public void removeBeacon(String beaconId) {
+        beacons.remove(beaconId);
+    }
 }
