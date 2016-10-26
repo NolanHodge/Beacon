@@ -64,9 +64,16 @@ public class MessageSenderHandler {
     public void sendPublicBeacon(LatLng latLng) {
         CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
 
+        for (Object key : PublicBeaconHandler.getInstance().getBeacons().keySet()) {
+            PublicBeacon publicBeacon = PublicBeaconHandler.getInstance().getBeacon((String) key);
+            if (publicBeacon.getFromUserId().equals(CurrentBeaconUser.getInstance().getUserId())) {
+
+            }
+        }
 
         PublicBeacon publicBeacon = new PublicBeacon(currentBeaconUser.getUserId(), currentBeaconUser.getDisplayName(), Double.toString(latLng.latitude), Double.toString(latLng.longitude));
-        FirebaseDatabase.getInstance().getReference().child(MessageTypes.PUBLIC_BEACON).push().setValue(publicBeacon);
+
+        FirebaseDatabase.getInstance().getReference().child(MessageTypes.PUBLIC_BEACON + "/").child(currentBeaconUser.getUserId()).setValue(publicBeacon);
 
 
 
