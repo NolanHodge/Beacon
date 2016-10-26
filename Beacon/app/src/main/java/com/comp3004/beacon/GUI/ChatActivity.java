@@ -138,18 +138,14 @@ public class ChatActivity extends AppCompatActivity {
                 if (text1.getText().equals(CurrentBeaconUser.getInstance().getDisplayName()))
                 {
                     text2.getLayoutParams().width = -500;
-                    text2.setTextColor(Color.WHITE);
 
                     LayoutParams layout = (LayoutParams)text2.getLayoutParams();
                     layout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
                     text2.setLayoutParams(layout);
-
                 }
                 else
                 {
                     text2.getLayoutParams().width = -500;
-                    //text2.setBackgroundColor(Color.GRAY);
-                    text2.setTextColor(Color.WHITE);
                 }
 
                 text1.setText("");
