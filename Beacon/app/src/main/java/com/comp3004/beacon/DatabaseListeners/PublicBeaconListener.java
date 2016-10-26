@@ -1,5 +1,7 @@
 package com.comp3004.beacon.DatabaseListeners;
 
+import android.database.CursorIndexOutOfBoundsException;
+
 import com.comp3004.beacon.Networking.PublicBeaconHandler;
 import com.comp3004.beacon.User.PrivateBeacon;
 import com.comp3004.beacon.User.CurrentBeaconUser;
@@ -15,7 +17,9 @@ public class PublicBeaconListener implements ChildEventListener {
     @Override
     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
         PublicBeacon publicBeacon = dataSnapshot.getValue(PublicBeacon.class);
-        PublicBeaconHandler.getInstance().addBeacon(dataSnapshot.getKey(), publicBeacon);
+        if (!publicBeacon.getFromUserId().equals(CurrentBeaconUser.getInstance().getUserId())) {
+            PublicBeaconHandler.getInstance().addBeacon(dataSnapshot.getKey(), publicBeacon);
+        }
     }
 
     @Override
