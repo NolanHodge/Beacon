@@ -45,6 +45,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Marker;
+
 
 import java.security.PublicKey;
 
@@ -244,13 +247,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
         mMap = googleMap;
-        mMap.setMyLocationEnabled(true);
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(new LatLng(current.getLatitude(), current.getLongitude()))
                 .zoom(13)
                 .build();
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        // Uses a custom icon.
+
+        // Turn this back on for the "little blue button"
+        //mMap.setMyLocationEnabled(true);
+        // comment out addMarker function to remove the little tower!
+        mMap.addMarker(new MarkerOptions()
+                .title("Beacon")
+                .position(new LatLng(current.getLatitude(), current.getLongitude()))
+                .snippet(currentBeaconUser.getDisplayName())
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.tower_icon_small)));
 
         //Add PrivateBeacon markers to the map
         for (PrivateBeacon privateBeacon : currentBeaconUser.getBeacons().values()) {
@@ -259,15 +271,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             mMap.addMarker(new MarkerOptions()
                     .title("Beacon")
+                    .position(position)
                     .snippet(currentBeaconUser.getFriend(userId).getDisplayName())
-                    .position(position))
-                    .setDraggable(true);
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.tower_icon_small)));
         }
 
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(final LatLng latLng) {
-                mMap.addMarker(new MarkerOptions().position(latLng));
+
+                CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
+
+                final Marker holdMarker = mMap.addMarker(new MarkerOptions()
+                        .title("Beacon")
+                        .position(latLng)
+                        .snippet(currentBeaconUser.getDisplayName())
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.tower_icon_small)));
+
                 mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
                 mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
                     @Override
@@ -284,7 +304,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        mMap.clear();
+                                        //mMap.clear();
+                                        holdMarker.remove();
                                         dialog.cancel(); //could've left this empty
                                     }
                                 })
