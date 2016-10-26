@@ -129,6 +129,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         FloatingActionButton messageButton = (FloatingActionButton) findViewById(R.id.message_button);
         FloatingActionButton beaconsButton = (FloatingActionButton) findViewById(R.id.beacons_button);
         FloatingActionButton publicBeaconsButton = (FloatingActionButton) findViewById(R.id.public_beacons_button);
+        FloatingActionButton cameraButon = (FloatingActionButton) findViewById(R.id.photo_activity_button);
 
         messageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -148,6 +149,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MapsActivity.this, PublicBeaconsActivity.class));
+            }
+        });
+
+        cameraButon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MapsActivity.this, MakePhotoActivity.class));
             }
         });
     }
