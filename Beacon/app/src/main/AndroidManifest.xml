@@ -48,16 +48,15 @@
             android:name="com.google.android.geo.AIzaSyCN_NOMKQwN6zg76QDZ3vyuVbRrWHlBge0"
             android:value="AIzaSyCN_NOMKQwN6zg76QDZ3vyuVbRrWHlBge0" />
 
-        <activity android:name=".GUI.ArrowActivity"
-            android:label="@string/title_activity_track"/>
-
-        <activity android:name=".GUI.FriendListActivity"
-            android:label="@string/title_activity_friend_list"
-            />
-
-        <activity android:name=".GUI.ChatActivity"
-            android:label="@string/title_activity_chat"
-            />
+        <activity
+            android:name=".GUI.ArrowActivity"
+            android:label="@string/title_activity_track" />
+        <activity
+            android:name=".GUI.FriendListActivity"
+            android:label="@string/title_activity_friend_list" />
+        <activity
+            android:name=".GUI.ChatActivity"
+            android:label="@string/title_activity_chat" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -73,21 +72,19 @@
         <activity
             android:name=".GUI.MapsActivity"
             android:label="@string/title_activity_maps" />
-
         <activity
             android:name=".GUI.PublicBeaconsActivity"
-            android:label="@string/title_activity_public">
-        </activity>
-
+            android:label="@string/title_activity_public"></activity>
         <activity
             android:name=".GUI.BeaconsListActivity"
-            android:label="@string/title_activity_beacons_list"
-            />
-
+            android:label="@string/title_activity_beacons_list" />
         <activity
             android:name=".GUI.ChatMessageThreadsActivity"
-            android:label="@string/title_activity_chat_message_threads"/>
-
+            android:label="@string/title_activity_chat_message_threads" />
+        <activity
+            android:name=".GUI.NavigationActivity"
+            android:label="@string/title_activity_navigation"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

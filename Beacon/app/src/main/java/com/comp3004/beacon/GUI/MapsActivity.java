@@ -238,11 +238,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         mMap.setMyLocationEnabled(true);
 
-        CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(new LatLng(current.getLatitude(), current.getLongitude()))
-                .zoom(13)
-                .build();
-        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        //CameraPosition cameraPosition = new CameraPosition.Builder()
+        //        .target(new LatLng(current.getLatitude(), current.getLongitude()))
+        //        .zoom(13)
+        //        .build();
+        //mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
         //Add PrivateBeacon markers to the map
         for (PrivateBeacon privateBeacon : currentBeaconUser.getBeacons().values()) {

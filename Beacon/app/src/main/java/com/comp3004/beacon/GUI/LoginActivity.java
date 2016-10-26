@@ -272,7 +272,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     Toast.makeText(LoginActivity.this, "Authentication failed.",
                             Toast.LENGTH_SHORT).show();
                 } else {
-                    startActivity(new Intent(LoginActivity.this, MapsActivity.class));
+                    startActivity(new Intent(LoginActivity.this, NavigationActivity.class));
 
                 }
             }
