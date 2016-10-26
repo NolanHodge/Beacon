@@ -119,7 +119,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mProfileTracker.startTracking();
 
         if (AccessToken.getCurrentAccessToken() != null && Profile.getCurrentProfile() != null) {
-            startActivity(new Intent(this, MapsActivity.class));
+            startActivity(new Intent(this, MapsFragment.class));
             //finish();
         }
 

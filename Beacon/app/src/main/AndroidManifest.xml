@@ -70,7 +70,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".GUI.MapsActivity"
+            android:name=".GUI.MapsFragment"
             android:label="@string/title_activity_maps" />
         <activity
             android:name=".GUI.PublicBeaconsActivity"
