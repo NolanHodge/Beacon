@@ -112,6 +112,7 @@ public class ChatActivity extends AppCompatActivity {
     private void populateFriendsListView() {
         CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
         List<Map<String, String>> userAndMessage = new ArrayList<Map<String, String>>();
+
         chatListView = (ListView) findViewById(R.id.chatListView);
 
         for (ChatMessage chatMessage : chatThread) {
@@ -121,7 +122,13 @@ public class ChatActivity extends AppCompatActivity {
             if (!friend.getDisplayName().equals(CurrentBeaconUser.getInstance().getDisplayName())) chatWith = friend.getDisplayName();
             userAndMesMap.put("username", friend.getDisplayName());
             userAndMesMap.put("message", chatMessage.getMessage());
+
+            // only want last 6 messages m8
             userAndMessage.add(userAndMesMap);
+
+            if (userAndMessage.size() > 5)
+                for (int i=0; i<userAndMessage.size(); i++) if (i < userAndMessage.size() - 6) userAndMessage.remove(i);
+
         }
 
         SimpleAdapter simpleAdapter = new SimpleAdapter(this, userAndMessage,
