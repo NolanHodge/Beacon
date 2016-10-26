@@ -310,7 +310,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                     }
                                 })
                                 .show();
-
                         mMap.setOnCameraIdleListener(null);
                     }
                 });
