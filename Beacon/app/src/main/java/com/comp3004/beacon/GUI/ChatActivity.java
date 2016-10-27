@@ -4,8 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Paint;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -18,7 +16,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
-import android.graphics.Color;
+
 import com.comp3004.beacon.Networking.ChatMessage;
 import com.comp3004.beacon.Networking.MailBox;
 import com.comp3004.beacon.Networking.MessageSenderHandler;
@@ -26,7 +24,6 @@ import com.comp3004.beacon.R;
 import com.comp3004.beacon.User.BeaconUser;
 import com.comp3004.beacon.User.CurrentBeaconUser;
 
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,6 +47,7 @@ public class ChatActivity extends AppCompatActivity {
         chatListView = (ListView) findViewById(R.id.chatListView);
         chatTextbox = (EditText) findViewById(R.id.chatEditText);
         sendButton = (Button) findViewById(R.id.sendChatMessageButton);
+        chatListView.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
 
         Bundle extras = getIntent().getExtras();
 
@@ -139,20 +137,16 @@ public class ChatActivity extends AppCompatActivity {
         {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
+                int MAX_MESSAGE_LEN = 30;
                 View view = super.getView(position, convertView, parent);
                 TextView text1 = (TextView) view.findViewById(android.R.id.text1);
                 TextView text2 = (TextView) view.findViewById(android.R.id.text2);
                 if (text1.getText().equals(CurrentBeaconUser.getInstance().getDisplayName()))
                 {
-                    text2.getLayoutParams().width = -500;
 
                     LayoutParams layout = (LayoutParams)text2.getLayoutParams();
                     layout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
                     text2.setLayoutParams(layout);
-                }
-                else
-                {
-                    text2.getLayoutParams().width = -500;
                 }
 
                 text1.setText("");
