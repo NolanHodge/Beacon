@@ -114,6 +114,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         MessageSenderHandler.getInstance().sendRegisterUserMessage();
         DatabaseManager.getInstance().loadCurrentUser();
+        DatabaseManager.getInstance().loadPhotos();
 
         if (CurrentBeaconInvitationHandler.getInstance().currentInvitationExists()) {
             CurrentBeaconInvitationHandler.getInstance().setCurrentInvitationExists(false);
@@ -158,7 +159,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         cameraButon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MapsActivity.this, MakePhotoActivity.class));
+                startActivity(new Intent(MapsActivity.this, TakePhotoActivity.class));
             }
         });
     }

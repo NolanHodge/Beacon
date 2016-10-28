@@ -1,10 +1,13 @@
 package com.comp3004.beacon.FirebaseServices;
 
+import android.database.CursorIndexOutOfBoundsException;
+
 import com.comp3004.beacon.DatabaseListeners.BeaconRequestDataListener;
 import com.comp3004.beacon.DatabaseListeners.CurrentUsersFriendsDataListener;
 import com.comp3004.beacon.DatabaseListeners.IsUserRegisteredDataListener;
 import com.comp3004.beacon.DatabaseListeners.MessageThreadListener;
 import com.comp3004.beacon.DatabaseListeners.NewMessageThreadListener;
+import com.comp3004.beacon.DatabaseListeners.PhotoDataListener;
 import com.comp3004.beacon.DatabaseListeners.PublicBeaconListener;
 import com.comp3004.beacon.Networking.MessageTypes;
 import com.comp3004.beacon.User.PrivateBeacon;
@@ -90,6 +93,11 @@ public class DatabaseManager {
         databaseReference.child("/publicBeacons").push().setValue(privateBeacon);
     }
 
+    public void loadPhotos() {
+        Query query = databaseReference.child(CurrentBeaconUser.getInstance().getUserId() + "_photos");
+        PhotoDataListener photoDataListener = new PhotoDataListener();
+        query.addChildEventListener(photoDataListener);
+    }
 
 
 

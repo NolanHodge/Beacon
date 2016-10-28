@@ -85,6 +85,7 @@
             android:name=".GUI.ChatMessageThreadsActivity"
             android:label="@string/title_activity_chat_message_threads" />
         <activity android:name=".GUI.MakePhotoActivity" />
+        <activity android:name=".GUI.TakePhotoActivity"/>
         <activity
             android:name=".GUI.UserSearchActivity"
             android:launchMode="singleTop">
