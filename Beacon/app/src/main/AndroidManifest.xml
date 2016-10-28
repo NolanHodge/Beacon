@@ -87,7 +87,8 @@
         <activity android:name=".GUI.MakePhotoActivity" />
         <activity
             android:name=".GUI.UserSearchActivity"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:label="@string/title_activity_user_search">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
