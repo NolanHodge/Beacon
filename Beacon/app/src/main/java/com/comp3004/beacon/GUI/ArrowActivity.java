@@ -1,9 +1,12 @@
 package com.comp3004.beacon.GUI;
 
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.Animation;
@@ -12,10 +15,14 @@ import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.comp3004.beacon.FirebaseServices.DatabaseManager;
 import com.comp3004.beacon.LocationManagement.LocationService;
+import com.comp3004.beacon.Networking.PhotoSenderHandler;
 import com.comp3004.beacon.R;
 import com.comp3004.beacon.User.PrivateBeacon;
 import com.comp3004.beacon.User.CurrentBeaconUser;
+
+import java.util.ArrayList;
 
 public class ArrowActivity extends AppCompatActivity {
     private float prev,destination = 0;
@@ -31,11 +38,14 @@ public class ArrowActivity extends AppCompatActivity {
     static String SOUTH = "South";
     public static String CURRENT_BEACON_ID_KEY = "CURRENT_BEACON_ID";
     private PrivateBeacon followingBeacon;
+
+    private FloatingActionButton imageViewButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_arrow);
 
+        imageViewButton = (FloatingActionButton) findViewById(R.id.view_image_button);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -44,7 +54,20 @@ public class ArrowActivity extends AppCompatActivity {
         }
 
 
+
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        imageViewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatabaseManager.getInstance().loadPhotos(followingBeacon.getFromUserId());
+                if (PhotoSenderHandler.getInstance().getImageBitmap() != null) {
+                    startActivity(new Intent(ArrowActivity.this, ImageViewActivity.class));
+
+                }
+            }
+        });
+
         LocationService locationService = new LocationService() {
             @Override
             public void onLocationChanged(Location location) {

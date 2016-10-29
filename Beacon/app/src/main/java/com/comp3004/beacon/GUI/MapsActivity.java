@@ -5,9 +5,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
@@ -49,6 +52,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Marker;
 
 
+import java.io.File;
 import java.security.PublicKey;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -71,6 +75,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private String mUsername;
     private String mPhotoUrl;
     SubscriptionHandler subscriptionHandler;
+    static final private int CAM_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,7 +119,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         MessageSenderHandler.getInstance().sendRegisterUserMessage();
         DatabaseManager.getInstance().loadCurrentUser();
-        DatabaseManager.getInstance().loadPhotos();
+
 
         if (CurrentBeaconInvitationHandler.getInstance().currentInvitationExists()) {
             CurrentBeaconInvitationHandler.getInstance().setCurrentInvitationExists(false);
@@ -159,7 +164,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         cameraButon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MapsActivity.this, TakePhotoActivity.class));
+                //startActivity(new Intent(MapsActivity.this, TakePhotoActivity.class));
+                Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                File file = getFile();
+                camera_intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+                startActivityForResult(camera_intent, CAM_REQUEST);
             }
         });
     }
@@ -266,17 +275,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.tower_icon_small)));
 
         //Add PrivateBeacon markers to the map
-        for (PrivateBeacon privateBeacon : currentBeaconUser.getBeacons().values()) {
-            LatLng position = new LatLng(Double.parseDouble(privateBeacon.getLat()), Double.parseDouble(privateBeacon.getLon()));
-            String userId = privateBeacon.getFromUserId();
+            for (PrivateBeacon privateBeacon : currentBeaconUser.getBeacons().values()) {
+                if (privateBeacon == null) break;
+                LatLng position = new LatLng(Double.parseDouble(privateBeacon.getLat()), Double.parseDouble(privateBeacon.getLon()));
+                String userId = privateBeacon.getFromUserId();
 
-            mMap.addMarker(new MarkerOptions()
-                    .title("Beacon")
-                    .position(position)
-                    .snippet(currentBeaconUser.getFriend(userId).getDisplayName())
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.tower_icon_small)));
+
+                mMap.addMarker(new MarkerOptions()
+                        .title("Beacon")
+                        .position(position)
+                        .snippet(currentBeaconUser.getFriend(userId).getDisplayName())
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.tower_icon_small)));
         }
-
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(final LatLng latLng) {
@@ -317,5 +327,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         });
+    }
+    private File getFile() {
+        File folder = new File("sdcard/camera_app");
+
+        if (!folder.exists()) {
+            folder.mkdir();
+        }
+        File imageFile = new File(folder, "camera_img.jpg");
+        return imageFile;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        String path = "sdcard/camera_app/camera_img.jpg";
+        //imageView.setImageDrawable(Drawable.createFromPath(path));
+        //upload image
+        File file = new File(path);
+        MessageSenderHandler.getInstance().sendPhotoMessage(file);
     }
 }

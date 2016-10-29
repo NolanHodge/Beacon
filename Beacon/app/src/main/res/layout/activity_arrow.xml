@@ -42,4 +42,14 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/arrow_prgrs" />
 
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/view_image_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_alignParentRight="true"
+        />
+
 </RelativeLayout>

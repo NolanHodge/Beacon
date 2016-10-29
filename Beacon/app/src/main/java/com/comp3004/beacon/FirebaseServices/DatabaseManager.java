@@ -93,8 +93,8 @@ public class DatabaseManager {
         databaseReference.child("/publicBeacons").push().setValue(privateBeacon);
     }
 
-    public void loadPhotos() {
-        Query query = databaseReference.child(CurrentBeaconUser.getInstance().getUserId() + "_photos");
+    public void loadPhotos(String userId) {
+        Query query = databaseReference.child(userId + "_photos");
         PhotoDataListener photoDataListener = new PhotoDataListener();
         query.addChildEventListener(photoDataListener);
     }

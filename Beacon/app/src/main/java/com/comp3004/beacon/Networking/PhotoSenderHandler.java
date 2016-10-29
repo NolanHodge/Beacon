@@ -3,6 +3,7 @@ package com.comp3004.beacon.Networking;
 import android.graphics.Bitmap;
 
 import java.util.BitSet;
+import java.util.HashMap;
 
 /**
  * Created by julianclayton on 16-10-26.
@@ -11,6 +12,8 @@ public class PhotoSenderHandler {
 
     private static PhotoSenderHandler photoSenderHandler = null;
     private Bitmap photoBitmap;
+
+    private HashMap<String, Bitmap> photos;
 
     public PhotoSenderHandler() {
         photoSenderHandler = this;
@@ -31,6 +34,7 @@ public class PhotoSenderHandler {
     public Bitmap getImageBitmap() {
         return photoBitmap;
     }
+
 
 
 }

@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 
+import com.comp3004.beacon.Networking.PhotoMessage;
 import com.comp3004.beacon.Networking.PhotoSenderHandler;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -20,7 +21,9 @@ public class PhotoDataListener implements ChildEventListener {
 
     @Override
     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-        String base64Image = (String) dataSnapshot.getValue();
+
+        PhotoMessage photoMessage = dataSnapshot.getValue(PhotoMessage.class);
+        String base64Image = photoMessage.getImageBinary();
         byte[] imageAsBytes = Base64.decode(base64Image.getBytes(), Base64.DEFAULT);
         InputStream inputStream  = new ByteArrayInputStream(imageAsBytes);
         Bitmap bitmap  = BitmapFactory.decodeStream(inputStream);
