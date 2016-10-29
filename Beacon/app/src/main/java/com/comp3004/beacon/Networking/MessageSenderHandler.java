@@ -9,6 +9,7 @@ import com.comp3004.beacon.User.PublicBeacon;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -101,5 +102,12 @@ public class MessageSenderHandler {
      */
     public void sendRegisterUserMessage() {
         DatabaseManager.getInstance().isCurrentUserRegistered();
+    }
+
+
+    public void sendPhotoMessage(File photoFile) {
+        PhotoMessage photoMessage = new PhotoMessage(photoFile, CurrentBeaconUser.getInstance());
+        FirebaseDatabase.getInstance().getReference().child(CurrentBeaconUser.getInstance().getUserId() + "_photos").push().setValue(photoMessage);
+
     }
 }

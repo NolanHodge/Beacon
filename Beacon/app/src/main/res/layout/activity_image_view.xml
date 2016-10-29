@@ -7,26 +7,15 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.comp3004.beacon.GUI.MakePhotoActivity">
-
-    <Button
-        android:id="@+id/captureFront"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="onClick"
-        android:text="Make Photo"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+    tools:context="com.comp3004.beacon.GUI.ImageViewActivity">
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/imageView"
+        android:id="@+id/imageView2"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_above="@+id/captureFront" />
-
+        android:layout_alignParentStart="true" />
 
 
 </RelativeLayout>

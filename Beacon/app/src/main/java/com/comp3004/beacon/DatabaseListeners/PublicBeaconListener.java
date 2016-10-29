@@ -32,7 +32,6 @@ public class PublicBeaconListener implements ChildEventListener {
             PublicBeaconHandler.getInstance().addBeacon(dataSnapshot.getKey(), publicBeacon);
             for (Beacon beacon : CurrentBeaconUser.getInstance().getBeacons().values()) {
                 if (beacon.getFromUserId().equals(publicBeacon.getFromUserId())) {
-                    System.out.println("HOUSE WORK");
                     beacon.setLon(publicBeacon.getLon());
                     beacon.setLat(publicBeacon.getLat());
                 }
