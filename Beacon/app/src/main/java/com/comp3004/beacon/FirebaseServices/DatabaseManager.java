@@ -15,6 +15,7 @@ import com.comp3004.beacon.DatabaseListeners.PhotoDataListener;
 import com.comp3004.beacon.DatabaseListeners.PublicBeaconListener;
 import com.comp3004.beacon.GUI.ChatActivity;
 import com.comp3004.beacon.Networking.MessageTypes;
+import com.comp3004.beacon.Networking.PhotoSenderHandler;
 import com.comp3004.beacon.User.PrivateBeacon;
 import com.comp3004.beacon.User.CurrentBeaconUser;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -108,23 +109,16 @@ public class DatabaseManager {
     }
 
     public File loadPhotos(final String userId) {
-        /*Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Query query = databaseReference.child(userId + "_photos");
-                PhotoDataListener photoDataListener = new PhotoDataListener();
-                query.addChildEventListener(photoDataListener);
-
-            }
-        });
-        thread.start();*/
         File localFile = null;
         StorageReference storageReference = FirebaseStorage.getInstance().getReference(userId + "_photos");
         localFile = new File("sdcard/camera_app/camera_img1.jpg");
+        System.out.println("USER ID2" + userId);
 
+        final File finalLocalFile = localFile;
         storageReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                PhotoSenderHandler.getInstance().addFile(userId, finalLocalFile);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -132,6 +126,7 @@ public class DatabaseManager {
                 exception.printStackTrace();
             }
         });
+
         return localFile;
     }
 
