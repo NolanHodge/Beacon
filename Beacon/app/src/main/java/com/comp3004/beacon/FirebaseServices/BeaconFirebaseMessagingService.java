@@ -55,8 +55,10 @@ public class BeaconFirebaseMessagingService extends FirebaseMessagingService {
 
             sendBroadcast(broadcastIntent);
 
-
         }
+    }
+    public void updatePhotoBroadast() {
+
     }
 
 }

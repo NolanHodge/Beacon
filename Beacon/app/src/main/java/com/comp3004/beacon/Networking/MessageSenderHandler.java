@@ -1,13 +1,20 @@
 package com.comp3004.beacon.Networking;
 
 import android.location.Location;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 
 import com.comp3004.beacon.FirebaseServices.DatabaseManager;
 import com.comp3004.beacon.User.CurrentBeaconUser;
 import com.comp3004.beacon.User.PrivateBeacon;
 import com.comp3004.beacon.User.PublicBeacon;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.util.HashMap;
@@ -106,8 +113,30 @@ public class MessageSenderHandler {
 
 
     public void sendPhotoMessage(File photoFile) {
-        PhotoMessage photoMessage = new PhotoMessage(photoFile, CurrentBeaconUser.getInstance());
+        /*PhotoMessage photoMessage = new PhotoMessage(photoFile, CurrentBeaconUser.getInstance());
         FirebaseDatabase.getInstance().getReference().child(CurrentBeaconUser.getInstance().getUserId() + "_photos").push().setValue(photoMessage);
+        */
+
+        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+        String path = photoFile.getPath();
+
+        StorageReference storageReference = firebaseStorage.getReference().child(photoFile.getPath());
+
+        UploadTask uploadTask = firebaseStorage.getReference().child(CurrentBeaconUser.getInstance().getUserId() + "_photos").putFile(Uri.fromFile(photoFile));
+
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                System.out.println("Successful image upload!");
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                System.out.println("Unsuccessful image upload!");
+
+            }
+        });
 
     }
 }

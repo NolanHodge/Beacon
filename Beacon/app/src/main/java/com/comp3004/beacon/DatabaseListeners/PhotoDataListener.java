@@ -40,6 +40,7 @@ public class PhotoDataListener implements ChildEventListener {
     @Override
     public void onChildRemoved(DataSnapshot dataSnapshot) {
 
+        PhotoSenderHandler.getInstance().setPhoto(null);
     }
 
     @Override
