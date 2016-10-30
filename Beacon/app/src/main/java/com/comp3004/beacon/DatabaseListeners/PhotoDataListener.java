@@ -28,7 +28,6 @@ public class PhotoDataListener implements ChildEventListener {
         InputStream inputStream  = new ByteArrayInputStream(imageAsBytes);
         Bitmap bitmap  = BitmapFactory.decodeStream(inputStream);
 
-        PhotoSenderHandler.getInstance().setPhoto(bitmap);
 
     }
 
@@ -40,7 +39,6 @@ public class PhotoDataListener implements ChildEventListener {
     @Override
     public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-        PhotoSenderHandler.getInstance().setPhoto(null);
     }
 
     @Override
