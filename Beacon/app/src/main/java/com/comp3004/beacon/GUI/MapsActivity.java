@@ -127,6 +127,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         }
 
+        for (PrivateBeacon privateBeacon : currentBeaconUser.getBeacons().values()) {
+
+            DatabaseManager.getInstance().loadPhotos(privateBeacon.getFromUserId());
+        }
 
         // Define Firebase Remote Config Settings.
         FirebaseRemoteConfigSettings firebaseRemoteConfigSettings =

@@ -3,8 +3,10 @@ package com.comp3004.beacon.GUI;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 
 import com.comp3004.beacon.FirebaseServices.DatabaseManager;
 import com.comp3004.beacon.LocationManagement.LocationService;
+import com.comp3004.beacon.Networking.ChatMessage;
 import com.comp3004.beacon.Networking.PhotoSenderHandler;
 import com.comp3004.beacon.R;
 import com.comp3004.beacon.User.PrivateBeacon;
@@ -60,11 +63,12 @@ public class ArrowActivity extends AppCompatActivity {
         imageViewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatabaseManager.getInstance().loadPhotos(followingBeacon.getFromUserId());
-                if (PhotoSenderHandler.getInstance().getImageBitmap() != null) {
-                    startActivity(new Intent(ArrowActivity.this, ImageViewActivity.class));
+                //DatabaseManager.getInstance().loadPhotos(followingBeacon.getFromUserId());
+                Intent intent = new Intent(ArrowActivity.this, ImageViewActivity.class);
+                intent.putExtra(ImageViewActivity.IMAGE_USER_ID, followingBeacon.getFromUserId());
+                startActivity(intent);
 
-                }
+                startActivity(intent);
             }
         });
 
