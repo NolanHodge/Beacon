@@ -113,14 +113,9 @@ public class MessageSenderHandler {
 
 
     public void sendPhotoMessage(File photoFile) {
-        /*PhotoMessage photoMessage = new PhotoMessage(photoFile, CurrentBeaconUser.getInstance());
-        FirebaseDatabase.getInstance().getReference().child(CurrentBeaconUser.getInstance().getUserId() + "_photos").push().setValue(photoMessage);
-        */
+
 
         FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-        String path = photoFile.getPath();
-
-        StorageReference storageReference = firebaseStorage.getReference().child(photoFile.getPath());
 
         UploadTask uploadTask = firebaseStorage.getReference().child(CurrentBeaconUser.getInstance().getUserId() + "_photos").putFile(Uri.fromFile(photoFile));
 
