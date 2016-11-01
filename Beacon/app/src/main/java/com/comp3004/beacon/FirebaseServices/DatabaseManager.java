@@ -1,9 +1,5 @@
 package com.comp3004.beacon.FirebaseServices;
 
-import android.content.BroadcastReceiver;
-import android.content.Intent;
-import android.database.CursorIndexOutOfBoundsException;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 
 import com.comp3004.beacon.DatabaseListeners.BeaconRequestDataListener;
@@ -11,17 +7,13 @@ import com.comp3004.beacon.DatabaseListeners.CurrentUsersFriendsDataListener;
 import com.comp3004.beacon.DatabaseListeners.IsUserRegisteredDataListener;
 import com.comp3004.beacon.DatabaseListeners.MessageThreadListener;
 import com.comp3004.beacon.DatabaseListeners.NewMessageThreadListener;
-import com.comp3004.beacon.DatabaseListeners.PhotoDataListener;
 import com.comp3004.beacon.DatabaseListeners.PublicBeaconListener;
-import com.comp3004.beacon.GUI.ChatActivity;
 import com.comp3004.beacon.Networking.MessageTypes;
 import com.comp3004.beacon.Networking.PhotoSenderHandler;
 import com.comp3004.beacon.User.PrivateBeacon;
 import com.comp3004.beacon.User.CurrentBeaconUser;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
@@ -30,7 +22,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 
 /**
@@ -110,10 +101,9 @@ public class DatabaseManager {
 
     public File loadPhotos(final String userId) {
 
-        File localFile = null;
+        File localFile;
         StorageReference storageReference = FirebaseStorage.getInstance().getReference(userId + "_photos");
         localFile = new File("sdcard/camera_app/camera_img1.jpg");
-        System.out.println("USER ID2" + userId);
 
         final File finalLocalFile = localFile;
         storageReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {

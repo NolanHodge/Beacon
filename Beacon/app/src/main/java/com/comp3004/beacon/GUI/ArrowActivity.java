@@ -56,7 +56,7 @@ public class ArrowActivity extends AppCompatActivity {
             followingBeacon = CurrentBeaconUser.getInstance().getBeacons().get(beaconId);
         }
 
-        //Load image associated with this beacon 
+        //Load image associated with this beacon in background
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
