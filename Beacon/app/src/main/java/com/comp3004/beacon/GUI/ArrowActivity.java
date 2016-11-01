@@ -29,21 +29,17 @@ import com.comp3004.beacon.User.CurrentBeaconUser;
 import java.util.ArrayList;
 
 public class ArrowActivity extends AppCompatActivity {
-    private float prev,destination = 0;
+    Location lastLocation = new Location(LocationManager.GPS_PROVIDER);
+
+    private float prev, destination = 0;
     static long MIN_TIME = 1000;
     static float MIN_DIST = 1;
-    static String NORTH = "North";
-    static String NORTHEAST = "Northeast";
-    static String NORTHWEST = "Northwest";
-    static String EAST = "East";
-    static String SOUTHEAST = "Southeast";
-    static String WEST = "West";
-    static String SOUTHWEST = "Southwest";
-    static String SOUTH = "South";
+
     public static String CURRENT_BEACON_ID_KEY = "CURRENT_BEACON_ID";
     private PrivateBeacon followingBeacon;
 
     private FloatingActionButton imageViewButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +62,6 @@ public class ArrowActivity extends AppCompatActivity {
         });
         t.start();
 
-
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         imageViewButton.setOnClickListener(new View.OnClickListener() {
@@ -88,31 +83,15 @@ public class ArrowActivity extends AppCompatActivity {
                 findViewById(R.id.arrow_prgrs).setVisibility(View.INVISIBLE);
 
                 final float[] results = new float[3];
+
+
                 Location.distanceBetween(location.getLatitude(), location.getLongitude(), Double.parseDouble(followingBeacon.getLat()), Double.parseDouble(followingBeacon.getLon()), results);
 
-                final int compass_bearing = (int) (results[2] + 360) % 360;
+                float ab = lastLocation.bearingTo(location);
+                float bc = results[2];
+                float ac = 180 - ((bc - ab) % 180);
 
-                String b;
-                if (compass_bearing >= 65 && compass_bearing < 115) {
-                    b = EAST;
-                } else if (compass_bearing >= 115 && compass_bearing < 155) {
-                    b = SOUTHEAST;
-                } else if (compass_bearing >= 155 && compass_bearing < 205) {
-                    b = SOUTH;
-                } else if (compass_bearing >= 205 && compass_bearing < 245) {
-                    b = SOUTHWEST;
-                } else if (compass_bearing >= 245 && compass_bearing < 295) {
-                    b = WEST;
-                } else if (compass_bearing >= 295 && compass_bearing < 335) {
-                    b = NORTHWEST;
-                } else if (compass_bearing >= 335 || compass_bearing < 25) {
-                    b = NORTH;
-                } else if (compass_bearing >= 25 && compass_bearing < 65) {
-                    b = NORTHEAST;
-                } else {
-                    b = "NA";
-                }
-                String s = results[0] > 1100 ? String.format("%.1f km\n%s", results[0] / 1000, b) : String.format("%.1f m\n%s", results[0], b);
+                String s = results[0] > 1100 ? String.format("%.1f km\n", results[0] / 1000) : String.format("%.1f m\n", results[0]);
 
                 TextView textView = (TextView) findViewById(R.id.txt_distance);
                 textView.setText(s);
@@ -120,12 +99,12 @@ public class ArrowActivity extends AppCompatActivity {
                 final ImageView imageView = (ImageView) findViewById(R.id.iv_arrow);
 
                 if (Math.abs(prev - results[1]) <= 180) {
-                    destination = results[1];
+                    destination = ab - ac;
                 } else {
                     if (prev < 0) {
-                        destination = (results[1] - 360) % 360;
+                        destination = ((ab - ac) - 360) % 360;
                     } else {
-                        destination = (results[1] + 360) % 360;
+                        destination = ((ab - ac) + 360) % 360;
                     }
                     if (Math.abs(destination - prev) > 180)
                         System.out.println(Math.abs(destination - prev) + " " + destination + " " + prev);
@@ -158,6 +137,7 @@ public class ArrowActivity extends AppCompatActivity {
                 });
 
                 imageView.startAnimation(anim);
+                lastLocation = location;
             }
         };
         try {
@@ -193,7 +173,7 @@ public class ArrowActivity extends AppCompatActivity {
             double rand1 = (Math.random() / 10 - .05);
             double rand2 = (Math.random() / 10 - .05);
 
-            Location.distanceBetween(location.getLatitude(), location.getLongitude(),  Double.parseDouble(followingBeacon.getLat()), Double.parseDouble(followingBeacon.getLon()) , results);
+            Location.distanceBetween(location.getLatitude(), location.getLongitude(), Double.parseDouble(followingBeacon.getLat()), Double.parseDouble(followingBeacon.getLon()), results);
             final int compass_bearing = (int) (results[2] + 360) % 360;
 
             String b;
