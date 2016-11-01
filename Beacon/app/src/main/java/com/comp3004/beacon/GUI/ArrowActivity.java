@@ -56,6 +56,14 @@ public class ArrowActivity extends AppCompatActivity {
             followingBeacon = CurrentBeaconUser.getInstance().getBeacons().get(beaconId);
         }
 
+        //Load image associated with this beacon 
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                DatabaseManager.getInstance().loadPhotos(followingBeacon.getFromUserId());
+            }
+        });
+        t.start();
 
 
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
