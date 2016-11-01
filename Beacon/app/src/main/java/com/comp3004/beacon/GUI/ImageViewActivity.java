@@ -40,7 +40,7 @@ public class ImageViewActivity extends AppCompatActivity {
             userId = extras.getString(IMAGE_USER_ID);
         }
 
-        DatabaseManager.getInstance().loadPhotos(userId);
+
         loadPhotoToView();
     }
 

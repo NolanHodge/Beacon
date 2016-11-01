@@ -109,6 +109,7 @@ public class DatabaseManager {
     }
 
     public File loadPhotos(final String userId) {
+
         File localFile = null;
         StorageReference storageReference = FirebaseStorage.getInstance().getReference(userId + "_photos");
         localFile = new File("sdcard/camera_app/camera_img1.jpg");
