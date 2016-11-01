@@ -54,9 +54,9 @@
             android:name=".GUI.ArrowActivity"
             android:label="@string/title_activity_track" />
         <activity
-            android:theme="@style/AppTheme"
             android:name=".GUI.FriendListActivity"
-            android:label="@string/title_activity_friend_list" />
+            android:label="@string/title_activity_friend_list"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".GUI.ChatActivity"
             android:label="@string/title_activity_chat" />
@@ -77,7 +77,7 @@
             android:label="@string/title_activity_maps" />
         <activity
             android:name=".GUI.PublicBeaconsActivity"
-            android:label="@string/title_activity_public"></activity>
+            android:label="@string/title_activity_public" />
         <activity
             android:name=".GUI.BeaconsListActivity"
             android:label="@string/title_activity_beacons_list" />
@@ -87,15 +87,17 @@
         <activity android:name=".GUI.MakePhotoActivity" />
         <activity
             android:name=".GUI.UserSearchActivity"
-            android:launchMode="singleTop"
-            android:label="@string/title_activity_user_search">
+            android:label="@string/title_activity_user_search"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
+        <activity android:name=".GUI.ArrowActivity2"></activity>
     </application>
 
 </manifest>

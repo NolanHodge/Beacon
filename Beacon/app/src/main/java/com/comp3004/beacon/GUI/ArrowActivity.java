@@ -11,6 +11,9 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.List;
 
 import com.comp3004.beacon.LocationManagement.LocationService;
 import com.comp3004.beacon.R;
@@ -31,18 +34,17 @@ public class ArrowActivity extends AppCompatActivity {
     static String SOUTH = "South";
     public static String CURRENT_BEACON_ID_KEY = "CURRENT_BEACON_ID";
     private PrivateBeacon followingBeacon;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_arrow);
-
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String beaconId = extras.getString(CURRENT_BEACON_ID_KEY);
             followingBeacon = CurrentBeaconUser.getInstance().getBeacons().get(beaconId);
         }
-
 
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         LocationService locationService = new LocationService() {
@@ -80,7 +82,6 @@ public class ArrowActivity extends AppCompatActivity {
 
                 TextView textView = (TextView) findViewById(R.id.txt_distance);
                 textView.setText(s);
-
 
                 final ImageView imageView = (ImageView) findViewById(R.id.iv_arrow);
 
@@ -129,9 +130,9 @@ public class ArrowActivity extends AppCompatActivity {
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME, MIN_DIST, locationService);
         } catch (SecurityException e) {
             e.printStackTrace();
+            Toast toast = Toast.makeText(getApplicationContext(), e.getMessage().length(), Toast.LENGTH_SHORT);
+            toast.show();
         }
-
-
     }
 
     private class test extends AsyncTask<Void, Void, Void> {
@@ -185,7 +186,6 @@ public class ArrowActivity extends AppCompatActivity {
 
             TextView textView = (TextView) findViewById(R.id.txt_distance);
             textView.setText(s);
-
 
             final ImageView imageView = (ImageView) findViewById(R.id.iv_arrow);
 

@@ -52,11 +52,8 @@ public class UserSearchActivity extends AppCompatActivity {
         users = new ArrayList<>();
 
         Intent intent = getIntent();
-
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-
              query = intent.getStringExtra(SearchManager.QUERY);
-
              arrayAdapter = new ArrayAdapter<String>(UserSearchActivity.this,
                     android.R.layout.simple_list_item_1, userNames){
                 @Override
