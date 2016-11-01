@@ -88,8 +88,8 @@
             android:label="@string/title_activity_chat_message_threads" />
         <activity
             android:name=".GUI.UserSearchActivity"
-            android:launchMode="singleTop"
-            android:label="@string/title_activity_user_search">
+            android:label="@string/title_activity_user_search"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -101,6 +101,7 @@
         <activity android:name=".GUI.ImageViewActivity"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".GUI.ArrowActivity2"></activity>
     </application>
 
 </manifest>
