@@ -52,7 +52,7 @@
             android:name=".GUI.ArrowActivity"
             android:label="@string/title_activity_track" />
         <activity
-            android:name=".GUI.FriendListActivity"
+            android:name=".GUI.FriendListFragment"
             android:label="@string/title_activity_friend_list" />
         <activity
             android:name=".GUI.ChatActivity"

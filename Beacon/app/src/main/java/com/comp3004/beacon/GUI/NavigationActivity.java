@@ -6,12 +6,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -102,7 +99,7 @@ public class NavigationActivity extends AppCompatActivity
         } else {
             mUsername = mFirebaseUser.getDisplayName();
             if (mFirebaseUser.getPhotoUrl() != null) {
-                Toast.makeText(NavigationActivity.this, getString(R.string.login_greeting) + " " + currentBeaconUser.getDisplayName(),
+                Toast.makeText(NavigationActivity.this, "Running ",
                         Toast.LENGTH_SHORT).show();
             }
         }
@@ -190,7 +187,9 @@ public class NavigationActivity extends AppCompatActivity
         if (id == R.id.nav_beacon_list) {
             startActivity(new Intent(NavigationActivity.this, BeaconsListActivity.class));
         } else if (id == R.id.nav_friend_list) {
-            startActivity(new Intent(NavigationActivity.this, FriendListActivity.class));
+            FriendListFragment friendListFragment = new FriendListFragment();
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(R.id.relativelayout_for_fragment, friendListFragment).addToBackStack(null).commit();
         } else if (id == R.id.nav_public_beacons) {
             startActivity(new Intent(NavigationActivity.this, PublicBeaconsActivity.class));
         } else if (id == R.id.nav_map) {

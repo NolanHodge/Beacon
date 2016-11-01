@@ -9,15 +9,18 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.comp3004.beacon.FirebaseServices.DatabaseManager;
 import com.comp3004.beacon.Networking.MailBox;
@@ -28,27 +31,33 @@ import com.comp3004.beacon.User.CurrentBeaconUser;
 import java.util.ArrayList;
 
 
-public class FriendListActivity extends AppCompatActivity {
+public class FriendListFragment extends Fragment {
 
     ArrayList<BeaconUser> friendsList;
     ArrayList<String> userNames;
     ListView friendsListView;
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+        return inflater.inflate(R.layout.fragment_friend_list, container, false);
+    }
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_friend_list);
+    public void onStart() {
+        super.onStart();
 
         DatabaseManager.getInstance().subscribeToMessageThread();
 
         friendsList = new ArrayList<BeaconUser>();
         userNames = new ArrayList<String>();
-        friendsListView = (ListView) findViewById(R.id.friendListView);
-        FloatingActionButton messageButton = (FloatingActionButton) findViewById(R.id.message_friends_button);
-
+        friendsListView = (ListView) getView().findViewById(R.id.friendListView);
+        FloatingActionButton messageButton = (FloatingActionButton) getView().findViewById(R.id.message_friends_button);
+        Toast.makeText(getActivity(), "Running Add Friends",
+                Toast.LENGTH_SHORT).show();
         //Add friends to list for GUI
         if (CurrentBeaconUser.getInstance().getFriends() != null) {
+
             for (Object key : CurrentBeaconUser.getInstance().getFriends().keySet()) {
                 BeaconUser beaconUser = (BeaconUser) CurrentBeaconUser.getInstance().getFriends().get(key);
                 if (!beaconUser.getUserId().equals(CurrentBeaconUser.getInstance().getUserId())) {
@@ -61,8 +70,8 @@ public class FriendListActivity extends AppCompatActivity {
         messageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(FriendListActivity.this, ChatMessageThreadsActivity.class);
-                startActivity(intent);
+                Intent intent = new Intent(getActivity(), ChatMessageThreadsActivity.class);
+                getActivity().startActivity(intent);
             }
         });
 
@@ -74,7 +83,7 @@ public class FriendListActivity extends AppCompatActivity {
 
     private void populateFriendsListView() {
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, userNames) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, userNames) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
@@ -97,8 +106,8 @@ public class FriendListActivity extends AppCompatActivity {
         friendsListView.setAdapter(adapter);
     }
     private void registerFriendsListviewCallback() {
-        friendsListView = (ListView) findViewById(R.id.friendListView);
-        final Context context = this;
+        friendsListView = (ListView) getView().findViewById(R.id.friendListView);
+        final Context context = getActivity();
 
         friendsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -111,15 +120,15 @@ public class FriendListActivity extends AppCompatActivity {
     }
 
     public void showBeaconOptionDialog(BeaconUser beaconUser, final int userIndex) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        final Context context = this;
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        final Context context = getActivity();
         builder.setTitle("Send " + beaconUser.getDisplayName())
                 .setItems(new String[]{"Beacon", "Message", "Cancel"}, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case 0:
-                                LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-                                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                                LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+                                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                                     return;
                                 }
                                 Location current = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER) == null ?
@@ -133,10 +142,10 @@ public class FriendListActivity extends AppCompatActivity {
                                     MailBox.getInstance().initializeThread(chatId);
                                     MessageSenderHandler.getInstance().sendMessage(friendsList.get(userIndex).getUserId(), "Has started a chat");
                                 }
-                                Intent intent = new Intent(FriendListActivity.this, ChatActivity.class);
+                                Intent intent = new Intent(getActivity(), ChatActivity.class);
                                 intent.putExtra("CHAT_ID", CurrentBeaconUser.getInstance().getUserId() + "_" + friendsList.get(userIndex).getUserId());
                                 intent.putExtra("CHAT_PARTICIPANT", friendsList.get(userIndex).getUserId());
-                                startActivity(intent);
+                                getActivity().startActivity(intent);
                                 break;
                             case 2:
                                 break;

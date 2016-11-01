@@ -3,12 +3,17 @@ package com.comp3004.beacon.FirebaseServices;
 import android.content.Intent;
 import android.util.Log;
 
+import android.content.BroadcastReceiver;
+import android.location.LocationManager;
+import android.support.v4.content.LocalBroadcastManager;
 import com.comp3004.beacon.GUI.ChatActivity;
 import com.comp3004.beacon.GUI.MapsFragment;
 import com.comp3004.beacon.Networking.CurrentBeaconInvitationHandler;
 import com.comp3004.beacon.User.CurrentBeaconUser;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.comp3004.beacon.Networking.ChatMessage;
+
 
 /**
  * Created by julianclayton on 16-09-26.

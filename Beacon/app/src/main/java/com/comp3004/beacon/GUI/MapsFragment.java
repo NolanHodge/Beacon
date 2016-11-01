@@ -1,6 +1,7 @@
 package com.comp3004.beacon.GUI;
 
 import android.Manifest;
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -33,8 +34,10 @@ import com.comp3004.beacon.User.CurrentBeaconUser;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -50,6 +53,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    MapView mMapView;
 
     public static final String LOCATION_MESSAGE_CHILD = "locations";
 
@@ -66,11 +70,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         super.onStart();
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager()
+        SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager()
                 .findFragmentById(R.id.map);
-        //mapFragment.getMapAsync(this);
-
-
+        mapFragment.getMapAsync(this);
     }
 
 
@@ -96,30 +98,30 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
 
-        //LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        //final Location current = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER) == null ?
-        //        locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER) :
-        //        locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        LocationManager locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
+        final Location current = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER) == null ?
+                locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER) :
+                locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
         mMap = googleMap;
         mMap.setMyLocationEnabled(true);
 
-        //CameraPosition cameraPosition = new CameraPosition.Builder()
-        //        .target(new LatLng(current.getLatitude(), current.getLongitude()))
-        //        .zoom(13)
-        //        .build();
-        //mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(new LatLng(current.getLatitude(), current.getLongitude()))
+                .zoom(13)
+                .build();
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
         //Add PrivateBeacon markers to the map
         for (PrivateBeacon privateBeacon : currentBeaconUser.getBeacons().values()) {
             LatLng position = new LatLng(Double.parseDouble(privateBeacon.getLat()), Double.parseDouble(privateBeacon.getLon()));
             String userId = privateBeacon.getFromUserId();
 
-            mMap.addMarker(new MarkerOptions()
-                    .title("Beacon")
-                    .snippet(currentBeaconUser.getFriend(userId).getDisplayName())
-                    .position(position))
-                    .setDraggable(true);
+            //mMap.addMarker(new MarkerOptions()
+            //        .title("Beacon")
+             //       .snippet(currentBeaconUser.getFriend(userId).getDisplayName())
+              //      .position(position))
+              //S      .setDraggable(true);
         }
 
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
