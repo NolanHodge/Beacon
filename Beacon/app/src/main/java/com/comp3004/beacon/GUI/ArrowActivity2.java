@@ -1,5 +1,8 @@
 package com.comp3004.beacon.GUI;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.hardware.GeomagneticField;
 import android.location.Location;
 import android.location.LocationManager;
@@ -11,6 +14,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.util.DisplayMetrics;
@@ -32,22 +36,17 @@ import com.comp3004.beacon.R;
 import com.comp3004.beacon.User.PrivateBeacon;
 import com.comp3004.beacon.User.CurrentBeaconUser;
 
-
 public class ArrowActivity2 extends AppCompatActivity implements SensorEventListener{
 
         private ImageView mPointer;
         private SensorManager mSensorManager;
         private Sensor mAccelerometer;
         private Sensor mMagnetometer;
-
         private float mCurrentDegree = 0f;
         private LocationManager locationManager;
         public static String CURRENT_BEACON_ID_KEY = "CURRENT_BEACON_ID";
         private PrivateBeacon followingBeacon;
-
         private GeomagneticField geoField;
-
-        private Location location = new Location("A");
         private Location target = new Location("B");
 
         private float[] accelerometerValues = new float[3];
@@ -91,7 +90,6 @@ public class ArrowActivity2 extends AppCompatActivity implements SensorEventList
             String s = results[0] > 1100 ? String.format("%.1f km", results[0] / 1000) : String.format("%.1f m", results[0]);
             TextView textView = (TextView) findViewById(R.id.txt_distance);
             textView.setText(s);
-
          }
         };
 
@@ -129,48 +127,22 @@ public class ArrowActivity2 extends AppCompatActivity implements SensorEventList
                 geomagneticValuesSet = true;
                 break;
         }
-/*
-        SensorManager.getRotationMatrix(mR, null, accelerometerValues, geomagneticValues);
-        SensorManager.getOrientation(mR, mOrientation);
-        float azimuthInRadians = mOrientation[0];
 
-        float azimuth = mOrientation[0];
-        azimuth = (float)Math.toDegrees(azimuth);
+        final Context context = this;
 
-        geoField = new GeomagneticField(
-                Double.valueOf(location.getLatitude()).floatValue(),
-                Double.valueOf(location.getLongitude()).floatValue(),
-                Double.valueOf(location.getAltitude()).floatValue(),
-                System.currentTimeMillis()
-        );
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER) == null ?
+                locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER) :
+                locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-        azimuth += geoField.getDeclination(); // converts magnetic north into true north
-        float bearing = location.bearingTo(target); // (it's already in degrees)
-
-        float degree = Math.round(event.values[0]);
-        degree += geoField.getDeclination();
-
-        float direction = azimuth + location.bearingTo( target );
-
-        TextView targetTV = (TextView) findViewById(R.id.txt_bearing);
-        targetTV.setText(" Target X: " + target.getLatitude() + " Target Y: " + target.getLongitude());
-
-        TextView degreesTextView = (TextView) findViewById(R.id.txt_degrees);
-        degreesTextView.setText("   " + Float.toString(degree) + "%    ");
-
-        RotateAnimation ra = new RotateAnimation(
-                mCurrentDegree,
-                -direction,
-                Animation.RELATIVE_TO_SELF, 0.5f,
-                Animation.RELATIVE_TO_SELF,
-                0.5f);
-
-        ra.setDuration(250);
-        ra.setFillAfter(true);
-
-        mPointer.startAnimation(ra);
-        mCurrentDegree = -direction;
-  */
+        final float[] results = new float[3];
+        Location.distanceBetween(location.getLatitude(), location.getLongitude(), target.getLatitude(), target.getLongitude(), results);
+        String s = results[0] > 1100 ? String.format("%.1f km", results[0] / 1000) : String.format("%.1f m", results[0]);
+        TextView textView = (TextView) findViewById(R.id.txt_distance);
+        textView.setText(s);
 
         SensorManager.getRotationMatrix(mR, null, accelerometerValues, geomagneticValues);
         SensorManager.getOrientation(mR, mOrientation);
@@ -204,26 +176,6 @@ public class ArrowActivity2 extends AppCompatActivity implements SensorEventList
         }
 
         mPointer.setRotation(direction2);
-
-        //Set the field
-        String bearingText = "N";
-
-        if ( (360 >= baseAzimuth && baseAzimuth >= 337.5) || (0 <= baseAzimuth && baseAzimuth <= 22.5) ) bearingText = "N";
-        else if (baseAzimuth > 22.5 && baseAzimuth < 67.5) bearingText = "NE";
-        else if (baseAzimuth >= 67.5 && baseAzimuth <= 112.5) bearingText = "E";
-        else if (baseAzimuth > 112.5 && baseAzimuth < 157.5) bearingText = "SE";
-        else if (baseAzimuth >= 157.5 && baseAzimuth <= 202.5) bearingText = "S";
-        else if (baseAzimuth > 202.5 && baseAzimuth < 247.5) bearingText = "SW";
-        else if (baseAzimuth >= 247.5 && baseAzimuth <= 292.5) bearingText = "W";
-        else if (baseAzimuth > 292.5 && baseAzimuth < 337.5) bearingText = "NW";
-        else bearingText = "?";
-
-        TextView degreesTextView = (TextView) findViewById(R.id.txt_degrees);
-        degreesTextView.setText(bearingText);
-
-        TextView targetTV = (TextView) findViewById(R.id.txt_bearing);
-        targetTV.setText(" Target X: " + target.getLatitude() + " Target Y: " + target.getLongitude());
-
     }
 
     @Override
