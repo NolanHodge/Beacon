@@ -1,0 +1,4 @@
+Beacon - Cameron MacQuarrie - Week 3 (Oct 6-Oct 12) Development log
+
+-Summarized content of proposal to determine what is to be added (2 hours)
+-Created flowchart of functions and interactions(1hour)

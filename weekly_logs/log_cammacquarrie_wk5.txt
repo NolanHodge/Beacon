@@ -1,0 +1,4 @@
+Beacon - Cameron MacQuarrie - Week 2 (Oct20-Oct 26) Development log
+
+Created and initialized navigation drawer (2 hours)
+Converted MapsActivity to Mapfragment. Fixed references. Error with location (2 hours)
