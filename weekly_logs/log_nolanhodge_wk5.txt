@@ -1,0 +1,5 @@
+Group Meeting
+UI refactoring for the app
+working on triangulation for app
+working on chat features
+
