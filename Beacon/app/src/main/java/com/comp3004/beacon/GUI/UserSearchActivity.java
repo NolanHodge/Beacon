@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 
 import android.widget.TextView;
 
+import com.comp3004.beacon.FirebaseServices.DatabaseManager;
 import com.comp3004.beacon.R;
 import com.comp3004.beacon.User.BeaconUser;
 import com.comp3004.beacon.User.CurrentBeaconUser;
@@ -131,7 +132,8 @@ public class UserSearchActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case 0:
-                                // @TODO add friend function
+                                BeaconUser selectedUser = users.get(userIndex);
+                                DatabaseManager.getInstance().addFriend(selectedUser);
                                 break;
                             case 1:
                                 break;
