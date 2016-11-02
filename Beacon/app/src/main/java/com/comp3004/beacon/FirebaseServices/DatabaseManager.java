@@ -1,5 +1,6 @@
 package com.comp3004.beacon.FirebaseServices;
 
+import android.database.CursorIndexOutOfBoundsException;
 import android.support.annotation.NonNull;
 
 import com.comp3004.beacon.DatabaseListeners.BeaconRequestDataListener;
@@ -10,6 +11,7 @@ import com.comp3004.beacon.DatabaseListeners.NewMessageThreadListener;
 import com.comp3004.beacon.DatabaseListeners.PublicBeaconListener;
 import com.comp3004.beacon.Networking.MessageTypes;
 import com.comp3004.beacon.Networking.PhotoSenderHandler;
+import com.comp3004.beacon.User.BeaconUser;
 import com.comp3004.beacon.User.PrivateBeacon;
 import com.comp3004.beacon.User.CurrentBeaconUser;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -93,6 +95,10 @@ public class DatabaseManager {
         PublicBeaconListener publicBeaconListener = new PublicBeaconListener();
         query.addChildEventListener(publicBeaconListener);
 
+    }
+
+    public void addFriend(BeaconUser beaconUser)  {
+        databaseReference.child("beaconUsers/" + CurrentBeaconUser.getInstance().getUserId() + "/friends").child(beaconUser.getUserId()).setValue(beaconUser);
     }
 
     public void createPublicBeacon(PrivateBeacon privateBeacon) {
