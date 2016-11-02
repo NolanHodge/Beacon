@@ -1,0 +1,5 @@
+Beacon - Cameron MacQuarrie - Week 2 (Oct 27-Nov 2) Development log
+
+Fixed location data in mapFragment (1 hour)
+Converted FriendListActivity to Fragment (2 hours)
+Fixed references. Error loading friends list still to do (1 hour)

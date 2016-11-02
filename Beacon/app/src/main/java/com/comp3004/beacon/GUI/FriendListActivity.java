@@ -73,7 +73,6 @@ public class FriendListActivity extends AppCompatActivity {
             }
         });
 
-
         populateFriendsListView();
         registerFriendsListviewCallback();
 
@@ -109,7 +108,6 @@ public class FriendListActivity extends AppCompatActivity {
         friendsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                AlertDialog alertDialog;
                 BeaconUser selectedBeaconUser = friendsList.get(position);
                 showBeaconOptionDialog(selectedBeaconUser, position);
             }
