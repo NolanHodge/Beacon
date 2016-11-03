@@ -1,29 +1,27 @@
 package com.comp3004.beacon.GUI;
 
 import android.content.Intent;
+
 import android.location.Location;
 import android.location.LocationManager;
-import android.media.Image;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.provider.ContactsContract;
+
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
+
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import java.util.List;
-import java.util.List;
 
 import com.comp3004.beacon.FirebaseServices.DatabaseManager;
 import com.comp3004.beacon.LocationManagement.LocationService;
-import com.comp3004.beacon.Networking.ChatMessage;
-import com.comp3004.beacon.Networking.PhotoSenderHandler;
 import com.comp3004.beacon.R;
 import com.comp3004.beacon.User.PrivateBeacon;
 import com.comp3004.beacon.User.CurrentBeaconUser;

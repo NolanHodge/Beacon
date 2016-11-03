@@ -1,14 +1,20 @@
 package com.comp3004.beacon.GUI;
 
 import android.content.Context;
+
 import android.graphics.drawable.Drawable;
+
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import android.support.v7.app.AppCompatActivity;
+
 import android.view.View;
+
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
 import com.comp3004.beacon.Networking.PhotoSenderHandler;
 import com.comp3004.beacon.R;
 
