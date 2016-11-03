@@ -16,6 +16,9 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.List;
 
 import com.comp3004.beacon.FirebaseServices.DatabaseManager;
 import com.comp3004.beacon.LocationManagement.LocationService;
@@ -116,7 +119,6 @@ public class ArrowActivity extends AppCompatActivity {
                 TextView textView = (TextView) findViewById(R.id.txt_distance);
                 textView.setText(s);
 
-
                 final ImageView imageView = (ImageView) findViewById(R.id.iv_arrow);
 
                 if (Math.abs(prev - results[1]) <= 180) {
@@ -164,9 +166,9 @@ public class ArrowActivity extends AppCompatActivity {
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME, MIN_DIST, locationService);
         } catch (SecurityException e) {
             e.printStackTrace();
+            Toast toast = Toast.makeText(getApplicationContext(), e.getMessage().length(), Toast.LENGTH_SHORT);
+            toast.show();
         }
-
-
     }
 
     private class test extends AsyncTask<Void, Void, Void> {
@@ -220,7 +222,6 @@ public class ArrowActivity extends AppCompatActivity {
 
             TextView textView = (TextView) findViewById(R.id.txt_distance);
             textView.setText(s);
-
 
             final ImageView imageView = (ImageView) findViewById(R.id.iv_arrow);
 

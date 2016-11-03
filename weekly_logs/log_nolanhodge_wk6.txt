@@ -1,0 +1,3 @@
+Created all new ArrowActivity class
+Using sensor hardware to make arrow act as compass
+UI changes for app

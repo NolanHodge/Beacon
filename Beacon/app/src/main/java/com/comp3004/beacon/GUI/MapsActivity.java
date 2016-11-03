@@ -46,6 +46,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -68,7 +69,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private DatabaseReference mFirebaseDatabaseReference;
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
     private GoogleApiClient mGoogleApiClient;
-    private FirebaseAnalytics mFirebaseAnalytics;
     private CurrentBeaconUser currentBeaconUser;
     private MessageSenderHandler messageHandler;
     private SharedPreferences mSharedPreferences;
@@ -96,7 +96,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         currentBeaconUser = CurrentBeaconUser.getInstance();
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         messageHandler = MessageSenderHandler.getInstance();
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -173,6 +172,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 File file = getFile();
                 camera_intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
                 startActivityForResult(camera_intent, CAM_REQUEST);
+                startActivity(new Intent(MapsActivity.this, ArrowActivity2.class));
             }
         });
     }

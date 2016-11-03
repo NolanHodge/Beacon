@@ -13,6 +13,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -88,8 +89,8 @@
             android:label="@string/title_activity_chat_message_threads" />
         <activity
             android:name=".GUI.UserSearchActivity"
-            android:launchMode="singleTop"
-            android:label="@string/title_activity_user_search">
+            android:label="@string/title_activity_user_search"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -101,6 +102,7 @@
         <activity android:name=".GUI.ImageViewActivity"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".GUI.ArrowActivity2"></activity>
     </application>
 
 </manifest>
