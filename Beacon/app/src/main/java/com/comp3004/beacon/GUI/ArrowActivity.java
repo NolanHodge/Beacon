@@ -17,7 +17,7 @@ import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import java.util.List;
 import java.util.List;
 
 import com.comp3004.beacon.FirebaseServices.DatabaseManager;
