@@ -1,46 +1,35 @@
 package com.comp3004.beacon.GUI;
 
-import android.Manifest;
 import android.app.SearchManager;
-import android.content.Context;
+
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationManager;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
+
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 
-import android.widget.TextView;
-
-import com.comp3004.beacon.FirebaseServices.DatabaseManager;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.comp3004.beacon.FirebaseServices.DatabaseManager;
-import com.comp3004.beacon.Networking.MailBox;
-import com.comp3004.beacon.Networking.MessageSenderHandler;
 import com.comp3004.beacon.R;
 import com.comp3004.beacon.User.BeaconUser;
 import com.comp3004.beacon.User.CurrentBeaconUser;
+
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
-import com.comp3004.beacon.User.CurrentBeaconUser;
 
 public class UserSearchActivity extends AppCompatActivity {
 

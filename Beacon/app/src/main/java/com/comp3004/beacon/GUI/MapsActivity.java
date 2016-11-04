@@ -1,25 +1,36 @@
 package com.comp3004.beacon.GUI;
 
 import android.Manifest;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
+
 import android.location.Location;
 import android.location.LocationManager;
+
 import android.net.Uri;
+
 import android.preference.PreferenceManager;
+
 import android.provider.MediaStore;
+
 import android.support.annotation.NonNull;
+
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+
 import android.os.Bundle;
+
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+
 import android.util.Log;
+
 import android.view.View;
+
 import android.widget.Toast;
 
 import com.comp3004.beacon.FirebaseServices.DatabaseManager;
@@ -29,8 +40,8 @@ import com.comp3004.beacon.Networking.SubscriptionHandler;
 
 import com.comp3004.beacon.R;
 import com.comp3004.beacon.User.PrivateBeacon;
-import com.comp3004.beacon.User.BeaconUser;
 import com.comp3004.beacon.User.CurrentBeaconUser;
+
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -41,7 +52,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.analytics.FirebaseAnalytics;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -52,9 +63,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Marker;
 
-
 import java.io.File;
-import java.security.PublicKey;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 

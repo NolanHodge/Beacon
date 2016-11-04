@@ -1,20 +1,29 @@
 package com.comp3004.beacon.GUI;
 
 import android.app.LoaderManager.LoaderCallbacks;
+
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.pm.PackageManager;
+
 import android.database.Cursor;
+
 import android.net.Uri;
+
 import android.os.Build;
 import android.os.Bundle;
+
 import android.provider.ContactsContract;
+
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+
 import android.util.Log;
+
 import android.view.View;
+
 import android.widget.Toast;
 
 import com.comp3004.beacon.R;
