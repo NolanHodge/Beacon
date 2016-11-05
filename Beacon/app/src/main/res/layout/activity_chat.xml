@@ -1,21 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:android1="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/background_color">
-
-    <ListView
-        android:id="@+id/chatListView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_above="@+id/chatEditText"
-        android:divider="@null"
-        android:dividerHeight="0dp"
-        >
-
-    </ListView>
 
     <EditText
         android:id="@+id/chatEditText"
@@ -39,5 +25,18 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/chatListView"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/sendChatMessageButton"
+        android:scrollingCache="true"
+        android:clickable="true"
+        android:scrollbars="vertical"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:minHeight="100px" />
 
 </RelativeLayout>
