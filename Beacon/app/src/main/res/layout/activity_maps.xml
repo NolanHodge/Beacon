@@ -46,6 +46,7 @@
         android:layout_centerHorizontal="true" />
 
     <android.support.design.widget.FloatingActionButton
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/photo_activity_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -53,7 +54,7 @@
         android:layout_margin="@dimen/fab_margin"
         android:layout_alignParentRight="true"
         android:src="@drawable/camera_icon"
-
+        app:backgroundTint="@color/button_green"
         />
 
 

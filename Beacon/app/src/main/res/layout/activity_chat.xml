@@ -36,6 +36,7 @@
         android:scrollingCache="true"
         android:clickable="true"
         android:scrollbars="vertical"
-        />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:minHeight="100px" />
 
 </RelativeLayout>

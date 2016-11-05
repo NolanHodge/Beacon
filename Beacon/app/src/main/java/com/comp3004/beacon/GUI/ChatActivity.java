@@ -8,6 +8,8 @@ import android.content.IntentFilter;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.AsyncTask;
+
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -38,6 +40,7 @@ public class ChatActivity extends AppCompatActivity {
     EditText chatTextbox;
     Button sendButton;
     String otherChatParticipantId, chatWith = "";
+    ArrayAdapter<String> adapter = null;
     private BroadcastReceiver broadcastReceiver;
     static final public String UPDATE_MESSAGE_THREAD = "UPDATE_MESSAGE_THREAD";
 
@@ -45,6 +48,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+
         chatListView = (ListView) findViewById(R.id.chatListView);
         chatTextbox = (EditText) findViewById(R.id.chatEditText);
         sendButton = (Button) findViewById(R.id.sendChatMessageButton);
@@ -70,26 +74,13 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        //populateFriendsListView();
         populateChatListView();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (intent.getAction().equals(UPDATE_MESSAGE_THREAD ))
-                {
-                    finish();
-                    startActivity(getIntent());
-                }
-            }
-        };
-
-        IntentFilter filter = new IntentFilter( UPDATE_MESSAGE_THREAD );
-        registerReceiver(broadcastReceiver, filter);
+        new messageListener().execute();
     }
 
     @Override
@@ -102,7 +93,6 @@ public class ChatActivity extends AppCompatActivity {
     private void populateChatListView() {
 
         CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
-        List<Map<String, String>> userAndMessage = new ArrayList<Map<String, String>>();
         chats = new ArrayList<>();
         chatListView = (ListView) findViewById(R.id.chatListView);
 
@@ -113,32 +103,70 @@ public class ChatActivity extends AppCompatActivity {
             if (!friend.getDisplayName().equals(CurrentBeaconUser.getInstance().getDisplayName())) chatWith = friend.getDisplayName();
             userAndMesMap.put("username", friend.getDisplayName());
             userAndMesMap.put("message", chatMessage.getMessage());
-
             chats.add(friend.getDisplayName() + "\n" + chatMessage.getMessage());
         }
+        setAdapter();
+    }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, chats){
+    private void setAdapter()
+    {
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, chats){
+
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
+
                 View view = super.getView(position, convertView, parent);
 
                 TextView text1 = (TextView) view.findViewById(android.R.id.text1);
 
                 if((position % 2) == 1)
                 {
-                    view.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
+                   view.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
                     text1.setTextColor(getContext().getResources().getColor(android.R.color.white));
+
                 }
                 else{
-                    view.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
+                  view.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
                     text1.setTextColor(getContext().getResources().getColor(android.R.color.white));
                 }
                 return view;
             }
         };
-
         chatListView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
         chatListView.setSelection(adapter.getCount() - 1);
         setTitle("Chat with " + chatWith);
     }
+
+    private class messageListener extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... params) {
+            broadcastReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    if (intent.getAction().equals(UPDATE_MESSAGE_THREAD)) {
+                        runOnUiThread(new Runnable(){
+                            public void run(){
+                                finish();
+                                startActivity(getIntent());
+                            }
+                        });
+                    }
+                }
+            };
+
+            IntentFilter filter = new IntentFilter(UPDATE_MESSAGE_THREAD);
+            registerReceiver(broadcastReceiver, filter);
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            populateChatListView();
+            adapter.notifyDataSetChanged();
+        }
+    }
 }
+
+
