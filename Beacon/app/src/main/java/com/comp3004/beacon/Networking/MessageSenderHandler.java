@@ -6,11 +6,13 @@ import android.support.annotation.NonNull;
 
 import com.comp3004.beacon.FirebaseServices.DatabaseManager;
 import com.comp3004.beacon.User.CurrentBeaconUser;
+import com.comp3004.beacon.User.CurrentUserPublicBeaconHandler;
 import com.comp3004.beacon.User.PrivateBeacon;
 import com.comp3004.beacon.User.PublicBeacon;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -57,15 +59,16 @@ public class MessageSenderHandler {
         FirebaseDatabase.getInstance().getReference().child(MessageTypes.BEACON_REQUEST_MESSAGE).push().setValue(notification);
 
         BeaconInvitationMessage beaconInvitationMessage = new BeaconInvitationMessage(senderId, CurrentBeaconUser.getInstance().getUserId(), beaconMessage, Double.toString(current.getLatitude()), Double.toString(current.getLongitude()), false);
+        String beaconId = currentBeaconUser.getUserId() + "_" + System.currentTimeMillis() + "_private";
+        FirebaseDatabase.getInstance().getReference().child("/" + senderId + "_beaconRequests/" + beaconId).setValue(beaconInvitationMessage);
 
-        FirebaseDatabase.getInstance().getReference().child("/" + senderId + "_beaconRequests").push().setValue(beaconInvitationMessage);
     }
 
     //Method allows users to follow and track public beacons
     public void followBeacon(PublicBeacon publicBeacon) {
 
         PrivateBeacon privateBeacon = new PrivateBeacon(publicBeacon);
-        FirebaseDatabase.getInstance().getReference().child("/" + CurrentBeaconUser.getInstance().getUserId() + "_beaconRequests").push().setValue(privateBeacon);
+        FirebaseDatabase.getInstance().getReference().child("/" + CurrentBeaconUser.getInstance().getUserId() + "_beaconRequests").child(publicBeacon.getBeaconId()).setValue(privateBeacon);
 
     }
 
@@ -81,10 +84,13 @@ public class MessageSenderHandler {
 
         PublicBeacon publicBeacon = new PublicBeacon(currentBeaconUser.getUserId(), currentBeaconUser.getDisplayName(), Double.toString(latLng.latitude), Double.toString(latLng.longitude));
 
-        FirebaseDatabase.getInstance().getReference().child(MessageTypes.PUBLIC_BEACON + "/").child(currentBeaconUser.getUserId()).setValue(publicBeacon);
-
-
-
+        if (CurrentUserPublicBeaconHandler.getInstance().isHasPublicBeacon()) {
+            CurrentUserPublicBeaconHandler currentUserPublicBeaconHandler = CurrentUserPublicBeaconHandler.getInstance();
+            FirebaseDatabase.getInstance().getReference().child(MessageTypes.PUBLIC_BEACON + "/" + currentUserPublicBeaconHandler.getKey()).setValue(publicBeacon);
+        }
+        else { //create new entry
+            FirebaseDatabase.getInstance().getReference().child(MessageTypes.PUBLIC_BEACON + "/" + currentBeaconUser.getUserId() + "_" + System.currentTimeMillis()).setValue(publicBeacon);
+        }
     }
 
     public void sendMessage(String toUserId, String message) {
@@ -132,6 +138,5 @@ public class MessageSenderHandler {
 
             }
         });
-
     }
 }
