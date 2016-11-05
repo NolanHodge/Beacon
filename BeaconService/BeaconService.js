@@ -23,6 +23,7 @@ function listenForNotificationRequests() {
   var notificationRequests = ref.child('notificationRequest');
   var beaconInvitationRequests = ref.child('beaconRequest');
   var messageRequests = ref.child('messageRequests');
+  var locationRequests = ref.child('locationRequests');
   
   notificationRequests.on('child_added', function(requestSnapshot) {
     var request = requestSnapshot.val();
@@ -54,6 +55,21 @@ function listenForNotificationRequests() {
   	sendMessageToUser(
   		request.toUserId,
   		request.message	
+  	);
+  }, function(error) {
+  	console.error(error);
+  });
+  
+  
+  locationRequests.on('child_added', function(requestSnapshot) {
+  	var request = requestSnapshot.val();
+  	console.log('Location Request received');
+  	console.log(request.toUserId);
+  	console.log(request.fromUserId);
+  	sendLocationRequestToUser(
+  		request.toUserId,
+  		request.message,
+  		request.fromUserId
   	);
   }, function(error) {
   	console.error(error);
@@ -104,6 +120,34 @@ function sendMessageToUser(senderId, message) {
     }
   });
 }
+
+function sendLocationRequestToUser(senderId, message, fromUserId) {
+	request({
+   	 url: 'https://fcm.googleapis.com/fcm/send',
+   	 method: 'POST',
+   	 headers: {
+      'Content-Type' :' application/json',
+      'Authorization': 'key='+API_KEY
+    },
+    body: JSON.stringify({
+      notification: {
+        title: message,
+        from: fromUserId
+      },
+      from : fromUserId,
+      to : '/topics/locationRequests_'+senderId
+    })
+  }, function(error, response, body) {
+    if (error) { console.error(error); console.log(error); }
+    else if (response.statusCode >= 400) { 
+      console.error('HTTP Error: '+response.statusCode+' - '+response.statusMessage); 
+    }
+  });
+}
+
+
+
+
 
 // start listening
 listenForNotificationRequests();

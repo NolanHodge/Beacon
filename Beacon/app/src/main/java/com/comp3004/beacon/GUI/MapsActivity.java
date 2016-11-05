@@ -2,6 +2,7 @@ package com.comp3004.beacon.GUI;
 
 import android.Manifest;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -35,6 +36,7 @@ import android.widget.Toast;
 
 import com.comp3004.beacon.FirebaseServices.DatabaseManager;
 import com.comp3004.beacon.Networking.CurrentBeaconInvitationHandler;
+import com.comp3004.beacon.Networking.CurrentLocationRequestHandler;
 import com.comp3004.beacon.Networking.MessageSenderHandler;
 import com.comp3004.beacon.Networking.SubscriptionHandler;
 
@@ -134,6 +136,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             openBeaconInvitationDialog();
 
         }
+        if (CurrentLocationRequestHandler.getInstance().isCurrentLocationRequestExists()) {
+            CurrentLocationRequestHandler.getInstance().setCurrentLocationRequestExists(false);
+            openLocationRequestDialog();
+
+        }
 
         for (PrivateBeacon privateBeacon : currentBeaconUser.getBeacons().values()) {
 
@@ -212,6 +219,38 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 });
 
     }
+    public void openLocationRequestDialog() {
+        final Context context = this;
+        CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
+        final CurrentLocationRequestHandler currentLocationRequestHandler = CurrentLocationRequestHandler.getInstance();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        String message = CurrentBeaconUser.getInstance().getFriend(currentLocationRequestHandler.getLocationRequestMessage().getFromUserId()).getDisplayName() + " wants your location!";
+        builder.setMessage(message);
+        builder.setPositiveButton("Accept, send Beacon!", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+
+                LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
+                Location current = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER) == null ?
+                        locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER) :
+                        locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                MessageSenderHandler.getInstance().sendBeaconRequest(currentLocationRequestHandler.getLocationRequestMessage().getFromUserId(), current);
+
+            }
+        });
+        builder.setNegativeButton("Decline", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 
     private void openBeaconInvitationDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -241,6 +280,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         AlertDialog dialog = builder.create();
         dialog.show();
+        CurrentBeaconInvitationHandler.getInstance().setCurrentInvitationExists(false);
     }
 
 

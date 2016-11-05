@@ -109,6 +109,20 @@ public class MessageSenderHandler {
         FirebaseDatabase.getInstance().getReference().child("/" + currentBeaconUser.getUserId()+ "_messageRequests/" + threadIdTwo).push().setValue(chatMessage);
 
     }
+
+    public void sendLocationRequest(String toUserId) {
+        CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
+
+        String message = currentBeaconUser.getDisplayName() + "wants to know your location";
+        Map notification = new HashMap<>();
+        notification.put("toUserId", toUserId);
+        notification.put("message", message);
+        notification.put("fromUserId", currentBeaconUser.getUserId());
+
+        FirebaseDatabase.getInstance().getReference().child(MessageTypes.LOCATION_REQUEST).push().setValue(notification);
+        FirebaseDatabase.getInstance().getReference().child(toUserId + "_locationRequests").push().setValue(new LocationRequestMessage(toUserId, currentBeaconUser.getUserId()));
+
+    }
     /**
      * This message is sent when the user logs in for the very first time to make an entry for them in the database
      *
@@ -139,4 +153,5 @@ public class MessageSenderHandler {
             }
         });
     }
+
 }
