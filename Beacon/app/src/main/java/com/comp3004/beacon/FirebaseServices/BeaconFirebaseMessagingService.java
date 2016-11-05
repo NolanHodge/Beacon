@@ -56,6 +56,14 @@ public class BeaconFirebaseMessagingService extends FirebaseMessagingService {
             sendBroadcast(broadcastIntent);
 
         }
+
+        if (remoteMessage.getFrom().equals("/topics/locationRequests_" + CurrentBeaconUser.getInstance().getUserId())) {
+            DatabaseManager.getInstance().registerLocationRequestListener();
+
+            Intent dialogIntent = new Intent(this, MapsActivity.class);
+            dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(dialogIntent);
+        }
     }
     public void updatePhotoBroadast() {
 

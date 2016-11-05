@@ -124,7 +124,7 @@ public class FriendListActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final Context context = this;
         builder.setTitle("Send " + beaconUser.getDisplayName())
-                .setItems(new String[]{"Beacon", "Message", "Cancel"}, new DialogInterface.OnClickListener() {
+                .setItems(new String[]{"Beacon", "Message","Request a Beacon", "Cancel"}, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case 0:
@@ -149,6 +149,8 @@ public class FriendListActivity extends AppCompatActivity {
                                 startActivity(intent);
                                 break;
                             case 2:
+                                MessageSenderHandler.getInstance().sendLocationRequest(friendsList.get(userIndex).getUserId());
+                            case 3:
                                 break;
                         }
                     }

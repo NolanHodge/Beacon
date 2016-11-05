@@ -14,5 +14,6 @@ public class MessageTypes {
     public static final String REGISTER_USER_MESSAGE = "beaconUsers";
     public static final String FRIENDS_MESSAGE = "friends";
     public static final String MESSAGE_REQUEST = "messageRequests";
+    public static final String LOCATION_REQUEST = "locationRequests";
 
 }

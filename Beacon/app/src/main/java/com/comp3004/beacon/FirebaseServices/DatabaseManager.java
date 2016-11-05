@@ -6,9 +6,11 @@ import android.support.annotation.NonNull;
 import com.comp3004.beacon.DatabaseListeners.BeaconRequestDataListener;
 import com.comp3004.beacon.DatabaseListeners.CurrentUsersFriendsDataListener;
 import com.comp3004.beacon.DatabaseListeners.IsUserRegisteredDataListener;
+import com.comp3004.beacon.DatabaseListeners.LocationRequestListener;
 import com.comp3004.beacon.DatabaseListeners.MessageThreadListener;
 import com.comp3004.beacon.DatabaseListeners.NewMessageThreadListener;
 import com.comp3004.beacon.DatabaseListeners.PublicBeaconListener;
+import com.comp3004.beacon.Networking.LocationRequestMessage;
 import com.comp3004.beacon.Networking.MessageTypes;
 import com.comp3004.beacon.Networking.PhotoSenderHandler;
 import com.comp3004.beacon.User.BeaconUser;
@@ -95,6 +97,12 @@ public class DatabaseManager {
         PublicBeaconListener publicBeaconListener = new PublicBeaconListener();
         query.addChildEventListener(publicBeaconListener);
 
+    }
+
+    public void registerLocationRequestListener() {
+        Query query =  databaseReference.child(CurrentBeaconUser.getInstance().getUserId() + "_locationRequests");
+        LocationRequestListener locationRequestListener = new LocationRequestListener();
+        query.addChildEventListener(locationRequestListener);
     }
 
     public void addFriend(BeaconUser beaconUser)  {
