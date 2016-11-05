@@ -181,6 +181,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 File file = getFile();
                 camera_intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
                 startActivityForResult(camera_intent, CAM_REQUEST);
+
             }
         });
     }

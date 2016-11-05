@@ -20,7 +20,8 @@
         android:layout_below="@android:id/text1"
         android:background="@drawable/chat_bubble"
         android:textColor="@android:color/white"
-        android:padding="10dp"
+        android:padding="7dp"
+        android:textSize="16sp"
         />
 
 </TwoLineListItem>
