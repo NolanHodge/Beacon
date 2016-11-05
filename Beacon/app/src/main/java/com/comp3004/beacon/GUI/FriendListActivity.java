@@ -40,7 +40,6 @@ import com.comp3004.beacon.User.CurrentBeaconUser;
 
 import java.util.ArrayList;
 
-
 public class FriendListActivity extends AppCompatActivity {
 
     ArrayList<BeaconUser> friendsList;
@@ -52,9 +51,7 @@ public class FriendListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_list);
-
         DatabaseManager.getInstance().subscribeToMessageThread();
-
         friendsList = new ArrayList<BeaconUser>();
         userNames = new ArrayList<String>();
         friendsListView = (ListView) findViewById(R.id.friendListView);

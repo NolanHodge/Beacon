@@ -44,9 +44,11 @@ public class ArrowActivity2 extends AppCompatActivity implements SensorEventList
         private SensorManager mSensorManager;
         private Sensor mAccelerometer;
         private Sensor mMagnetometer;
-        private float mCurrentDegree = 0f;
         private LocationManager locationManager;
         public static String CURRENT_BEACON_ID_KEY = "CURRENT_BEACON_ID";
+        public static String FROM_MAP_TRACK_LAT = "FROM_MAP_TRACK_LAT";
+        public static String FROM_MAP_TRACK_LON = "FROM_MAP_TRACK_LON";
+
         private PrivateBeacon followingBeacon;
         private GeomagneticField geoField;
         private Location target = new Location("B");
@@ -68,8 +70,16 @@ public class ArrowActivity2 extends AppCompatActivity implements SensorEventList
         Bundle extras = getIntent().getExtras();
 
         if (extras != null) {
-            String beaconId = extras.getString(CURRENT_BEACON_ID_KEY);
-            followingBeacon = CurrentBeaconUser.getInstance().getBeacons().get(beaconId);
+            if (extras.containsKey(CURRENT_BEACON_ID_KEY)) {
+                String beaconId = extras.getString(CURRENT_BEACON_ID_KEY);
+                followingBeacon = CurrentBeaconUser.getInstance().getBeacons().get(beaconId);
+            }
+            else {
+                String fromMapLat = extras.getString(FROM_MAP_TRACK_LAT);
+
+                String fromMapLon = extras.getString(FROM_MAP_TRACK_LON);
+                followingBeacon = new PrivateBeacon(fromMapLat, fromMapLon);
+            }
         }
 
         //** Sensor Manager tings
@@ -177,49 +187,17 @@ public class ArrowActivity2 extends AppCompatActivity implements SensorEventList
             direction2 = direction2 + 360;
         }
 
+        TextView myCoords = (TextView) findViewById(R.id.txt_degrees);
+        myCoords.setText("lat: " + location.getLatitude() + " lon: " + location.getLongitude());
+
+        TextView theirCoords = (TextView) findViewById(R.id.txt_bearing);
+        theirCoords.setText("lat: " + target.getLatitude() + " lon: " + target.getLongitude());
+
         mPointer.setRotation(direction2);
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         // TODO Auto-generated method stub
-    }
-
-    private float normalizeDegree(float value)
-    {
-        if (value >= 0.0f && value <= 180.0f)
-        {
-            return value;
-        }
-        else
-        {
-            return 180 + (180 + value);
-        }
-    }
-
-    private void rotateImageView( ImageView imageView, int drawable, float rotate ) {
-        // Decode the drawable into a bitmap
-        Bitmap bitmapOrg = BitmapFactory.decodeResource( getResources(), drawable );
-
-        // Get the width/height of the drawable
-        DisplayMetrics dm = new DisplayMetrics(); getWindowManager().getDefaultDisplay().getMetrics(dm);
-        int width = bitmapOrg.getWidth(), height = bitmapOrg.getHeight();
-
-        // Initialize a new Matrix
-        Matrix matrix = new Matrix();
-
-        // Decide on how much to rotate
-        rotate = rotate % 360;
-
-        // Actually rotate the image
-        matrix.postRotate( rotate, width, height );
-
-        // recreate the new Bitmap via a couple conditions
-        Bitmap rotatedBitmap = Bitmap.createBitmap( bitmapOrg, 0, 0, width, height, matrix, true );
-        BitmapDrawable bmd = new BitmapDrawable( rotatedBitmap );
-
-        imageView.setImageBitmap( rotatedBitmap );
-        imageView.setImageDrawable(new BitmapDrawable(getResources(), rotatedBitmap));
-        imageView.setScaleType( ScaleType.CENTER );
     }
 }

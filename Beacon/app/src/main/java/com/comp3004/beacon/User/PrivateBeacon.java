@@ -42,6 +42,12 @@ public class PrivateBeacon extends Beacon {
         this.publicBeacon = publicBeacon;
     }
 
+    public PrivateBeacon(String lat, String lon)
+    {
+        this.lat = lat;
+        this.lon = lon;
+    }
+
 
     public String getToUserId() {
         return toUserId;

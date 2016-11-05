@@ -38,9 +38,6 @@ public class BeaconsListActivity extends AppCompatActivity {
 
         CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
 
-
-
-
         if (currentBeaconUser.getBeacons() != null) {
             for (Object key : CurrentBeaconUser.getInstance().getBeacons().keySet()) {
                 BeaconUser bc = (BeaconUser) CurrentBeaconUser.getInstance().getFriends().get(key);
@@ -90,7 +87,7 @@ public class BeaconsListActivity extends AppCompatActivity {
         });
     }
     public void showBeaconOptionDialog(final PrivateBeacon privateBeacon, final int index) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MyDialogTheme);
         builder
                 .setItems(new String[]{"Track1","Track2", "Delete", "Cancel"}, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -119,7 +116,7 @@ public class BeaconsListActivity extends AppCompatActivity {
                                 break;
                         }
                     }
-                });
-        builder.create().show();
+                }).show();
+
     }
 }
