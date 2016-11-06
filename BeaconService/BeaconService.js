@@ -24,6 +24,7 @@ function listenForNotificationRequests() {
   var beaconInvitationRequests = ref.child('beaconRequest');
   var messageRequests = ref.child('messageRequests');
   var locationRequests = ref.child('locationRequests');
+  var friendRequests = ref.child('friendRequests');
   
   notificationRequests.on('child_added', function(requestSnapshot) {
     var request = requestSnapshot.val();
@@ -74,6 +75,19 @@ function listenForNotificationRequests() {
   }, function(error) {
   	console.error(error);
   });
+  
+  
+  friendRequests.on('child_added', function(requestSnapshot) {
+  	var request = requestSnapshot.val();
+  	console.log('Friend Request received from:');
+  	console.log(request.fromUserId);
+  	sendFriendRequestToUser(
+  		request.toUserId,
+  		request.message
+  	);
+  	}, function(error) {
+  		console.log(error);
+  	});
   
 };
 
@@ -145,7 +159,27 @@ function sendLocationRequestToUser(senderId, message, fromUserId) {
   });
 }
 
-
+function sendFriendRequestToUser(toUserId, message) {
+	request({
+   	 url: 'https://fcm.googleapis.com/fcm/send',
+   	 method: 'POST',
+   	 headers: {
+      'Content-Type' :' application/json',
+      'Authorization': 'key='+API_KEY
+    },
+    body: JSON.stringify({
+      notification: {
+        title: message
+      },
+      to : '/topics/friendRequests_'+toUserId
+    })
+  }, function(error, response, body) {
+    if (error) { console.error(error); console.log(error); }
+    else if (response.statusCode >= 400) { 
+      console.error('HTTP Error: '+response.statusCode+' - '+response.statusMessage); 
+    }
+  });
+}
 
 
 

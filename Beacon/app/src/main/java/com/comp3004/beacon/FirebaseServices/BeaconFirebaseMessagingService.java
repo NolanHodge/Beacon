@@ -64,6 +64,12 @@ public class BeaconFirebaseMessagingService extends FirebaseMessagingService {
             dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(dialogIntent);
         }
+
+        if (remoteMessage.getFrom().equals("/topics/friendRequests_" + CurrentBeaconUser.getInstance().getUserId())) {
+            System.out.println("Bitch please");
+        }
+
+
     }
     public void updatePhotoBroadast() {
 
