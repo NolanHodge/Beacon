@@ -27,7 +27,8 @@ public class SubscriptionHandler {
         FirebaseMessaging.getInstance().subscribeToTopic("user_" + GLOBAL_MESSAGE);
         FirebaseMessaging.getInstance().subscribeToTopic("beaconRequests_" + CurrentBeaconUser.getInstance().getUserId());
         FirebaseMessaging.getInstance().subscribeToTopic("messages_" + CurrentBeaconUser.getInstance().getUserId());
-       // FirebaseMessaging.getInstance().subscribeToTopic("locationRequests_" + CurrentBeaconUser.getInstance().getUserId());
+        FirebaseMessaging.getInstance().subscribeToTopic("locationRequests_" + CurrentBeaconUser.getInstance().getUserId());
+        FirebaseMessaging.getInstance().subscribeToTopic("friendRequests_" + CurrentBeaconUser.getInstance().getUserId());
 
     }
 

@@ -123,6 +123,23 @@ public class MessageSenderHandler {
         FirebaseDatabase.getInstance().getReference().child(toUserId + "_locationRequests").push().setValue(new LocationRequestMessage(toUserId, currentBeaconUser.getUserId()));
 
     }
+
+
+    public void sendFriendRequest(String toUserId) {
+        CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
+
+        String message = currentBeaconUser.getDisplayName() + "wants to add you as a friend";
+
+        Map notification = new HashMap<>();
+        notification.put("toUserId", toUserId);
+        notification.put("message", message);
+        notification.put("fromUserId", currentBeaconUser.getUserId());
+
+
+        FirebaseDatabase.getInstance().getReference().child(MessageTypes.FRIEND_REQUEST).push().setValue(notification);
+        FirebaseDatabase.getInstance().getReference().child(toUserId + "_friendRequests").push().setValue(new LocationRequestMessage(toUserId, currentBeaconUser.getUserId()));
+
+    }
     /**
      * This message is sent when the user logs in for the very first time to make an entry for them in the database
      *

@@ -284,8 +284,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
         AlertDialog dialog = builder.create();
-        dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(android.R.color.holo_red_light));
-        dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(android.R.color.holo_blue_light));
         dialog.show();
         CurrentBeaconInvitationHandler.getInstance().setCurrentInvitationExists(false);
     }
@@ -337,7 +335,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if (privateBeacon == null) break;
                 LatLng position = new LatLng(Double.parseDouble(privateBeacon.getLat()), Double.parseDouble(privateBeacon.getLon()));
                 String userId = privateBeacon.getFromUserId();
-
+                System.out.println("User ID " + privateBeacon.getFromUserId());
                 mMap.addMarker(new MarkerOptions()
                         .title("Private Beacon")
                         .position(position)
@@ -379,8 +377,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 })
                                 .show();
 
-                        dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(android.R.color.holo_red_light));
-                        dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(android.R.color.holo_blue_light));
+                       // dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(android.R.color.holo_red_light));
+                        //dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(android.R.color.holo_blue_light));
 
                         mMap.setOnCameraIdleListener(null);
                     }
