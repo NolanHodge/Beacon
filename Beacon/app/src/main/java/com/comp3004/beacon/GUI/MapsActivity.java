@@ -3,6 +3,7 @@ package com.comp3004.beacon.GUI;
 import android.Manifest;
 
 import android.content.Context;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,10 +27,13 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 
+import android.view.Menu;
 import android.view.View;
 
 import android.widget.Toast;
@@ -41,6 +45,8 @@ import com.comp3004.beacon.Networking.MessageSenderHandler;
 import com.comp3004.beacon.Networking.SubscriptionHandler;
 
 import com.comp3004.beacon.R;
+import com.comp3004.beacon.User.Beacon;
+import com.comp3004.beacon.User.BeaconUser;
 import com.comp3004.beacon.User.PrivateBeacon;
 import com.comp3004.beacon.User.CurrentBeaconUser;
 
@@ -52,6 +58,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
@@ -67,7 +74,7 @@ import com.google.android.gms.maps.model.Marker;
 
 import java.io.File;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, OnMarkerClickListener {
 
     private GoogleMap mMap;
 
@@ -87,6 +94,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private String mPhotoUrl;
     SubscriptionHandler subscriptionHandler;
     static final private int CAM_REQUEST = 1;
+    private String fromMapLat, fromMapLon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -253,7 +261,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void openBeaconInvitationDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MyDialogTheme);
         final CurrentBeaconInvitationHandler currentBeaconInvitationHandler = CurrentBeaconInvitationHandler.getInstance();
         builder.setMessage(currentBeaconInvitationHandler.getMessage());
         builder.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
@@ -262,12 +270,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 PrivateBeacon privateBeacon = new PrivateBeacon(currentBeaconInvitationHandler);
                 CurrentBeaconUser.getInstance().addBeacon(privateBeacon);
 
-
                 Intent intent = new Intent(MapsActivity.this, ArrowActivity.class);
                 intent.putExtra("CURRENT_BEACON_ID", privateBeacon.getFromUserId());
                 startActivity(intent);
-
-
             }
         });
         builder.setNegativeButton("Decline", new DialogInterface.OnClickListener() {
@@ -279,10 +284,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
         AlertDialog dialog = builder.create();
+        dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(android.R.color.holo_red_light));
+        dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(android.R.color.holo_blue_light));
         dialog.show();
         CurrentBeaconInvitationHandler.getInstance().setCurrentInvitationExists(false);
     }
-
 
     /**
      * Manipulates the map once available.
@@ -296,10 +302,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         DatabaseManager.getInstance().loadCurrentUser();
-
+        googleMap.setOnMarkerClickListener(this);
         CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
         //Requesting permission
-
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
@@ -322,20 +327,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //mMap.setMyLocationEnabled(true);
         // comment out addMarker function to remove the little tower!
         mMap.addMarker(new MarkerOptions()
-                .title("Beacon")
+                .title("Your Beacon")
                 .position(new LatLng(current.getLatitude(), current.getLongitude()))
                 .snippet(currentBeaconUser.getDisplayName())
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.tower_icon_small)));
 
-        //Add PrivateBeacon markers to the map
+            //Add PrivateBeacon markers to the map
             for (PrivateBeacon privateBeacon : currentBeaconUser.getBeacons().values()) {
                 if (privateBeacon == null) break;
                 LatLng position = new LatLng(Double.parseDouble(privateBeacon.getLat()), Double.parseDouble(privateBeacon.getLon()));
                 String userId = privateBeacon.getFromUserId();
 
-
                 mMap.addMarker(new MarkerOptions()
-                        .title("Beacon")
+                        .title("Private Beacon")
                         .position(position)
                         .snippet(currentBeaconUser.getFriend(userId).getDisplayName())
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.tower_icon_small)));
@@ -347,7 +351,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
 
                 final Marker holdMarker = mMap.addMarker(new MarkerOptions()
-                        .title("Beacon")
+                        .title("Your Public Beacon")
                         .position(latLng)
                         .snippet(currentBeaconUser.getDisplayName())
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.tower_icon_small)));
@@ -356,7 +360,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
                     @Override
                     public void onCameraIdle() {
-                        AlertDialog dialog = new AlertDialog.Builder(MapsActivity.this)
+                        AlertDialog dialog = new AlertDialog.Builder(MapsActivity.this, R.style.MyDialogTheme)
                                 .setTitle("Create a Public Beacon")
                                 .setMessage("Would you like to create a beacon here?")
                                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -374,6 +378,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                     }
                                 })
                                 .show();
+
+                        dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(android.R.color.holo_red_light));
+                        dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(android.R.color.holo_blue_light));
+
                         mMap.setOnCameraIdleListener(null);
                     }
                 });
@@ -381,6 +389,53 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
     }
+
+    @Override
+    public boolean onMarkerClick (final Marker marker)
+    {
+        if (marker.getTitle().equals("Your Beacon"))
+        {
+            AlertDialog dialog = new AlertDialog.Builder(MapsActivity.this, R.style.MyDialogTheme)
+                    .setMessage("Your friends will track you to this location.")
+                    .setTitle(marker.getTitle())
+                    .setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //mMap.clear();
+                            dialog.cancel(); //could've left this empty
+                        }
+                    }).show();
+
+            dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(android.R.color.holo_blue_light));
+            return true;
+        }
+        AlertDialog dialog = new AlertDialog.Builder(MapsActivity.this, R.style.MyDialogTheme)
+                .setMessage(marker.getSnippet())
+                .setTitle(marker.getTitle())
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel(); //could've left this empty
+                    }
+                })
+                .setPositiveButton("Track", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        LatLng latlng = marker.getPosition();
+                        String lat = "" + latlng.latitude;
+                        String lon = "" + latlng.longitude;
+                        Intent intent2 = new Intent(MapsActivity.this, ArrowActivity2.class);
+                        intent2.putExtra(ArrowActivity2.FROM_MAP_TRACK_LAT, lat);
+                        intent2.putExtra(ArrowActivity2.FROM_MAP_TRACK_LON, lon);
+                        startActivity(intent2);
+                    }
+                })
+                .show();
+        dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(android.R.color.holo_red_light));
+        dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(android.R.color.holo_blue_light));
+        return true;
+    }
+
     private File getFile() {
         File folder = new File("sdcard/camera_app");
 
