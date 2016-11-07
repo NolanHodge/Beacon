@@ -16,6 +16,7 @@ public class MessageTypes {
     public static final String MESSAGE_REQUEST = "messageRequests";
     public static final String LOCATION_REQUEST = "locationRequests";
     public static final String FRIEND_REQUEST = "friendRequests";
+    public static final String FRIEND_REQUEST_ACCEPT = "friendRequestAccept";
 
 
 }

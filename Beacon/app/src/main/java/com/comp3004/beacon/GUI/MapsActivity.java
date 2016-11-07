@@ -16,6 +16,7 @@ import android.net.Uri;
 
 import android.preference.PreferenceManager;
 
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
 
 import android.support.annotation.NonNull;
@@ -40,6 +41,7 @@ import android.widget.Toast;
 
 import com.comp3004.beacon.FirebaseServices.DatabaseManager;
 import com.comp3004.beacon.Networking.CurrentBeaconInvitationHandler;
+import com.comp3004.beacon.Networking.CurrentFriendRequestsHandler;
 import com.comp3004.beacon.Networking.CurrentLocationRequestHandler;
 import com.comp3004.beacon.Networking.MessageSenderHandler;
 import com.comp3004.beacon.Networking.SubscriptionHandler;
@@ -148,6 +150,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             CurrentLocationRequestHandler.getInstance().setCurrentLocationRequestExists(false);
             openLocationRequestDialog();
 
+        }
+        if (CurrentFriendRequestsHandler.getInstance().doesCurrentFriendRequestExist()) {
+            CurrentFriendRequestsHandler.getInstance().setCurrentFriendRequestExist(false);
+            openFriendRequestDialog();
         }
 
         for (PrivateBeacon privateBeacon : currentBeaconUser.getBeacons().values()) {
@@ -279,6 +285,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onClick(DialogInterface dialog, int id) {
                 CurrentBeaconInvitationHandler.getInstance().setCurrentInvitationExists(false);
                 DatabaseManager.getInstance().removeBeaconFromDb(CurrentBeaconInvitationHandler.getInstance().getBeaconId());
+
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        CurrentBeaconInvitationHandler.getInstance().setCurrentInvitationExists(false);
+    }
+
+
+    private void openFriendRequestDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MyDialogTheme);
+        final CurrentFriendRequestsHandler currentFriendRequestsHandler = CurrentFriendRequestsHandler.getInstance();
+        builder.setMessage(currentFriendRequestsHandler.getFriendRequestMessage().getBeaconUser().getDisplayName() + " wants to add you as a friend");
+        builder.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+               //Add friend
+                DatabaseManager.getInstance().addFriend(currentFriendRequestsHandler.getFriendRequestMessage().getBeaconUser());
+                MessageSenderHandler.getInstance().sendFriendRequestAcceptMessage(currentFriendRequestsHandler.getFriendRequestMessage().getBeaconUser().getUserId());
+            }
+        });
+        builder.setNegativeButton("Decline", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
 
             }
         });

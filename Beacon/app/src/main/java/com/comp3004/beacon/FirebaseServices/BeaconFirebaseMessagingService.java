@@ -1,8 +1,11 @@
 package com.comp3004.beacon.FirebaseServices;
 
 import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
+import android.os.Handler;
+import android.provider.ContactsContract;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -10,6 +13,7 @@ import com.comp3004.beacon.GUI.ChatActivity;
 import com.comp3004.beacon.GUI.MapsActivity;
 import com.comp3004.beacon.Networking.ChatMessage;
 import com.comp3004.beacon.Networking.CurrentBeaconInvitationHandler;
+import com.comp3004.beacon.Networking.CurrentFriendRequestsHandler;
 import com.comp3004.beacon.User.CurrentBeaconUser;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -25,7 +29,7 @@ public class BeaconFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = "MyFMService";
     public MapsActivity activity;
 
-
+    Context context;
 
 
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -66,7 +70,19 @@ public class BeaconFirebaseMessagingService extends FirebaseMessagingService {
         }
 
         if (remoteMessage.getFrom().equals("/topics/friendRequests_" + CurrentBeaconUser.getInstance().getUserId())) {
-            System.out.println("Bitch please");
+            DatabaseManager.getInstance().registerFriendRequestListener();
+
+
+            Intent dialogIntent = new Intent(this, MapsActivity.class);
+            dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(dialogIntent);
+        }
+
+        if (remoteMessage.getFrom().equals("/topics/acceptFriendRequests_" + CurrentBeaconUser.getInstance().getUserId())) {
+            System.out.println("BITCH");
+            DatabaseManager.getInstance().addFriend(CurrentFriendRequestsHandler.getInstance().getPendingAprovalUser());
+
+
         }
 
 
