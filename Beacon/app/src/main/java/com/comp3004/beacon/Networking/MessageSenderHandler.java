@@ -137,7 +137,17 @@ public class MessageSenderHandler {
 
 
         FirebaseDatabase.getInstance().getReference().child(MessageTypes.FRIEND_REQUEST).push().setValue(notification);
-        FirebaseDatabase.getInstance().getReference().child(toUserId + "_friendRequests").push().setValue(new LocationRequestMessage(toUserId, currentBeaconUser.getUserId()));
+        FirebaseDatabase.getInstance().getReference().child(toUserId + "_friendRequests").push().setValue(new FriendRequestMessage(toUserId, currentBeaconUser.getUserId(), currentBeaconUser));
+
+    }
+
+    public void sendFriendRequestAcceptMessage(String toUserId) {
+        Map notification = new HashMap<>();
+        notification.put("toUserId", toUserId);
+        notification.put("message", CurrentBeaconUser.getInstance().getDisplayName() + "has accepted your friend request");
+        notification.put("fromUserId", CurrentBeaconUser.getInstance().getUserId());
+
+        FirebaseDatabase.getInstance().getReference().child(MessageTypes.FRIEND_REQUEST_ACCEPT).push().setValue(notification);
 
     }
     /**

@@ -19,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.comp3004.beacon.FirebaseServices.DatabaseManager;
+import com.comp3004.beacon.Networking.CurrentFriendRequestsHandler;
 import com.comp3004.beacon.Networking.MessageSenderHandler;
 import com.comp3004.beacon.R;
 import com.comp3004.beacon.User.BeaconUser;
@@ -133,8 +134,8 @@ public class UserSearchActivity extends AppCompatActivity {
                         switch (which) {
                             case 0:
                                 BeaconUser selectedUser = users.get(userIndex);
-                                DatabaseManager.getInstance().addFriend(selectedUser);
                                 MessageSenderHandler.getInstance().sendFriendRequest(users.get(userIndex).getUserId());
+                                CurrentFriendRequestsHandler.getInstance().setPendingAprovalUser(users.get(userIndex));
                                 break;
                             case 1:
                                 break;

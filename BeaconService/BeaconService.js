@@ -25,6 +25,7 @@ function listenForNotificationRequests() {
   var messageRequests = ref.child('messageRequests');
   var locationRequests = ref.child('locationRequests');
   var friendRequests = ref.child('friendRequests');
+  var acceptFriendRequests = ref.child('friendRequestAccept');
   
   notificationRequests.on('child_added', function(requestSnapshot) {
     var request = requestSnapshot.val();
@@ -82,6 +83,19 @@ function listenForNotificationRequests() {
   	console.log('Friend Request received from:');
   	console.log(request.fromUserId);
   	sendFriendRequestToUser(
+  		request.toUserId,
+  		request.message
+  	);
+  	}, function(error) {
+  		console.log(error);
+  	});
+  	
+  	
+  acceptFriendRequests.on('child_added', function(requestSnapshot) {
+  	var request = requestSnapshot.val();
+  	console.log('Accept Friend Request received from:');
+  	console.log(request.fromUserId);
+  	sendAcceptFriendRequestToUser(
   		request.toUserId,
   		request.message
   	);
@@ -181,7 +195,27 @@ function sendFriendRequestToUser(toUserId, message) {
   });
 }
 
-
+function sendAcceptFriendRequestToUser(toUserId, message) {
+	request({
+   	 url: 'https://fcm.googleapis.com/fcm/send',
+   	 method: 'POST',
+   	 headers: {
+      'Content-Type' :' application/json',
+      'Authorization': 'key='+API_KEY
+    },
+    body: JSON.stringify({
+      notification: {
+        title: message
+      },
+      to : '/topics/acceptFriendRequests_'+toUserId
+    })
+  }, function(error, response, body) {
+    if (error) { console.error(error); console.log(error); }
+    else if (response.statusCode >= 400) { 
+      console.error('HTTP Error: '+response.statusCode+' - '+response.statusMessage); 
+    }
+  });
+}
 
 // start listening
 listenForNotificationRequests();

@@ -5,11 +5,13 @@ import android.support.annotation.NonNull;
 
 import com.comp3004.beacon.DatabaseListeners.BeaconRequestDataListener;
 import com.comp3004.beacon.DatabaseListeners.CurrentUsersFriendsDataListener;
+import com.comp3004.beacon.DatabaseListeners.FriendRequestDataListener;
 import com.comp3004.beacon.DatabaseListeners.IsUserRegisteredDataListener;
 import com.comp3004.beacon.DatabaseListeners.LocationRequestListener;
 import com.comp3004.beacon.DatabaseListeners.MessageThreadListener;
 import com.comp3004.beacon.DatabaseListeners.NewMessageThreadListener;
 import com.comp3004.beacon.DatabaseListeners.PublicBeaconListener;
+import com.comp3004.beacon.Networking.FriendRequestMessage;
 import com.comp3004.beacon.Networking.LocationRequestMessage;
 import com.comp3004.beacon.Networking.MessageTypes;
 import com.comp3004.beacon.Networking.PhotoSenderHandler;
@@ -45,6 +47,7 @@ public class DatabaseManager {
         BeaconRequestDataListener beaconRequestDataListener = new BeaconRequestDataListener();
         query.addChildEventListener(beaconRequestDataListener);
         publicBeacons = new HashMap<>();
+
     }
 
     public static DatabaseManager getInstance() {
@@ -113,6 +116,12 @@ public class DatabaseManager {
         databaseReference.child("/publicBeacons").push().setValue(privateBeacon);
     }
 
+    public void registerFriendRequestListener() {
+        Query query = databaseReference.child(CurrentBeaconUser.getInstance().getUserId() + "_friendRequests");
+        FriendRequestDataListener friendRequestDataListener = new FriendRequestDataListener();
+        query.addChildEventListener(friendRequestDataListener);
+
+    }
     public File loadPhotos(final String userId) {
 
         File localFile;
