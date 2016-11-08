@@ -1,19 +1,33 @@
 package com.comp3004.beacon.GUI;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.LayerDrawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.comp3004.beacon.LocationManagement.LocationService;
+import com.comp3004.beacon.Networking.MessageSenderHandler;
 import com.comp3004.beacon.R;
 
 import org.json.JSONObject;
@@ -29,6 +43,8 @@ import java.util.List;
 
 public class NearbyPlacesActivity extends AppCompatActivity {
 
+    private Location myLocation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +54,7 @@ public class NearbyPlacesActivity extends AppCompatActivity {
         final LocationService locationService = new LocationService() {
             @Override
             public void onLocationChanged(Location location) {
-
+                myLocation = location;
                 String search = String.format
                         ("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=%f,%f&rankby=distance&key=%s&sensor=true",
                                 location.getLatitude(), location.getLongitude(), getString(R.string.api_key));
@@ -145,20 +161,82 @@ public class NearbyPlacesActivity extends AppCompatActivity {
 
                 ListView listView = (ListView) findViewById(R.id.nearby_place_listview);
 
-                ArrayList<String> placeList = new ArrayList<>();
-                for (aPlace place : list) {
-                    placeList.add(place.getName());
-                }
-
-                // specify an adapter (see also next example)
-
-                listView.setAdapter(new ArrayAdapter<String>(NearbyPlacesActivity.this, android.R.layout.simple_list_item_1, placeList));
+                listView.setAdapter(new NearbyAdapter(list));
 
             } catch (NullPointerException e) {
 
             }
 
         }
+    }
+
+    private class NearbyAdapter extends ArrayAdapter<aPlace> {
+
+        public NearbyAdapter(List<aPlace> objects) {
+            super(NearbyPlacesActivity.this, R.layout.nearby_list_item, objects);
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder viewHolder;
+            final aPlace place = getItem(position);
+            if (convertView == null) {
+
+                viewHolder = new ViewHolder();
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.nearby_list_item, parent, false);
+                viewHolder.layout = convertView.findViewById(R.id.layout);
+                viewHolder.nameText = (TextView) convertView.findViewById(R.id.txt_place_name);
+                viewHolder.distanceText = (TextView) convertView.findViewById(R.id.txt_distance);
+                viewHolder.addressText = (TextView) convertView.findViewById(R.id.txt_address);
+
+                convertView.setTag(viewHolder);
+            } else {
+                viewHolder = (ViewHolder) convertView.getTag();
+            }
+
+            viewHolder.nameText.setText(place.getName());
+            viewHolder.addressText.setText(place.getAddress());
+
+            float[] dist = new float[1];
+            Location.distanceBetween(myLocation.getLatitude(), myLocation.getLongitude(),
+                    place.getLocation().latitude, place.getLocation().longitude, dist);
+
+            viewHolder.distanceText.setText((Math.round(dist[0])) + " m");
+
+            viewHolder.layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog dialog = new AlertDialog.Builder(NearbyPlacesActivity.this, R.style.MyDialogTheme)
+                            .setTitle("Create a Beacon")
+                            .setMessage("Would you like to create a beacon here?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    MessageSenderHandler.getInstance().sendPublicBeacon(place.getLocation());
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //mMap.clear();
+                                    dialog.cancel(); //could've left this empty
+                                }
+                            })
+                            .show();
+                }
+            });
+
+            return convertView;
+        }
+
+    }
+
+    private static class ViewHolder {
+        public View layout;
+        public TextView nameText;
+        public TextView distanceText;
+        public TextView addressText;
     }
 
 }
