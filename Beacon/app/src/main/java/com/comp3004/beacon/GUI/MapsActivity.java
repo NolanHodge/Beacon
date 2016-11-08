@@ -16,7 +16,6 @@ import android.net.Uri;
 
 import android.preference.PreferenceManager;
 
-import android.provider.ContactsContract;
 import android.provider.MediaStore;
 
 import android.support.annotation.NonNull;
@@ -28,27 +27,22 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 
-import android.support.v7.widget.SearchView;
 import android.util.Log;
 
-import android.view.Menu;
 import android.view.View;
 
 import android.widget.Toast;
 
 import com.comp3004.beacon.FirebaseServices.DatabaseManager;
-import com.comp3004.beacon.Networking.CurrentBeaconInvitationHandler;
-import com.comp3004.beacon.Networking.CurrentFriendRequestsHandler;
-import com.comp3004.beacon.Networking.CurrentLocationRequestHandler;
+import com.comp3004.beacon.NotificationHandlers.CurrentBeaconInvitationHandler;
+import com.comp3004.beacon.NotificationHandlers.CurrentFriendRequestsHandler;
+import com.comp3004.beacon.NotificationHandlers.CurrentLocationRequestHandler;
 import com.comp3004.beacon.Networking.MessageSenderHandler;
 import com.comp3004.beacon.Networking.SubscriptionHandler;
 
 import com.comp3004.beacon.R;
-import com.comp3004.beacon.User.Beacon;
-import com.comp3004.beacon.User.BeaconUser;
 import com.comp3004.beacon.User.PrivateBeacon;
 import com.comp3004.beacon.User.CurrentBeaconUser;
 
@@ -82,6 +76,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public static final String ANONYMOUS = "anonymous";
     public static final String LOCATION_MESSAGE_CHILD = "locations";
+    public static final String FRIEND_REQUEST = "friend_request";
+    public static final String LOCATION_REQUEST = "location_request";
+    public static final String BEACON_REQUEST = "beacon_request";
 
     // Firebase instance variables
     private FirebaseAuth mFirebaseAuth;
@@ -97,6 +94,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     SubscriptionHandler subscriptionHandler;
     static final private int CAM_REQUEST = 1;
     private String fromMapLat, fromMapLon;
+    boolean pendingFriendRequest;
+    boolean pendingLocationRequest;
+    boolean pendingBeaconRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +107,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
+        pendingFriendRequest = false;
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            if (extras.containsKey(FRIEND_REQUEST)) {
+                pendingFriendRequest = extras.getBoolean(FRIEND_REQUEST);
+
+            }
+            if (extras.containsKey(LOCATION_REQUEST)) {
+                pendingLocationRequest = extras.getBoolean(LOCATION_REQUEST);
+            }
+            if (extras.containsKey(BEACON_REQUEST)) {
+                pendingBeaconRequest = extras.getBoolean(BEACON_REQUEST);
+            }
+        }
+
 
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -141,18 +159,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         DatabaseManager.getInstance().loadCurrentUser();
 
 
-        if (CurrentBeaconInvitationHandler.getInstance().currentInvitationExists()) {
+        if (pendingBeaconRequest == true) {
             CurrentBeaconInvitationHandler.getInstance().setCurrentInvitationExists(false);
+            pendingBeaconRequest = false;
             openBeaconInvitationDialog();
 
         }
-        if (CurrentLocationRequestHandler.getInstance().isCurrentLocationRequestExists()) {
+        if (pendingLocationRequest == true) {
             CurrentLocationRequestHandler.getInstance().setCurrentLocationRequestExists(false);
             openLocationRequestDialog();
 
         }
-        if (CurrentFriendRequestsHandler.getInstance().doesCurrentFriendRequestExist()) {
+        if (pendingFriendRequest == true) {
             CurrentFriendRequestsHandler.getInstance().setCurrentFriendRequestExist(false);
+            pendingFriendRequest = false;
             openFriendRequestDialog();
         }
 
@@ -302,7 +322,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         builder.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
 
-               //Add friend
+                //Add friend
                 DatabaseManager.getInstance().addFriend(currentFriendRequestsHandler.getFriendRequestMessage().getBeaconUser());
                 MessageSenderHandler.getInstance().sendFriendRequestAcceptMessage(currentFriendRequestsHandler.getFriendRequestMessage().getBeaconUser().getUserId());
             }
@@ -367,11 +387,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 LatLng position = new LatLng(Double.parseDouble(privateBeacon.getLat()), Double.parseDouble(privateBeacon.getLon()));
                 String userId = privateBeacon.getFromUserId();
                 System.out.println("User ID " + privateBeacon.getFromUserId());
-                mMap.addMarker(new MarkerOptions()
+                /*mMap.addMarker(new MarkerOptions()
                         .title("Private Beacon")
                         .position(position)
                         .snippet(currentBeaconUser.getFriend(userId).getDisplayName())
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.tower_icon_small)));
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.tower_icon_small)));*/
         }
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override

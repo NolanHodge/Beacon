@@ -56,10 +56,9 @@ public class MessageSenderHandler {
 
         new LatLng(current.getLatitude(), current.getLongitude());
 
-        FirebaseDatabase.getInstance().getReference().child(MessageTypes.BEACON_REQUEST_MESSAGE).push().setValue(notification);
-
-        BeaconInvitationMessage beaconInvitationMessage = new BeaconInvitationMessage(senderId, CurrentBeaconUser.getInstance().getUserId(), beaconMessage, Double.toString(current.getLatitude()), Double.toString(current.getLongitude()), false);
         String beaconId = currentBeaconUser.getUserId() + "_" + System.currentTimeMillis() + "_private";
+        FirebaseDatabase.getInstance().getReference().child(MessageTypes.BEACON_REQUEST_MESSAGE + "/" + beaconId).setValue(notification);
+        BeaconInvitationMessage beaconInvitationMessage = new BeaconInvitationMessage(senderId, CurrentBeaconUser.getInstance().getUserId(), beaconMessage, Double.toString(current.getLatitude()), Double.toString(current.getLongitude()), false);
         FirebaseDatabase.getInstance().getReference().child("/" + senderId + "_beaconRequests/" + beaconId).setValue(beaconInvitationMessage);
 
     }

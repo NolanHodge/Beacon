@@ -1,24 +1,21 @@
 package com.comp3004.beacon.FirebaseServices;
 
-import android.content.BroadcastReceiver;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.location.LocationManager;
-import android.os.Handler;
-import android.provider.ContactsContract;
-import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
 import com.comp3004.beacon.GUI.ChatActivity;
 import com.comp3004.beacon.GUI.MapsActivity;
-import com.comp3004.beacon.Networking.ChatMessage;
-import com.comp3004.beacon.Networking.CurrentBeaconInvitationHandler;
-import com.comp3004.beacon.Networking.CurrentFriendRequestsHandler;
+import com.comp3004.beacon.NotificationHandlers.CurrentBeaconInvitationHandler;
+import com.comp3004.beacon.NotificationHandlers.CurrentFriendRequestsHandler;
+import com.comp3004.beacon.NotificationHandlers.CurrentLocationRequestHandler;
+import com.comp3004.beacon.R;
 import com.comp3004.beacon.User.CurrentBeaconUser;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-
-import java.util.HashMap;
 
 /**
  * Created by julianclayton on 16-09-26.
@@ -47,9 +44,33 @@ public class BeaconFirebaseMessagingService extends FirebaseMessagingService {
         //Handle messages
         if (remoteMessage.getFrom().equals("/topics/beaconRequests_" + CurrentBeaconUser.getInstance().getUserId())) {
             CurrentBeaconInvitationHandler.getInstance().setCurrentInvitationExists(true);
+
             Intent dialogIntent = new Intent(this, MapsActivity.class);
             dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(dialogIntent);
+            dialogIntent.putExtra(MapsActivity.BEACON_REQUEST, true);
+
+
+            PendingIntent resultPendingIntent =
+                    PendingIntent.getActivity(
+                            this,
+                            0,
+                            dialogIntent,
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                    );
+            CurrentLocationRequestHandler currentLocationRequestHandler = CurrentLocationRequestHandler.getInstance();
+            android.support.v4.app.NotificationCompat.Builder mBuilder =
+                    new NotificationCompat.Builder(this)
+                            .setSmallIcon(R.drawable.app_icon)
+                            .setContentTitle("Beacon Request")
+                            .setContentText("A friend wants know your location")
+                            .setAutoCancel(true)
+                            .setContentIntent(resultPendingIntent);
+
+            int mNotificationId = 003;
+            NotificationManager mNotifyMgr =
+                    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+            mNotifyMgr.notify(mNotificationId, mBuilder.build());
         }
 
         if (remoteMessage.getFrom().equals("/topics/messages_" + CurrentBeaconUser.getInstance().getUserId())) {
@@ -66,7 +87,31 @@ public class BeaconFirebaseMessagingService extends FirebaseMessagingService {
 
             Intent dialogIntent = new Intent(this, MapsActivity.class);
             dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(dialogIntent);
+           // startActivity(dialogIntent);
+            dialogIntent.putExtra(MapsActivity.LOCATION_REQUEST, true);
+
+
+            PendingIntent resultPendingIntent =
+                    PendingIntent.getActivity(
+                            this,
+                            0,
+                            dialogIntent,
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                    );
+            CurrentLocationRequestHandler currentLocationRequestHandler = CurrentLocationRequestHandler.getInstance();
+            android.support.v4.app.NotificationCompat.Builder mBuilder =
+                    new NotificationCompat.Builder(this)
+                            .setSmallIcon(R.drawable.app_icon)
+                            .setContentTitle("Location Request")
+                            .setContentText("A friend wants know your location")
+                            .setAutoCancel(true)
+                            .setContentIntent(resultPendingIntent);
+
+            int mNotificationId = 002;
+            NotificationManager mNotifyMgr =
+                    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+            mNotifyMgr.notify(mNotificationId, mBuilder.build());
         }
 
         if (remoteMessage.getFrom().equals("/topics/friendRequests_" + CurrentBeaconUser.getInstance().getUserId())) {
@@ -75,20 +120,37 @@ public class BeaconFirebaseMessagingService extends FirebaseMessagingService {
 
             Intent dialogIntent = new Intent(this, MapsActivity.class);
             dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(dialogIntent);
+            dialogIntent.putExtra(MapsActivity.FRIEND_REQUEST, true);
+
+            PendingIntent resultPendingIntent =
+                    PendingIntent.getActivity(
+                            this,
+                            0,
+                            dialogIntent,
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                    );
+            CurrentFriendRequestsHandler currentFriendRequestsHandler = CurrentFriendRequestsHandler.getInstance();
+            android.support.v4.app.NotificationCompat.Builder mBuilder =
+                    new NotificationCompat.Builder(this)
+                            .setSmallIcon(R.drawable.app_icon)
+                            .setContentTitle("Friend Request")
+                            .setContentText("A Beacon user wants to add you as a friend")
+                            .setAutoCancel(true)
+                    .setContentIntent(resultPendingIntent);
+
+            int mNotificationId = 001;
+            NotificationManager mNotifyMgr =
+                    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            mNotifyMgr.notify(mNotificationId, mBuilder.build());
+
         }
 
         if (remoteMessage.getFrom().equals("/topics/acceptFriendRequests_" + CurrentBeaconUser.getInstance().getUserId())) {
-            System.out.println("BITCH");
             DatabaseManager.getInstance().addFriend(CurrentFriendRequestsHandler.getInstance().getPendingAprovalUser());
+            remoteMessage.getNotification();
+
 
 
         }
-
-
     }
-    public void updatePhotoBroadast() {
-
-    }
-
 }
