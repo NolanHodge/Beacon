@@ -1,4 +1,6 @@
-package com.comp3004.beacon.Networking;
+package com.comp3004.beacon.NotificationHandlers;
+
+import com.comp3004.beacon.Networking.BeaconInvitationMessage;
 
 /**
  * Created by julianclayton on 16-10-10.

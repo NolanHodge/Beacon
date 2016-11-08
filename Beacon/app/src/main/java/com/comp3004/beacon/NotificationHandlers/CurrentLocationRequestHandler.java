@@ -1,4 +1,6 @@
-package com.comp3004.beacon.Networking;
+package com.comp3004.beacon.NotificationHandlers;
+
+import com.comp3004.beacon.Networking.LocationRequestMessage;
 
 /**
  * Created by julianclayton on 2016-11-05.

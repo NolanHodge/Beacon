@@ -1,7 +1,6 @@
 package com.comp3004.beacon.User;
 
-import com.comp3004.beacon.Networking.BeaconInvitationMessage;
-import com.comp3004.beacon.Networking.CurrentBeaconInvitationHandler;
+import com.comp3004.beacon.NotificationHandlers.CurrentBeaconInvitationHandler;
 
 /**
  * Created by julianclayton on 16-10-10.

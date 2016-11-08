@@ -102,6 +102,7 @@
             android:screenOrientation="portrait" />
         <activity android:name=".GUI.ArrowActivity2" />
         <activity android:name=".GUI.NearbyPlacesActivity"></activity>
+        <activity android:name=".GUI.MyBeaconsActivity"></activity>
     </application>
 
 </manifest>

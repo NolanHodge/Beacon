@@ -1,7 +1,7 @@
 package com.comp3004.beacon.DatabaseListeners;
 
 
-import com.comp3004.beacon.Networking.CurrentFriendRequestsHandler;
+import com.comp3004.beacon.NotificationHandlers.CurrentFriendRequestsHandler;
 import com.comp3004.beacon.Networking.FriendRequestMessage;
 
 import com.google.firebase.database.ChildEventListener;
@@ -16,9 +16,9 @@ public class FriendRequestDataListener implements ChildEventListener {
     @Override
     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
         FriendRequestMessage friendRequestMessage = dataSnapshot.getValue(FriendRequestMessage.class);
-
         CurrentFriendRequestsHandler.getInstance().setCurrentFriendRequestExist(true);
         CurrentFriendRequestsHandler.getInstance().setFriendRequestMessage(friendRequestMessage);
+
     }
 
     @Override

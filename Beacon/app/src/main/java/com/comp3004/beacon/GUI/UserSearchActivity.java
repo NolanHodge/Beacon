@@ -18,8 +18,7 @@ import android.widget.ListView;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
-import com.comp3004.beacon.FirebaseServices.DatabaseManager;
-import com.comp3004.beacon.Networking.CurrentFriendRequestsHandler;
+import com.comp3004.beacon.NotificationHandlers.CurrentFriendRequestsHandler;
 import com.comp3004.beacon.Networking.MessageSenderHandler;
 import com.comp3004.beacon.R;
 import com.comp3004.beacon.User.BeaconUser;

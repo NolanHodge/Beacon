@@ -1,5 +1,6 @@
-package com.comp3004.beacon.Networking;
+package com.comp3004.beacon.NotificationHandlers;
 
+import com.comp3004.beacon.Networking.FriendRequestMessage;
 import com.comp3004.beacon.User.BeaconUser;
 
 /**
@@ -8,10 +9,11 @@ import com.comp3004.beacon.User.BeaconUser;
 public class CurrentFriendRequestsHandler {
 
 
-    private static CurrentFriendRequestsHandler currentFriendRequestsHandler;
+    private static CurrentFriendRequestsHandler currentFriendRequestsHandler = null;
     boolean currentFriendRequestExist;
     FriendRequestMessage friendRequestMessage;
     BeaconUser pendingAprovalUser;
+    String displayName;
 
     public static CurrentFriendRequestsHandler getInstance() {
         if (currentFriendRequestsHandler == null) {
@@ -32,8 +34,11 @@ public class CurrentFriendRequestsHandler {
 
     public void setFriendRequestMessage(FriendRequestMessage friendRequestMessage) {
         this.friendRequestMessage = friendRequestMessage;
+        displayName = friendRequestMessage.getDisplayName();
     }
-
+    public String getDisplayName() {
+        return displayName;
+    }
     public BeaconUser getPendingAprovalUser() {
         return pendingAprovalUser;
     }

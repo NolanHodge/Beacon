@@ -1,3 +1,4 @@
+
 package com.comp3004.beacon.User;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -14,12 +15,14 @@ public class CurrentBeaconUser extends BeaconUser {
 
     static CurrentBeaconUser currentBeaconUser = null;
     private boolean registered;
+    private HashMap<String, Beacon> myBeacons;
 
     public CurrentBeaconUser(FirebaseUser user, FirebaseInstanceId id) {
         super(user, id);
         getFriends().put(user.getUid(), new BeaconUser(user.getUid(), user.getDisplayName(), "tok", user.getPhotoUrl().toString()));
         currentBeaconUser = this;
         registered = false;
+        myBeacons = new HashMap<String, Beacon>();
     }
 
     public static CurrentBeaconUser getInstance() {
@@ -45,6 +48,19 @@ public class CurrentBeaconUser extends BeaconUser {
         currentBeaconUser.setFriends(beaconUser.getFriends());
     }
 
+    public void addMyBeaon(String beaconId, Beacon beacon) {
+        myBeacons.put(beaconId, beacon);
+    }
 
+    public void removeMyBeacon(String beaconId) {
+        myBeacons.remove(beaconId);
+    }
+
+    public HashMap getMyBeacons() {
+        return myBeacons;
+    }
+    public Beacon getMyBeacon(String id) {
+        return myBeacons.get(id);
+    }
 
 }

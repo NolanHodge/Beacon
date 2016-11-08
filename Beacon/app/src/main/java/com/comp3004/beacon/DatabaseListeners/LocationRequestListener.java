@@ -1,8 +1,7 @@
 package com.comp3004.beacon.DatabaseListeners;
 
-import com.comp3004.beacon.Networking.CurrentLocationRequestHandler;
+import com.comp3004.beacon.NotificationHandlers.CurrentLocationRequestHandler;
 import com.comp3004.beacon.Networking.LocationRequestMessage;
-import com.comp3004.beacon.User.CurrentBeaconUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
