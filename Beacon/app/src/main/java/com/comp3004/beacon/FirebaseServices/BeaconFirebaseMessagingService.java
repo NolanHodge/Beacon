@@ -62,7 +62,7 @@ public class BeaconFirebaseMessagingService extends FirebaseMessagingService {
                     new NotificationCompat.Builder(this)
                             .setSmallIcon(R.drawable.app_icon)
                             .setContentTitle("Beacon Request")
-                            .setContentText("A friend wants know your location")
+                            .setContentText("A friend wants you to know their location")
                             .setAutoCancel(true)
                             .setContentIntent(resultPendingIntent);
 

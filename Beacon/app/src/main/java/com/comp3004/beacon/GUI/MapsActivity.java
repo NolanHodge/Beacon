@@ -55,6 +55,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
+import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
@@ -173,6 +174,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (pendingFriendRequest == true) {
             CurrentFriendRequestsHandler.getInstance().setCurrentFriendRequestExist(false);
             pendingFriendRequest = false;
+
             openFriendRequestDialog();
         }
 
@@ -253,6 +255,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 });
 
     }
+
     public void openLocationRequestDialog() {
         final Context context = this;
         CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
@@ -381,17 +384,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .snippet(currentBeaconUser.getDisplayName())
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.tower_icon_small)));
 
-            //Add PrivateBeacon markers to the map
-            for (PrivateBeacon privateBeacon : currentBeaconUser.getBeacons().values()) {
-                if (privateBeacon == null) break;
-                LatLng position = new LatLng(Double.parseDouble(privateBeacon.getLat()), Double.parseDouble(privateBeacon.getLon()));
-                String userId = privateBeacon.getFromUserId();
-                System.out.println("User ID " + privateBeacon.getFromUserId());
-                /*mMap.addMarker(new MarkerOptions()
-                        .title("Private Beacon")
-                        .position(position)
-                        .snippet(currentBeaconUser.getFriend(userId).getDisplayName())
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.tower_icon_small)));*/
+
+        //Add PrivateBeacon markers to the map
+        for (PrivateBeacon privateBeacon : currentBeaconUser.getBeacons().values()) {
+            if (privateBeacon == null) break;
+            LatLng position = new LatLng(Double.parseDouble(privateBeacon.getLat()), Double.parseDouble(privateBeacon.getLon()));
+            String userId = privateBeacon.getFromUserId();
+            System.out.println("User ID " + privateBeacon.getFromUserId());
+            mMap.addMarker(new MarkerOptions()
+                    .title("Private Beacon")
+                    .position(position)
+                    .snippet(currentBeaconUser.getFriend(userId).getDisplayName())
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.tower_icon_small)));
         }
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
@@ -428,7 +432,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 })
                                 .show();
 
-                       // dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(android.R.color.holo_red_light));
+                        // dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(android.R.color.holo_red_light));
                         //dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(android.R.color.holo_blue_light));
 
                         mMap.setOnCameraIdleListener(null);
@@ -440,10 +444,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     @Override
-    public boolean onMarkerClick (final Marker marker)
-    {
-        if (marker.getTitle().equals("Your Beacon"))
-        {
+    public boolean onMarkerClick(final Marker marker) {
+        if (marker.getTitle().equals("Your Beacon")) {
             AlertDialog dialog = new AlertDialog.Builder(MapsActivity.this, R.style.MyDialogTheme)
                     .setMessage("Your friends will track you to this location.")
                     .setTitle(marker.getTitle())
@@ -503,5 +505,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //upload image
         File file = new File(path);
         MessageSenderHandler.getInstance().sendPhotoMessage(file);
+    }
+
+    public void openNearby(View v) {
+        startActivity(new Intent(this, NearbyPlacesActivity.class));
     }
 }
