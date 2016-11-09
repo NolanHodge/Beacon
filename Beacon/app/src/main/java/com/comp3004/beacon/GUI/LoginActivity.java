@@ -53,7 +53,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.READ_CONTACTS;
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 
 /**
  * A login screen that offers login via google
@@ -79,6 +81,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
+    private static final int REQUEST_READ_EXTERNAL_STORAGE = 1;
+    private static final int REQUEST_CAMERA = 2;
     private static final int PERMISSION_LOCATION_REQUEST_CODE = 4;
 
     @Override
@@ -192,7 +196,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if (!mayRequestContacts()) {
             return;
         }
-
+        if (!mayRequestStorage()) {
+            return;
+        }
+        if (!mayRequestCamera()) {
+            return;
+        }
         getLoaderManager().initLoader(0, null, this);
     }
 
@@ -211,6 +220,35 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         return false;
     }
 
+    private boolean mayRequestStorage() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return true;
+        }
+        if (checkSelfPermission(READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        }
+        if (shouldShowRequestPermissionRationale(READ_EXTERNAL_STORAGE)) {
+
+        } else {
+            requestPermissions(new String[]{READ_EXTERNAL_STORAGE}, REQUEST_READ_EXTERNAL_STORAGE);
+        }
+        return false;
+    }
+
+    private boolean mayRequestCamera() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return true;
+        }
+        if (checkSelfPermission(CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        }
+        if (shouldShowRequestPermissionRationale(CAMERA)) {
+
+        } else {
+            requestPermissions(new String[]{CAMERA}, REQUEST_CAMERA);
+        }
+        return false;
+    }
     /**
      * Callback received when a permissions request has been completed.
      */

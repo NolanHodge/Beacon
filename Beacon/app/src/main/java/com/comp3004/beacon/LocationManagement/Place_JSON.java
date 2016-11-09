@@ -1,4 +1,4 @@
-package com.comp3004.beacon.GUI;
+package com.comp3004.beacon.LocationManagement;
 
 
 import com.google.android.gms.maps.model.LatLng;
@@ -17,7 +17,7 @@ public class Place_JSON {
     /**
      * Receives a JSONObject and returns a list
      */
-    public ArrayList<aPlace> parse(JSONObject jObject) {
+    public ArrayList<APlace> parse(JSONObject jObject) {
 
         JSONArray jPlaces = null;
         try {
@@ -32,9 +32,9 @@ public class Place_JSON {
         return getPlaces(jPlaces);
     }
 
-    private ArrayList<aPlace> getPlaces(JSONArray jPlaces) {
+    private ArrayList<APlace> getPlaces(JSONArray jPlaces) {
         int placesCount = jPlaces.length();
-        ArrayList<aPlace> placesList = new ArrayList<>();
+        ArrayList<APlace> placesList = new ArrayList<>();
 
         /** Taking each place, parses and adds to list object */
         for (int i = 0; i < placesCount; i++) {
@@ -51,8 +51,8 @@ public class Place_JSON {
     /**
      * Parsing the Place JSON object
      */
-    private aPlace getPlace(JSONObject jPlace) {
-        final aPlace place = new aPlace();
+    private APlace getPlace(JSONObject jPlace) {
+        final APlace place = new APlace();
 
         try {
             // Extracting Place name, if available
