@@ -1,14 +1,10 @@
 package com.comp3004.beacon.GUI;
 
-import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.LayerDrawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,17 +12,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RatingBar;
-import android.widget.RelativeLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.comp3004.beacon.LocationManagement.LocationService;
+import com.comp3004.beacon.LocationManagement.Place_JSON;
+import com.comp3004.beacon.LocationManagement.APlace;
 import com.comp3004.beacon.Networking.MessageSenderHandler;
 import com.comp3004.beacon.R;
 
@@ -132,14 +124,14 @@ public class NearbyPlacesActivity extends AppCompatActivity {
         return data;
     }
 
-    private class ParserTask extends AsyncTask<String, Integer, ArrayList<aPlace>> {
+    private class ParserTask extends AsyncTask<String, Integer, ArrayList<APlace>> {
 
         JSONObject jObject;
 
         // Invoked by execute() method of this object
         @Override
-        protected ArrayList<aPlace> doInBackground(String... jsonData) {
-            ArrayList<aPlace> places = null;
+        protected ArrayList<APlace> doInBackground(String... jsonData) {
+            ArrayList<APlace> places = null;
             Place_JSON placeJson = new Place_JSON();
 
             try {
@@ -154,7 +146,7 @@ public class NearbyPlacesActivity extends AppCompatActivity {
 
         // Executed after the complete execution of doInBackground() method
         @Override
-        protected void onPostExecute(ArrayList<aPlace> list) {
+        protected void onPostExecute(ArrayList<APlace> list) {
             try {
                 Log.w("Map", "list size: " + list.size());
                 // Clears all the existing markers;
@@ -170,9 +162,9 @@ public class NearbyPlacesActivity extends AppCompatActivity {
         }
     }
 
-    private class NearbyAdapter extends ArrayAdapter<aPlace> {
+    private class NearbyAdapter extends ArrayAdapter<APlace> {
 
-        public NearbyAdapter(List<aPlace> objects) {
+        public NearbyAdapter(List<APlace> objects) {
             super(NearbyPlacesActivity.this, R.layout.nearby_list_item, objects);
         }
 
@@ -180,7 +172,7 @@ public class NearbyPlacesActivity extends AppCompatActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             ViewHolder viewHolder;
-            final aPlace place = getItem(position);
+            final APlace place = getItem(position);
             if (convertView == null) {
 
                 viewHolder = new ViewHolder();

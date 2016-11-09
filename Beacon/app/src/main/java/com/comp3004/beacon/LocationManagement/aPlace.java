@@ -1,11 +1,11 @@
-package com.comp3004.beacon.GUI;
+package com.comp3004.beacon.LocationManagement;
 
 import com.google.android.gms.maps.model.LatLng;
 
 /**
  * Created by Jason on 06/11/2016.
  */
-public class aPlace {
+public class APlace {
     private String name, address;
     LatLng location;
 
