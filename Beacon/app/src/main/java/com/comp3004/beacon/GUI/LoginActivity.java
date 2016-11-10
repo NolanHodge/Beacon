@@ -6,6 +6,7 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.pm.PackageManager;
+import android.content.Context;
 
 import android.database.Cursor;
 
@@ -20,12 +21,15 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 
+import android.widget.ProgressBar;
 import android.util.Log;
 
 import android.view.View;
+import android.view.WindowManager;
 
 import android.widget.Toast;
 
+import com.comp3004.beacon.Networking.SaveSharedPreference;
 import com.comp3004.beacon.R;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
@@ -67,11 +71,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private AccessTokenTracker mTokenTracker;
     private ProfileTracker mProfileTracker;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private ProgressBar mProgress;
+
 
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
 
     private SignInButton mGoogleSignInButton;
+    private LoginButton mFacebookSignInButton;
     private GoogleApiClient mGoogleApiClient;
 
     // Firebase instance variables
@@ -91,8 +98,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         FacebookSdk.sdkInitialize(this);
         setContentView(R.layout.activity_login);
 
+        mProgress = (ProgressBar) findViewById(R.id.progressBar);
+        mProgress.setVisibility(View.INVISIBLE);
+
         //Fields
         mGoogleSignInButton = (SignInButton) findViewById(R.id.google_sign_in_button);
+        mFacebookSignInButton = (LoginButton) findViewById(R.id.login_button);
 
         //Click Listeners
         mGoogleSignInButton.setOnClickListener(this);
@@ -148,6 +159,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     PERMISSION_LOCATION_REQUEST_CODE);
         }
 
+        if(SaveSharedPreference.getUserName(LoginActivity.this).equals("google"))
+        {
+            mProgress.setVisibility(View.VISIBLE);
+            WindowManager.LayoutParams wp = getWindow().getAttributes();
+            wp.dimAmount = 1f;
+            mFacebookSignInButton.setVisibility(View.GONE);
+            mGoogleSignInButton.setVisibility(View.GONE);
+            googleSignIn();
+        }
+        else if (SaveSharedPreference.getUserName(LoginActivity.this).equals("facebook"))
+        {
+
+        }
     }
 
     @Override
@@ -184,6 +208,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
+                SaveSharedPreference.setUserName(this, "google");
             } else {
                 // Google Sign In failed
                 Log.e(TAG, "Google Sign In failed.");
@@ -405,5 +430,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             Log.d("Facebook", "Error " + e);
         }
     };
+
+    public static Context getContext()
+    {
+        return getContext();
+    }
 }
 

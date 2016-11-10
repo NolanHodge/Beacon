@@ -29,14 +29,18 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.comp3004.beacon.FirebaseServices.DatabaseManager;
 import com.comp3004.beacon.Networking.MailBox;
 import com.comp3004.beacon.Networking.MessageSenderHandler;
+import com.comp3004.beacon.Networking.SaveSharedPreference;
 import com.comp3004.beacon.R;
 import com.comp3004.beacon.User.BeaconUser;
 import com.comp3004.beacon.User.CurrentBeaconUser;
+import com.comp3004.beacon.GUI.LoginActivity;
+import com.facebook.login.widget.LoginButton;
 
 import java.util.ArrayList;
 
@@ -45,7 +49,10 @@ public class FriendListActivity extends AppCompatActivity {
     ArrayList<BeaconUser> friendsList;
     ArrayList<String> userNames;
     ListView friendsListView;
-
+    FloatingActionButton messageButton;
+    FloatingActionButton signoutButton;
+    AlertDialog.Builder builder;
+    private ProgressBar mProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +62,11 @@ public class FriendListActivity extends AppCompatActivity {
         friendsList = new ArrayList<BeaconUser>();
         userNames = new ArrayList<String>();
         friendsListView = (ListView) findViewById(R.id.friendListView);
-        FloatingActionButton messageButton = (FloatingActionButton) findViewById(R.id.message_friends_button);
+        messageButton = (FloatingActionButton) findViewById(R.id.message_friends_button);
+        signoutButton = (FloatingActionButton) findViewById(R.id.sign_out_button);
+        builder = new AlertDialog.Builder(this, R.style.MyDialogTheme);
+        mProgress = (ProgressBar) findViewById(R.id.prog_bar);
+        mProgress.setVisibility(View.INVISIBLE);
 
         //Add friends to list for GUI
         if (CurrentBeaconUser.getInstance().getFriends() != null) {
@@ -73,6 +84,29 @@ public class FriendListActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(FriendListActivity.this, ChatMessageThreadsActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        signoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                builder.setMessage("Are you sure you want to sign out?");
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        mProgress.setVisibility(View.VISIBLE);
+                        SaveSharedPreference.setUserName(LoginActivity.getContext(), "");
+                        Intent intent = new Intent(FriendListActivity.this, LoginButton.class);
+                        startActivity(intent);
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
 
@@ -118,7 +152,7 @@ public class FriendListActivity extends AppCompatActivity {
     }
 
     public void showBeaconOptionDialog(BeaconUser beaconUser, final int userIndex) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MyDialogTheme);
         final Context context = this;
         builder.setTitle("Send " + beaconUser.getDisplayName())
                 .setItems(new String[]{"Beacon", "Message","Request a Beacon", "Cancel"}, new DialogInterface.OnClickListener() {

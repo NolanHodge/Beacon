@@ -45,6 +45,8 @@ import com.comp3004.beacon.Networking.SubscriptionHandler;
 import com.comp3004.beacon.R;
 import com.comp3004.beacon.User.PrivateBeacon;
 import com.comp3004.beacon.User.CurrentBeaconUser;
+import com.comp3004.beacon.Networking.SaveSharedPreference;
+
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -101,6 +103,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
