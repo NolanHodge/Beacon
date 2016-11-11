@@ -299,7 +299,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 PrivateBeacon privateBeacon = new PrivateBeacon(currentBeaconInvitationHandler);
                 CurrentBeaconUser.getInstance().addBeacon(privateBeacon);
 
-                Intent intent = new Intent(MapsActivity.this, ArrowActivity.class);
+                Intent intent = new Intent(MapsActivity.this, ArrowActivity2.class);
                 intent.putExtra("CURRENT_BEACON_ID", privateBeacon.getFromUserId());
                 startActivity(intent);
             }

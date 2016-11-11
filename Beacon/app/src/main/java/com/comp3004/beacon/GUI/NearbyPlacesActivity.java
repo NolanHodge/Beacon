@@ -42,6 +42,8 @@ public class NearbyPlacesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nearby_places);
 
+        findViewById(R.id.arrow_prgrs).setVisibility(View.VISIBLE);
+
         final LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         final LocationService locationService = new LocationService() {
             @Override
@@ -155,6 +157,8 @@ public class NearbyPlacesActivity extends AppCompatActivity {
 
                 listView.setAdapter(new NearbyAdapter(list));
 
+                findViewById(R.id.arrow_prgrs).setVisibility(View.INVISIBLE);
+
             } catch (NullPointerException e) {
 
             }
@@ -217,6 +221,23 @@ public class NearbyPlacesActivity extends AppCompatActivity {
                             .show();
                 }
             });
+
+            TextView text1 = (TextView) convertView.findViewById(R.id.txt_distance);
+            TextView text2 = (TextView) convertView.findViewById(R.id.txt_place_name);
+            TextView text3 = (TextView) convertView.findViewById(R.id.txt_address);
+
+            if((position % 2) == 1)
+            {
+                convertView.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
+                text1.setTextColor(getContext().getResources().getColor(android.R.color.white));
+                text2.setTextColor(getContext().getResources().getColor(android.R.color.white));
+                text3.setTextColor(getContext().getResources().getColor(android.R.color.white));
+            }
+            else{
+                convertView.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
+                text1.setTextColor(getContext().getResources().getColor(android.R.color.white));
+                text2.setTextColor(getContext().getResources().getColor(android.R.color.white));
+                text3.setTextColor(getContext().getResources().getColor(android.R.color.white));            }
 
             return convertView;
         }

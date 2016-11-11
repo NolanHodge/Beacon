@@ -66,9 +66,6 @@ public class PublicBeaconsActivity extends AppCompatActivity {
         populateBeaconsListView();
         registerFriendsListviewCallback();
 
-
-
-
     }
 
     private void populateBeaconsListView() {

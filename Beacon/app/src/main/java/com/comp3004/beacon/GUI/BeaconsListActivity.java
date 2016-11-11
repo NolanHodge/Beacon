@@ -89,20 +89,15 @@ public class BeaconsListActivity extends AppCompatActivity {
     public void showBeaconOptionDialog(final PrivateBeacon privateBeacon, final int index) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MyDialogTheme);
         builder
-                .setItems(new String[]{"Track1","Track2", "Delete", "Cancel"}, new DialogInterface.OnClickListener() {
+                .setItems(new String[]{"Track", "Delete", "Cancel"}, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case 0:
-                                Intent intent = new Intent(BeaconsListActivity.this, ArrowActivity.class);
-                                intent.putExtra(ArrowActivity.CURRENT_BEACON_ID_KEY, privateBeacon.getFromUserId());
+                                Intent intent = new Intent(BeaconsListActivity.this, ArrowActivity2.class);
+                                intent.putExtra(ArrowActivity2.CURRENT_BEACON_ID_KEY, privateBeacon.getFromUserId());
                                 startActivity(intent);
                                 break;
                             case 1:
-                                Intent intent2 = new Intent(BeaconsListActivity.this, ArrowActivity2.class);
-                                intent2.putExtra(ArrowActivity2.CURRENT_BEACON_ID_KEY, privateBeacon.getFromUserId());
-                                startActivity(intent2);
-                                break;
-                            case 2:
                                 CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
                                 currentBeaconUser.getBeacons().remove(privateBeacon.getFromUserId());
                                 DatabaseManager.getInstance().removeBeaconFromDb(privateBeacon.getBeaconId());
@@ -112,7 +107,7 @@ public class BeaconsListActivity extends AppCompatActivity {
                                 beaconsList.remove(index);
                                 beaconsListView.invalidate();
                                 break;
-                            case 3:
+                            case 2:
                                 break;
                         }
                     }
