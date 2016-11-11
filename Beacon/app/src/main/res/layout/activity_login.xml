@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".GUI.LoginActivity"
-    android:background="#3D9A3D"
+    android:background="@drawable/background_image"
     >
 
     <!-- Login progress -->

@@ -25,6 +25,7 @@
     <string name="title_activity_friend_list">Friends List</string>
     <string name="title_activity_public">Public Beacons</string>
     <string name="title_activity_user_search">Search Users</string>
+    <string name="title_activity_nearby">Nearby Locations</string>
     <string name="search_hint">Search Users</string>
     <string name="api_key">AIzaSyCN_NOMKQwN6zg76QDZ3vyuVbRrWHlBge0</string>
 </resources>

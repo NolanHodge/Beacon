@@ -101,7 +101,9 @@
             android:name=".GUI.ImageViewActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".GUI.ArrowActivity2" />
-        <activity android:name=".GUI.NearbyPlacesActivity"></activity>
+        <activity android:name=".GUI.NearbyPlacesActivity"
+            android:label="@string/title_activity_nearby"
+            ></activity>
         <activity android:name=".GUI.MyBeaconsActivity"></activity>
     </application>
 
