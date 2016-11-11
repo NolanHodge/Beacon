@@ -484,8 +484,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     }
                 })
                 .show();
-        dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(android.R.color.holo_red_light));
-        dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(android.R.color.holo_blue_light));
+        dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(this, android.R.color.holo_red_light));
+        dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(this, android.R.color.holo_blue_light));
         return true;
     }
 

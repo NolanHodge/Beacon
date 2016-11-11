@@ -117,6 +117,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
+                    startActivity(new Intent(LoginActivity.this, MapsActivity.class));
+                    finish();
                     Log.d("", "onAuthStateChanged:signed_in:" + user.getUid());
                 } else {
                     // User is signed out
@@ -133,7 +135,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         if (AccessToken.getCurrentAccessToken() != null && Profile.getCurrentProfile() != null) {
             startActivity(new Intent(this, MapsActivity.class));
-            //finish();
+            finish();
         }
 
         callbackManager = CallbackManager.Factory.create();
@@ -249,6 +251,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
         return false;
     }
+
     /**
      * Callback received when a permissions request has been completed.
      */
