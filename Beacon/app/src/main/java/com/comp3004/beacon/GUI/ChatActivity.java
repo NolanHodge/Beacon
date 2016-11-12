@@ -134,6 +134,10 @@ public class ChatActivity extends AppCompatActivity {
             chats.add(friend.getDisplayName() + "\n" + chatMessage.getMessage());
 
         }
+
+        new GetImage(photoUrls.get(currentBeaconUser.getUserId()), photoUrls.get(aFriend.getUserId())).execute();
+        getSupportActionBar().setTitle("Chat with " + aFriend.getDisplayName());
+
         //setAdapter();
 
     }

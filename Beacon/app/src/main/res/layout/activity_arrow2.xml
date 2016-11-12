@@ -60,4 +60,16 @@
         android:layout_below="@+id/txt_degrees"
         android:layout_centerHorizontal="true" />
 
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/view_image_button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/image_icon"
+
+        />
+
 </RelativeLayout>

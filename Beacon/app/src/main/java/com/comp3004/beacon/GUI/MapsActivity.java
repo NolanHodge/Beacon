@@ -503,8 +503,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         String path = "sdcard/camera_app/camera_img.jpg";
-        //imageView.setImageDrawable(Drawable.createFromPath(path));
-        //upload image
         File file = new File(path);
         MessageSenderHandler.getInstance().sendPhotoMessage(file);
     }
