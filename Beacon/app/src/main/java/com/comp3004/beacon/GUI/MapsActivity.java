@@ -36,6 +36,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.comp3004.beacon.FirebaseServices.DatabaseManager;
+import com.comp3004.beacon.LocationManagement.LocationService;
 import com.comp3004.beacon.NotificationHandlers.CurrentBeaconInvitationHandler;
 import com.comp3004.beacon.NotificationHandlers.CurrentFriendRequestsHandler;
 import com.comp3004.beacon.NotificationHandlers.CurrentLocationRequestHandler;
@@ -125,7 +126,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 pendingBeaconRequest = extras.getBoolean(BEACON_REQUEST);
             }
         }
-
 
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -352,38 +352,40 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * installed Google Play services and returned to the app.
      */
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(final GoogleMap googleMap) {
+        mMap = googleMap;
         DatabaseManager.getInstance().loadCurrentUser();
-        googleMap.setOnMarkerClickListener(this);
-        CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
+        mMap.setOnMarkerClickListener(this);
+        final CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
         //Requesting permission
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
 
-        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        final Location current = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER) == null ?
-                locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER) :
-                locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        final LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        LocationService locationService = new LocationService() {
+            @Override
+            public void onLocationChanged(Location location) {
+                try {
+                    locationManager.removeUpdates(this);
+                } catch (SecurityException e) {
+                }
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                        .target(new LatLng(location.getLatitude(), location.getLongitude()))
+                        .zoom(13)
+                        .build();
+                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                // comment out addMarker function to remove the little tower!
+                mMap.addMarker(new MarkerOptions()
+                        .title("Your Beacon")
+                        .position(new LatLng(location.getLatitude(), location.getLongitude()))
+                        .snippet(currentBeaconUser.getDisplayName())
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.tower_icon_small)));
+            }
+        };
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 10, locationService);
 
-        mMap = googleMap;
-
-        CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(new LatLng(current.getLatitude(), current.getLongitude()))
-                .zoom(13)
-                .build();
-        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-        // Uses a custom icon.
-
-        // Turn this back on for the "little blue button"
         //mMap.setMyLocationEnabled(true);
-        // comment out addMarker function to remove the little tower!
-        mMap.addMarker(new MarkerOptions()
-                .title("Your Beacon")
-                .position(new LatLng(current.getLatitude(), current.getLongitude()))
-                .snippet(currentBeaconUser.getDisplayName())
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.tower_icon_small)));
-
 
         //Add PrivateBeacon markers to the map
         for (PrivateBeacon privateBeacon : currentBeaconUser.getBeacons().values()) {
@@ -427,7 +429,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                     public void onClick(DialogInterface dialog, int which) {
                                         //mMap.clear();
                                         holdMarker.remove();
-                                        dialog.cancel(); //could've left this empty
+                                        //dialog.cancel(); //could've left this empty
                                     }
                                 })
                                 .show();
@@ -482,8 +484,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     }
                 })
                 .show();
-        dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(android.R.color.holo_red_light));
-        dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(android.R.color.holo_blue_light));
+        dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(this, android.R.color.holo_red_light));
+        dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(this, android.R.color.holo_blue_light));
         return true;
     }
 

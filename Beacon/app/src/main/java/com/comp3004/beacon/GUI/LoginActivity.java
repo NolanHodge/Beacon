@@ -1,5 +1,6 @@
 package com.comp3004.beacon.GUI;
 
+import android.Manifest;
 import android.app.LoaderManager.LoaderCallbacks;
 
 import android.content.CursorLoader;
@@ -53,6 +54,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import java.util.ArrayList;
+
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.READ_CONTACTS;
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
@@ -83,7 +86,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private static final int REQUEST_READ_CONTACTS = 0;
     private static final int REQUEST_READ_EXTERNAL_STORAGE = 1;
     private static final int REQUEST_CAMERA = 2;
-    private static final int PERMISSION_LOCATION_REQUEST_CODE = 4;
+    private static final int REQUEST_LOCATION = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +101,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mGoogleSignInButton.setOnClickListener(this);
 
         // Set up the login form.
-        populateAutoComplete();
+        //populateAutoComplete();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -117,6 +120,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
+                    startActivity(new Intent(LoginActivity.this, MapsActivity.class));
+                    finish();
                     Log.d("", "onAuthStateChanged:signed_in:" + user.getUid());
                 } else {
                     // User is signed out
@@ -133,7 +138,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         if (AccessToken.getCurrentAccessToken() != null && Profile.getCurrentProfile() != null) {
             startActivity(new Intent(this, MapsActivity.class));
-            //finish();
+            finish();
         }
 
         callbackManager = CallbackManager.Factory.create();
@@ -141,12 +146,24 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         loginButton.registerCallback(callbackManager, mFacebookCallback);
         loginButton.setReadPermissions("public_profile, user_friends");
 
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    PERMISSION_LOCATION_REQUEST_CODE);
+        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.CAMERA,
+                Manifest.permission.READ_CONTACTS,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION};
+
+        ArrayList<String> requestPermissions = new ArrayList<>();
+        boolean askForPermission = false;
+        for (String permission : permissions) {
+            if (ActivityCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                askForPermission = true;
+                requestPermissions.add(permission);
+            }
         }
+        if (askForPermission)
+            ActivityCompat.requestPermissions(this, requestPermissions.toArray(new String[requestPermissions.size()]),
+                    REQUEST_LOCATION);
+
 
     }
 
@@ -249,6 +266,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
         return false;
     }
+
     /**
      * Callback received when a permissions request has been completed.
      */
@@ -259,12 +277,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 populateAutoComplete();
             }
-        } else if (requestCode == PERMISSION_LOCATION_REQUEST_CODE) {
+        } else if (requestCode == REQUEST_LOCATION) {
             // If request is cancelled, the result arrays are empty.
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            } else {
+            if (grantResults.length > 0 && grantResults[0] != PackageManager.PERMISSION_GRANTED)
                 finish();
-            }
         }
 
         // other 'case' lines to check for other
@@ -320,7 +336,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             Toast.LENGTH_SHORT).show();
                 } else {
                     startActivity(new Intent(LoginActivity.this, MapsActivity.class));
-
+                    finish();
                 }
             }
         });
