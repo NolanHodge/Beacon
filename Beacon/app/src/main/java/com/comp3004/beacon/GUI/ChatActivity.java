@@ -163,6 +163,7 @@ public class ChatActivity extends AppCompatActivity {
         protected void onPostExecute(Bitmap[] aVoid) {
             adapter = new ChatAdapter(chatThread, aVoid[0], aVoid[1]);
             chatListView.setAdapter(adapter);
+            chatListView.setSelection(chatListView.getCount() - 1);
         }
     }
 
