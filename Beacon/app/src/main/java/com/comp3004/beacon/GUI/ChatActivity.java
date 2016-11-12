@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +23,7 @@ import android.view.ViewGroup;
 
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -258,6 +260,21 @@ public class ChatActivity extends AppCompatActivity {
             }
 
             viewHolder.message.setText(messages.get(position).getMessage());
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) viewHolder.layout.getLayoutParams();
+
+            if (!messages.get(position).getFromUserId().equals(CurrentBeaconUser.getInstance().getUserId())) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    params.removeRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                }
+                params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    params.removeRule(RelativeLayout.ALIGN_PARENT_LEFT);
+                }
+                params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            }
+            viewHolder.layout.setLayoutParams(params);
+
             return convertView;
         }
     }
