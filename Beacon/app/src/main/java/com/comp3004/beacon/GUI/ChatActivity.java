@@ -134,7 +134,8 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private class GetImage extends AsyncTask<Void, Void, Bitmap[]> {
-        String userIcon, friendIcon;
+        String userIcon = "";
+        String friendIcon = "";
 
         public GetImage(String userIcon, String friendIcon) {
             this.userIcon = userIcon;
@@ -143,18 +144,16 @@ public class ChatActivity extends AppCompatActivity {
 
         @Override
         protected Bitmap[] doInBackground(Void... params) {
-            String userUrl = userIcon;
-            String friendUrl = friendIcon;
+
             Bitmap mIcon11 = null;
             Bitmap mIcon12 = null;
             try {
-                InputStream in = new java.net.URL(userUrl).openStream();
+                InputStream in = new java.net.URL(userIcon).openStream();
                 mIcon11 = BitmapFactory.decodeStream(in);
                 in.close();
-                in = new java.net.URL(friendUrl).openStream();
+                in = new java.net.URL(friendIcon).openStream();
                 mIcon12 = BitmapFactory.decodeStream(in);
             } catch (Exception e) {
-                Log.e("Error", e.getMessage());
                 e.printStackTrace();
             }
 
@@ -253,10 +252,11 @@ public class ChatActivity extends AppCompatActivity {
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
-            if (messages.get(position).getFromUserId().equals(CurrentBeaconUser.getInstance().getUserId())) {
+            if (messages.get(position).getFromUserId().equals(CurrentBeaconUser.getInstance().getUserId()) && userIcon != null) {
                 viewHolder.icon.setImageBitmap(userIcon);
             } else {
-                viewHolder.icon.setImageBitmap(friendIcon);
+                if (friendIcon != null)
+                    viewHolder.icon.setImageBitmap(friendIcon);
             }
 
             viewHolder.message.setText(messages.get(position).getMessage());
