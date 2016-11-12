@@ -75,6 +75,14 @@ public class ChatActivity extends AppCompatActivity {
             String chatId = extras.getString("CHAT_ID");
             chatThread = MailBox.getInstance().getChatThread(chatId);
             otherChatParticipantId = extras.getString("CHAT_PARTICIPANT");
+
+            CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
+            BeaconUser friend = currentBeaconUser.getFriend(otherChatParticipantId);
+
+            getSupportActionBar().setTitle("Chat with " + friend.getDisplayName());
+
+            populateChatListView();
+            new GetImage(currentBeaconUser.getPhotoUrl(), friend.getPhotoUrl()).execute();
         }
 
         sendButton.setOnClickListener(new View.OnClickListener() {
@@ -89,7 +97,6 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        populateChatListView();
     }
 
     @Override
@@ -127,8 +134,10 @@ public class ChatActivity extends AppCompatActivity {
             chats.add(friend.getDisplayName() + "\n" + chatMessage.getMessage());
 
         }
+
         new GetImage(photoUrls.get(currentBeaconUser.getUserId()), photoUrls.get(aFriend.getUserId())).execute();
         getSupportActionBar().setTitle("Chat with " + aFriend.getDisplayName());
+
         //setAdapter();
 
     }
