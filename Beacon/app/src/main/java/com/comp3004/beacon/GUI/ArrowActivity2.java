@@ -3,6 +3,7 @@ package com.comp3004.beacon.GUI;
 import android.Manifest;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 
 import android.hardware.GeomagneticField;
@@ -17,11 +18,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import android.util.DisplayMetrics;
 
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -33,6 +36,7 @@ import android.hardware.SensorEvent;
 import android.widget.Toast;
 import android.widget.ImageView.ScaleType;
 
+import com.comp3004.beacon.FirebaseServices.DatabaseManager;
 import com.comp3004.beacon.LocationManagement.LocationService;
 import com.comp3004.beacon.R;
 import com.comp3004.beacon.User.PrivateBeacon;
@@ -45,6 +49,8 @@ public class ArrowActivity2 extends AppCompatActivity implements SensorEventList
         private Sensor mAccelerometer;
         private Sensor mMagnetometer;
         private LocationManager locationManager;
+        private FloatingActionButton imageViewButton;
+
         public static String CURRENT_BEACON_ID_KEY = "CURRENT_BEACON_ID";
         public static String FROM_MAP_TRACK_LAT = "FROM_MAP_TRACK_LAT";
         public static String FROM_MAP_TRACK_LON = "FROM_MAP_TRACK_LON";
@@ -63,11 +69,16 @@ public class ArrowActivity2 extends AppCompatActivity implements SensorEventList
         static long MIN_TIME  = 1000;
         static float MIN_DIST = 1;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_arrow2);
         Bundle extras = getIntent().getExtras();
+
+        imageViewButton = (FloatingActionButton) findViewById(R.id.view_image_button2);
+
 
         if (extras != null) {
             if (extras.containsKey(CURRENT_BEACON_ID_KEY)) {
@@ -82,6 +93,14 @@ public class ArrowActivity2 extends AppCompatActivity implements SensorEventList
             }
         }
 
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                DatabaseManager.getInstance().loadPhotos(followingBeacon.getFromUserId());
+            }
+        });
+        t.start();
+
         //** Sensor Manager tings
         mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -94,24 +113,35 @@ public class ArrowActivity2 extends AppCompatActivity implements SensorEventList
          @Override
          public void onLocationChanged(Location location) {
 
-             final float[] results = new float[3];
+            final float[] results = new float[3];
             Location.distanceBetween(location.getLatitude(), location.getLongitude(), Double.parseDouble(followingBeacon.getLat()), Double.parseDouble(followingBeacon.getLon()), results);
-             target.setLatitude(Double.parseDouble(followingBeacon.getLat()));
-             target.setLongitude(Double.parseDouble(followingBeacon.getLon()));
+            target.setLatitude(Double.parseDouble(followingBeacon.getLat()));
+            target.setLongitude(Double.parseDouble(followingBeacon.getLon()));
             final int compass_bearing = (int) (results[2] + 360) % 360;
             String s = results[0] > 1100 ? String.format("%.1f km", results[0] / 1000) : String.format("%.1f m", results[0]);
             TextView textView = (TextView) findViewById(R.id.txt_distance);
             textView.setText(s);
-         }
-        };
+        }
+    };
 
         try {
          locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME, MIN_DIST, locationService);
          } catch (SecurityException e) {
-          e.printStackTrace();
-          Toast toast = Toast.makeText(getApplicationContext(), e.getMessage().length(), Toast.LENGTH_SHORT);
-          toast.show();
-      }
+            e.printStackTrace();
+            Toast toast = Toast.makeText(getApplicationContext(), e.getMessage().length(), Toast.LENGTH_SHORT);
+            toast.show();
+        }
+        imageViewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //DatabaseManager.getInstance().loadPhotos(followingBeacon.getFromUserId());
+                Intent intent = new Intent(ArrowActivity2.this, ImageViewActivity.class);
+                intent.putExtra(ImageViewActivity.IMAGE_USER_ID, followingBeacon.getFromUserId());
+                startActivity(intent);
+
+                startActivity(intent);
+            }
+        });
     }
 
     protected void onResume() {
