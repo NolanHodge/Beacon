@@ -78,6 +78,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, OnMarkerClickListener {
@@ -110,6 +111,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     Marker currentMarker;
 
+
+    HashMap<String, Marker> currentMarkers;
+
     Handler mHandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +130,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
         mHandler = new Handler();
 
+        currentMarkers  = new HashMap<String, Marker>();
         pendingFriendRequest = false;
 
         Bundle extras = getIntent().getExtras();
@@ -522,24 +527,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         @Override
                         public void run() {
                             final CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
-                            for (PrivateBeacon privateBeacon : currentBeaconUser.getBeacons().values()) {
+                            for (final PrivateBeacon privateBeacon : currentBeaconUser.getBeacons().values()) {
                                 if (privateBeacon == null) break;
                                 final LatLng position = new LatLng(Double.parseDouble(privateBeacon.getLat()), Double.parseDouble(privateBeacon.getLon()));
                                 final String userId = privateBeacon.getFromUserId();
-                                System.out.println("User ID " + privateBeacon.getFromUserId());
-                                System.out.println("Marker: "+ privateBeacon.getBeaconId() + "Marker: " + position + "\n" + "Marker: " + currentBeaconUser.getFriend(userId).getDisplayName());
                                 final String title;
                                 if (privateBeacon.isPublicBeacon()) {  title = "Public Beacon";}
                                 else {title = "Private Beacon";}
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        mMap.addMarker(new MarkerOptions()
+                                        if (currentMarkers.containsKey(privateBeacon.getBeaconId())) {
+                                            currentMarkers.get(privateBeacon.getBeaconId()).remove();
+                                        }
+                                        Marker marker = mMap.addMarker(new MarkerOptions()
                                                 .title(title)
                                                 .position(position)
                                                 .snippet(currentBeaconUser.getFriend(userId).getDisplayName())
                                                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.tower_icon_small)));
-                                        }});
+                                        currentMarkers.put(privateBeacon.getBeaconId(), marker);
+
+                                    }});
+
                             }
                             for (Object key : currentBeaconUser.getMyBeacons().keySet()) {
                                 if (currentBeaconUser.getMyBeacon((String) key).isPublicBeacon()) {
