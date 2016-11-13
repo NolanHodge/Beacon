@@ -79,7 +79,7 @@ public class ChatActivity extends AppCompatActivity {
             CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
             BeaconUser friend = currentBeaconUser.getFriend(otherChatParticipantId);
 
-            getSupportActionBar().setTitle("Chat with " + friend.getDisplayName());
+            getSupportActionBar().setTitle("Chat with " + CurrentBeaconUser.getInstance().getFriend(otherChatParticipantId).getDisplayName());
 
             populateChatListView();
             new GetImage(currentBeaconUser.getPhotoUrl(), friend.getPhotoUrl()).execute();
@@ -136,7 +136,7 @@ public class ChatActivity extends AppCompatActivity {
         }
 
         new GetImage(photoUrls.get(currentBeaconUser.getUserId()), photoUrls.get(aFriend.getUserId())).execute();
-        getSupportActionBar().setTitle("Chat with " + aFriend.getDisplayName());
+        getSupportActionBar().setTitle("Chat with " + CurrentBeaconUser.getInstance().getFriend(otherChatParticipantId).getDisplayName());
 
         //setAdapter();
 
