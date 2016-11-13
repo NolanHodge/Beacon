@@ -18,11 +18,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.comp3004.beacon.FirebaseServices.DatabaseManager;
 import com.comp3004.beacon.LocationManagement.LocationService;
 import com.comp3004.beacon.LocationManagement.Place_JSON;
 import com.comp3004.beacon.LocationManagement.APlace;
 import com.comp3004.beacon.Networking.MessageSenderHandler;
 import com.comp3004.beacon.R;
+import com.comp3004.beacon.User.CurrentBeaconUser;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONObject;
 
@@ -206,24 +209,30 @@ public class NearbyPlacesActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     AlertDialog dialog = new AlertDialog.Builder(NearbyPlacesActivity.this, R.style.MyDialogTheme)
-                            .setTitle("Create a Beacon")
-                            .setMessage("Would you like to create a beacon here?")
-                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                @Override
+                            .setTitle("Public Location")
+                            .setItems(new String[]{"Create Beacon Here", "Track", "Cancel"}, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-                                    MessageSenderHandler.getInstance().sendPublicBeacon(place.getLocation());
-                                    Intent publicBeaconIntent = new Intent(context, MapsActivity.class);
-                                    publicBeaconIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    publicBeaconIntent.putExtra(MapsActivity.FRIEND_REQUEST, true);
+                                    switch (which) {
+                                        case 0:
+                                            MessageSenderHandler.getInstance().sendPublicBeacon(place.getLocation());
+                                            Intent publicBeaconIntent = new Intent(context, MapsActivity.class);
+                                            publicBeaconIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            publicBeaconIntent.putExtra(MapsActivity.FRIEND_REQUEST, true);
+                                            break;
+                                        case 1:
+                                            LatLng latlng = place.getLocation();
+                                            String lat = "" + latlng.latitude;
+                                            String lon = "" + latlng.longitude;
+                                            Intent intent2 = new Intent(NearbyPlacesActivity.this, ArrowActivity2.class);
+                                            intent2.putExtra(ArrowActivity2.FROM_MAP_TRACK_LAT, lat);
+                                            intent2.putExtra(ArrowActivity2.FROM_MAP_TRACK_LON, lon);
+                                            startActivity(intent2);
+                                            break;
+                                        case 2:
+                                            break;
+                                    }
                                 }
-                            })
-                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.cancel();
-                                }
-                            })
-                            .show();
+                            }).show();
                 }
             });
 

@@ -143,6 +143,7 @@ public class FriendListActivity extends AppCompatActivity {
                                 Intent intent = new Intent(FriendListActivity.this, ChatActivity.class);
                                 intent.putExtra("CHAT_ID", CurrentBeaconUser.getInstance().getUserId() + "_" + friendsList.get(userIndex).getUserId());
                                 intent.putExtra("CHAT_PARTICIPANT", friendsList.get(userIndex).getUserId());
+                                intent.putExtra("CHAT_WITH", friendsListView.getItemAtPosition(userIndex).toString());
                                 startActivity(intent);
                                 break;
                             case 2:

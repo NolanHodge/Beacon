@@ -39,6 +39,14 @@ public class ChatMessageThreadsActivity extends AppCompatActivity {
         chatTitles = new ArrayList<String>();
         chatIds = new ArrayList<String>();
 
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            if (extras.containsKey("CHAT_WITH")) {
+                String chatWith = extras.getString("CHAT_WITH");
+                setTitle(chatWith);
+            }
+        }
+
         conversationsListView = (ListView) findViewById(R.id.conversationsListView);
 
         DatabaseManager.getInstance().subscribeToMessageThread();
@@ -54,10 +62,12 @@ public class ChatMessageThreadsActivity extends AppCompatActivity {
                     List<String> chatParticipantIds = Arrays.asList(thread.get(0).getThreadId().split("_"));
 
                     BeaconUser chatParticipant = (BeaconUser) currentBeaconUser.getFriends().get(chatParticipantIds.get(1));
-                    String chatTitle = chatParticipant.getDisplayName();
-                    if (!chatParticipant.getUserId().equals(currentBeaconUser.getUserId())) {
-                        chatTitles.add(chatTitle);
-                        chatIds.add((String) key);
+                    if (chatParticipant != null) {
+                        String chatTitle = chatParticipant.getDisplayName();
+                        if (!chatParticipant.getUserId().equals(currentBeaconUser.getUserId())) {
+                            chatTitles.add(chatTitle);
+                            chatIds.add((String) key);
+                        }
                     }
                 }
             }
