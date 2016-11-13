@@ -256,8 +256,8 @@ public class ArrowActivity2 extends FragmentActivity implements SensorEventListe
 
     protected void onResume() {
         super.onResume();
-        mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_GAME);
-        mSensorManager.registerListener(this, mMagnetometer, SensorManager.SENSOR_DELAY_GAME);
+        mSensorManager.registerListener(this, mAccelerometer,SensorManager.SENSOR_DELAY_GAME);
+        mSensorManager.registerListener(this, mMagnetometer,SensorManager.SENSOR_DELAY_GAME);
     }
 
     protected void onPause() {

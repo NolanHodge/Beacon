@@ -401,7 +401,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
                 CameraPosition cameraPosition = new CameraPosition.Builder()
                         .target(new LatLng(location.getLatitude(), location.getLongitude()))
-                        .zoom(13)
+                        .zoom(15)
                         .build();
                 mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                 // comment out addMarker function to remove the little tower!
