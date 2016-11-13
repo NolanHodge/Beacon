@@ -37,9 +37,10 @@ import android.view.View;
 
 import android.widget.Toast;
 
+import android.widget.Switch;
+
 import com.comp3004.beacon.FirebaseServices.DatabaseManager;
 import com.comp3004.beacon.LocationManagement.LocationService;
-import com.comp3004.beacon.Networking.PhotoSenderHandler;
 import com.comp3004.beacon.NotificationHandlers.CurrentBeaconInvitationHandler;
 import com.comp3004.beacon.NotificationHandlers.CurrentFriendRequestsHandler;
 import com.comp3004.beacon.NotificationHandlers.CurrentLocationRequestHandler;
@@ -90,6 +91,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public static final String LOCATION_REQUEST = "location_request";
     public static final String BEACON_REQUEST = "beacon_request";
     private Context context;
+    private Switch switch_d;
     // Firebase instance variables
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
@@ -107,7 +109,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     boolean pendingFriendRequest;
     boolean pendingLocationRequest;
     boolean pendingBeaconRequest;
-
+    private Location loc = null;
+    private boolean switch_on = false;
     Marker currentMarker;
 
     Handler mHandler;
@@ -117,7 +120,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
 
         findViewById(R.id.arrow_prgrs).setVisibility(View.VISIBLE);
-
+        switch_d = (Switch) findViewById(R.id.three_d_switch);
         context = this;
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -242,6 +245,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         });
+
+        switch_d.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                    if (!switch_on) {
+                        switch_on = true;
+                        CameraPosition currentPlace = new CameraPosition.Builder()
+                                .target(new LatLng(loc.getLatitude(), loc.getLongitude()))
+                                .tilt(65.5f).zoom(18).build();
+                        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(currentPlace));
+                    } else {
+                        switch_on = false;
+                        CameraPosition cameraPosition = new CameraPosition.Builder()
+                                .target(new LatLng(loc.getLatitude(), loc.getLongitude()))
+                                .zoom(15)
+                                .build();
+                        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                    }
+                }
+        });
+
         placeBeacons();
     }
 
@@ -400,6 +424,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     locationManager.removeUpdates(this);
                 } catch (SecurityException e) {
                 }
+
+                loc = location;
+
                 CameraPosition cameraPosition = new CameraPosition.Builder()
                         .target(new LatLng(location.getLatitude(), location.getLongitude()))
                         .zoom(15)
@@ -415,6 +442,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         };
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 10, locationService);
 
+        // uncomment this for blue "location" icon, enable for debugging only
         //mMap.setMyLocationEnabled(true);
 
         //Add PrivateBeacon markers to the map
