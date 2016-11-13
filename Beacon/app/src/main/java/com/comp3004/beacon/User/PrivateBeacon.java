@@ -2,6 +2,9 @@ package com.comp3004.beacon.User;
 
 import com.comp3004.beacon.NotificationHandlers.CurrentBeaconInvitationHandler;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Created by julianclayton on 16-10-10.
  */
@@ -55,4 +58,12 @@ public class PrivateBeacon extends Beacon {
         this.toUserId = toUserId;
     }
 
+    private boolean isPrivate() {
+        List<String> ids = Arrays.asList(beaconId.split("_"));
+        if (ids.size() == 3 && ids.get(2).equals("private")) {
+            return true;
+        }
+        else return false;
+
+    }
 }
