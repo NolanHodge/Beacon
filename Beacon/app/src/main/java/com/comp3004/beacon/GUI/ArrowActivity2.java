@@ -80,6 +80,7 @@ public class ArrowActivity2 extends FragmentActivity implements SensorEventListe
         private FloatingActionButton imageViewButton;
         private float distance;
         private float mCurrentDegree = 0f;
+        private Location location;
 
         public static String CURRENT_BEACON_ID_KEY = "CURRENT_BEACON_ID";
         public static String FROM_MAP_TRACK_LAT = "FROM_MAP_TRACK_LAT";
@@ -285,7 +286,7 @@ public class ArrowActivity2 extends FragmentActivity implements SensorEventListe
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER) == null ?
+         location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER) == null ?
                 locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER) :
                 locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
@@ -320,7 +321,6 @@ public class ArrowActivity2 extends FragmentActivity implements SensorEventListe
             direction2 = direction2 + 360;
         }
 
-        mPointer.setRotation(direction2 % 360);
 
         // Rotate Compass
         float azimuthInRadians = mOrientation[0];
@@ -331,8 +331,21 @@ public class ArrowActivity2 extends FragmentActivity implements SensorEventListe
                 Animation.RELATIVE_TO_SELF, 0.5f,
                 Animation.RELATIVE_TO_SELF,
                 0.5f);
+
+        RotateAnimation ra2 = new RotateAnimation(
+                mCurrentDegree,
+                -direction2,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF,
+                0.5f);
+
         ra.setDuration(250);
         ra.setFillAfter(true);
+        ra2.setDuration(250);
+        ra2.setFillAfter(true);
+
+        mPointer.setRotation(direction2 % 360);
+
         findViewById(R.id.compass_corner).startAnimation(ra);
         mCurrentDegree = -azimuthInDegress;
 
@@ -342,11 +355,12 @@ public class ArrowActivity2 extends FragmentActivity implements SensorEventListe
         findViewById(R.id.arrow_prgrs).setVisibility(View.INVISIBLE);
     }
 
-    private void updateCamera(float bearing) {
-        CameraPosition oldPos = mMap.getCameraPosition();
+    public void updateCamera(float bearing) {
+        CameraPosition currentPlace = new CameraPosition.Builder()
+                .target(new LatLng(location.getLatitude(), location.getLongitude()))
+                .bearing(bearing).tilt(65.5f).zoom(getZoomDistance((int)distance)).build();
+        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(currentPlace));
 
-        CameraPosition pos = CameraPosition.builder(oldPos).bearing(bearing).build();
-        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(pos));
     }
 
     /*
@@ -372,7 +386,7 @@ public class ArrowActivity2 extends FragmentActivity implements SensorEventListe
         2  : 295828775.300000
         1  : 591657550.500000
     */
-    public int getZoomDistance(int dist)
+    public float getZoomDistance(int dist)
     {
         if (dist < 100)
             return 19;
