@@ -1,6 +1,8 @@
 package com.comp3004.beacon.GUI;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
@@ -36,14 +38,14 @@ import java.util.List;
 public class NearbyPlacesActivity extends AppCompatActivity {
 
     private Location myLocation;
-
+    Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nearby_places);
 
         findViewById(R.id.arrow_prgrs).setVisibility(View.VISIBLE);
-
+        context = this;
         final LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         final LocationService locationService = new LocationService() {
             @Override
@@ -210,6 +212,9 @@ public class NearbyPlacesActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     MessageSenderHandler.getInstance().sendPublicBeacon(place.getLocation());
+                                    Intent publicBeaconIntent = new Intent(context, MapsActivity.class);
+                                    publicBeaconIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    publicBeaconIntent.putExtra(MapsActivity.FRIEND_REQUEST, true);
                                 }
                             })
                             .setNegativeButton("No", new DialogInterface.OnClickListener() {

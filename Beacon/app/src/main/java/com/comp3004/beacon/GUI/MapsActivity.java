@@ -9,11 +9,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
 
 import android.net.Uri;
 
+import android.os.Handler;
 import android.preference.PreferenceManager;
 
 import android.provider.MediaStore;
@@ -37,6 +39,7 @@ import android.widget.Toast;
 
 import com.comp3004.beacon.FirebaseServices.DatabaseManager;
 import com.comp3004.beacon.LocationManagement.LocationService;
+import com.comp3004.beacon.Networking.PhotoSenderHandler;
 import com.comp3004.beacon.NotificationHandlers.CurrentBeaconInvitationHandler;
 import com.comp3004.beacon.NotificationHandlers.CurrentFriendRequestsHandler;
 import com.comp3004.beacon.NotificationHandlers.CurrentLocationRequestHandler;
@@ -44,6 +47,7 @@ import com.comp3004.beacon.Networking.MessageSenderHandler;
 import com.comp3004.beacon.Networking.SubscriptionHandler;
 
 import com.comp3004.beacon.R;
+import com.comp3004.beacon.User.Beacon;
 import com.comp3004.beacon.User.PrivateBeacon;
 import com.comp3004.beacon.User.CurrentBeaconUser;
 
@@ -71,6 +75,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Marker;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, OnMarkerClickListener {
 
@@ -100,6 +106,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     boolean pendingLocationRequest;
     boolean pendingBeaconRequest;
 
+    Marker currentMarker;
+
+    Handler mHandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,7 +118,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
+        mHandler = new Handler();
 
         pendingFriendRequest = false;
 
@@ -227,6 +236,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         });
+        placeBeacons();
     }
 
     public void fetchConfig() {
@@ -256,9 +266,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        placeBeacons();
+    }
     public void openLocationRequestDialog() {
         final Context context = this;
-        CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
         final CurrentLocationRequestHandler currentLocationRequestHandler = CurrentLocationRequestHandler.getInstance();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -296,9 +310,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         builder.setPositiveButton("Accept", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
 
+
                 PrivateBeacon privateBeacon = new PrivateBeacon(currentBeaconInvitationHandler);
                 CurrentBeaconUser.getInstance().addBeacon(privateBeacon);
 
+                placeBeacons();
                 Intent intent = new Intent(MapsActivity.this, ArrowActivity2.class);
                 intent.putExtra("CURRENT_BEACON_ID", privateBeacon.getFromUserId());
                 startActivity(intent);
@@ -353,6 +369,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(final GoogleMap googleMap) {
+        System.out.println("MAP READY");
         mMap = googleMap;
         DatabaseManager.getInstance().loadCurrentUser();
         mMap.setOnMarkerClickListener(this);
@@ -388,22 +405,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //mMap.setMyLocationEnabled(true);
 
         //Add PrivateBeacon markers to the map
-        for (PrivateBeacon privateBeacon : currentBeaconUser.getBeacons().values()) {
-            if (privateBeacon == null) break;
-            LatLng position = new LatLng(Double.parseDouble(privateBeacon.getLat()), Double.parseDouble(privateBeacon.getLon()));
-            String userId = privateBeacon.getFromUserId();
-            System.out.println("User ID " + privateBeacon.getFromUserId());
-            mMap.addMarker(new MarkerOptions()
-                    .title("Private Beacon")
-                    .position(position)
-                    .snippet(currentBeaconUser.getFriend(userId).getDisplayName())
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.tower_icon_small)));
-        }
+        placeBeacons();
+
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(final LatLng latLng) {
 
-                CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
+                final CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
 
                 final Marker holdMarker = mMap.addMarker(new MarkerOptions()
                         .title("Your Public Beacon")
@@ -422,6 +430,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         MessageSenderHandler.getInstance().sendPublicBeacon(latLng);
+                                        if (currentMarker != null) {
+                                            currentMarker.remove();
+                                        }
+                                        currentMarker = holdMarker;
                                     }
                                 })
                                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -488,6 +500,57 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(this, android.R.color.holo_blue_light));
         return true;
     }
+    public void placeBeacons() {
+
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            final CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
+                            for (PrivateBeacon privateBeacon : currentBeaconUser.getBeacons().values()) {
+                                if (privateBeacon == null) break;
+                                final LatLng position = new LatLng(Double.parseDouble(privateBeacon.getLat()), Double.parseDouble(privateBeacon.getLon()));
+                                final String userId = privateBeacon.getFromUserId();
+                                System.out.println("User ID " + privateBeacon.getFromUserId());
+                                System.out.println("Marker: "+ privateBeacon.getBeaconId() + "Marker: " + position + "\n" + "Marker: " + currentBeaconUser.getFriend(userId).getDisplayName());
+                                final String title;
+                                if (privateBeacon.isPublicBeacon()) {  title = "Public Beacon";}
+                                else {title = "Private Beacon";}
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mMap.addMarker(new MarkerOptions()
+                                                .title(title)
+                                                .position(position)
+                                                .snippet(currentBeaconUser.getFriend(userId).getDisplayName())
+                                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.tower_icon_small)));
+                                        }});
+                            }
+                            for (Object key : currentBeaconUser.getMyBeacons().keySet()) {
+                                if (isPublicBeacon((String) key)) {
+                                    Beacon beacon = (Beacon) currentBeaconUser.getMyBeacons().get((String) key);
+                                    LatLng position = new LatLng(Double.parseDouble(beacon.getLat()), Double.parseDouble(beacon.getLon()));
+                                    Marker marker =  mMap.addMarker(new MarkerOptions()
+                                    .title("Your public beacon")
+                                    .snippet(currentBeaconUser.getDisplayName())
+                                    .position(position)
+                                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.tower_icon_small)));
+                                    if (currentMarker != null) {
+                                        currentMarker.remove();
+                                    }
+                                    currentMarker = marker;
+
+                                }
+                            }
+                        }});
+                }
+            }).start();
+    }
+
+
 
     private File getFile() {
         File folder = new File("sdcard/camera_app");
@@ -499,6 +562,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return imageFile;
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -506,8 +570,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         File file = new File(path);
         MessageSenderHandler.getInstance().sendPhotoMessage(file);
     }
-
     public void openNearby(View v) {
         startActivity(new Intent(this, NearbyPlacesActivity.class));
     }
+
+
+    private boolean isPublicBeacon(String beaconId) {
+        List<String> ids = Arrays.asList(beaconId.split("_"));
+        if (ids.size() == 3 && ids.get(2).equals("private")) {
+            return false;
+        }
+        else return true;
+
+    }
+
 }
