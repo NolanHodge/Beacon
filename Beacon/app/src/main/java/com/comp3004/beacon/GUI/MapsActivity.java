@@ -480,6 +480,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                                 publicBeaconIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                                 publicBeaconIntent.putExtra(MapsActivity.FRIEND_REQUEST, true);
                                                 public_beacon = true;
+                                                if (currentMarker != null) {
+                                                    currentMarker.remove();
+                                                }
+                                                currentMarker = holdMarker;
                                                 break;
                                             case 1:
                                                 String lat = "" + latLng.latitude;

@@ -32,6 +32,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.comp3004.beacon.FirebaseServices.DatabaseManager;
+import com.comp3004.beacon.LocationManagement.LocationService;
 import com.comp3004.beacon.Networking.MailBox;
 import com.comp3004.beacon.Networking.MessageSenderHandler;
 import com.comp3004.beacon.R;
@@ -45,7 +46,7 @@ public class FriendListActivity extends AppCompatActivity {
     ArrayList<BeaconUser> friendsList;
     ArrayList<String> userNames;
     ListView friendsListView;
-
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +57,7 @@ public class FriendListActivity extends AppCompatActivity {
         userNames = new ArrayList<String>();
         friendsListView = (ListView) findViewById(R.id.friendListView);
         FloatingActionButton messageButton = (FloatingActionButton) findViewById(R.id.message_friends_button);
-
+        context = this;
         //Add friends to list for GUI
         if (CurrentBeaconUser.getInstance().getFriends() != null) {
             for (Object key : CurrentBeaconUser.getInstance().getFriends().keySet()) {
@@ -121,18 +122,28 @@ public class FriendListActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MyDialogTheme);
         final Context context = this;
         builder.setTitle("Send " + beaconUser.getDisplayName())
-                .setItems(new String[]{"Beacon", "Message","Request a Beacon", "Cancel"}, new DialogInterface.OnClickListener() {
+                .setItems(new String[]{"Beacon", "Message", "Request a Beacon", "Cancel"}, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case 0:
-                                LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+                                final LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+                                LocationService locationService = new LocationService() {
+                                    @Override
+                                    public void onLocationChanged(Location location) {
+                                        try {
+                                            locationManager.removeUpdates(this);
+                                        } catch (SecurityException e) {
+                                        }
+
+
+                                        MessageSenderHandler.getInstance().sendBeaconRequest(friendsList.get(userIndex).getUserId(), location);
+                                    }
+                                };
                                 if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                                     return;
                                 }
-                                Location current = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER) == null ?
-                                        locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER) :
-                                        locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                                MessageSenderHandler.getInstance().sendBeaconRequest(friendsList.get(userIndex).getUserId(), current);
+                                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 10, locationService);
+
                                 break;
                             case 1:
                                 String chatId = CurrentBeaconUser.getInstance().getUserId() + "_" + friendsList.get(userIndex).getUserId();
