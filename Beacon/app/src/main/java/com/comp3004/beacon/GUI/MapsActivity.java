@@ -373,8 +373,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(final GoogleMap googleMap) {
-        System.out.println("MAP READY");
         mMap = googleMap;
+        mMap.clear();
         DatabaseManager.getInstance().loadCurrentUser();
         mMap.setOnMarkerClickListener(this);
         final CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
@@ -383,8 +383,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
         try {
-            // Customise the styling of the base map using a JSON object defined
-            // in a raw resource file.
+
             boolean success = mMap.setMapStyle(
                     MapStyleOptions.loadRawResourceStyle(
                             this, R.raw.beacon_map_style));
