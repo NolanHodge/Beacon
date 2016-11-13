@@ -19,7 +19,7 @@ public class CurrentBeaconUser extends BeaconUser {
 
     public CurrentBeaconUser(FirebaseUser user, FirebaseInstanceId id) {
         super(user, id);
-        getFriends().put(user.getUid(), new BeaconUser(user.getUid(), user.getDisplayName(), "tok", user.getPhotoUrl().toString()));
+        friends.put(user.getUid(), new BeaconUser(user.getUid(), user.getDisplayName(), "tok", user.getPhotoUrl().toString()));
         currentBeaconUser = this;
         registered = false;
         myBeacons = new HashMap<String, Beacon>();

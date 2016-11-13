@@ -14,7 +14,7 @@ public class BeaconUser {
     private String displayName;
     private String userAuthToken;
     private String photoUrl;
-    private HashMap<String, BeaconUser> friends;
+    protected HashMap<String, BeaconUser> friends;
     protected HashMap<String, PrivateBeacon> beacons;
 
     FirebaseUser firebaseUser;

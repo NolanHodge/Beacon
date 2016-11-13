@@ -19,6 +19,9 @@ public class CurrentUsersFriendsDataListener implements ValueEventListener {
     public void onDataChange(DataSnapshot dataSnapshot) {
         BeaconUser beaconUser = dataSnapshot.getValue(BeaconUser.class);
         CurrentBeaconUser.getInstance().setCurrentBeaconUser(beaconUser);
+
+     
+
     }
 
     @Override
