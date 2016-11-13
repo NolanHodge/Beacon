@@ -88,7 +88,7 @@ public class BeaconsListActivity extends AppCompatActivity {
     }
     public void showBeaconOptionDialog(final PrivateBeacon privateBeacon, final int index) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MyDialogTheme);
-        builder
+        builder .setTitle(beaconsListView.getItemAtPosition(index).toString())
                 .setItems(new String[]{"Track", "Delete", "Cancel"}, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {

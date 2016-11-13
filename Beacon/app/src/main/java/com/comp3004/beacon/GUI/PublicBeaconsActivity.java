@@ -109,7 +109,7 @@ public class PublicBeaconsActivity extends AppCompatActivity {
     }
 
     public void showBeaconOptionDialog(PublicBeacon publicBeacon, final int position) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MyDialogTheme);
         final Context context = this;
         builder.setTitle("Follow " + publicBeacon.getDisplayName() + "?")
                 .setItems(new String[]{"Yes", "No"}, new DialogInterface.OnClickListener() {
