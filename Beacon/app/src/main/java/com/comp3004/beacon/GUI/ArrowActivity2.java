@@ -76,7 +76,7 @@ public class ArrowActivity2 extends AppCompatActivity implements SensorEventList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_arrow2);
         Bundle extras = getIntent().getExtras();
-
+        findViewById(R.id.arrow_prgrs).setVisibility(View.VISIBLE);
         imageViewButton = (FloatingActionButton) findViewById(R.id.view_image_button2);
 
 
@@ -180,12 +180,6 @@ public class ArrowActivity2 extends AppCompatActivity implements SensorEventList
                 locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER) :
                 locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-        final float[] results = new float[3];
-        Location.distanceBetween(location.getLatitude(), location.getLongitude(), target.getLatitude(), target.getLongitude(), results);
-        String s = results[0] > 1100 ? String.format("%.1f km", results[0] / 1000) : String.format("%.1f m", results[0]);
-        TextView textView = (TextView) findViewById(R.id.txt_distance);
-        textView.setText(s);
-
         SensorManager.getRotationMatrix(mR, null, accelerometerValues, geomagneticValues);
         SensorManager.getOrientation(mR, mOrientation);
 
@@ -217,13 +211,9 @@ public class ArrowActivity2 extends AppCompatActivity implements SensorEventList
             direction2 = direction2 + 360;
         }
 
-        TextView myCoords = (TextView) findViewById(R.id.txt_degrees);
-        myCoords.setText("lat: " + location.getLatitude() + " lon: " + location.getLongitude());
+        mPointer.setRotation(direction2 % 360);
 
-        TextView theirCoords = (TextView) findViewById(R.id.txt_bearing);
-        theirCoords.setText("lat: " + target.getLatitude() + " lon: " + target.getLongitude());
-
-        mPointer.setRotation(direction2);
+        findViewById(R.id.arrow_prgrs).setVisibility(View.INVISIBLE);
     }
 
     @Override

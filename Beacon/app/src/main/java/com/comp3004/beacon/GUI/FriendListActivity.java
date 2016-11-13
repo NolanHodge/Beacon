@@ -118,7 +118,7 @@ public class FriendListActivity extends AppCompatActivity {
     }
 
     public void showBeaconOptionDialog(BeaconUser beaconUser, final int userIndex) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MyDialogTheme);
         final Context context = this;
         builder.setTitle("Send " + beaconUser.getDisplayName())
                 .setItems(new String[]{"Beacon", "Message","Request a Beacon", "Cancel"}, new DialogInterface.OnClickListener() {
