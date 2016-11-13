@@ -89,7 +89,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public static final String FRIEND_REQUEST = "friend_request";
     public static final String LOCATION_REQUEST = "location_request";
     public static final String BEACON_REQUEST = "beacon_request";
-
+    private Context context;
     // Firebase instance variables
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
@@ -117,6 +117,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
 
         findViewById(R.id.arrow_prgrs).setVisibility(View.VISIBLE);
+
+        context = this;
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -421,7 +423,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(final LatLng latLng) {
-
                 final CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
 
                 final Marker holdMarker = mMap.addMarker(new MarkerOptions()
@@ -435,28 +436,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     @Override
                     public void onCameraIdle() {
                         AlertDialog dialog = new AlertDialog.Builder(MapsActivity.this, R.style.MyDialogTheme)
-                                .setTitle("Create a Public Beacon")
-                                .setMessage("Would you like to create a beacon here?")
-                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                    @Override
+                                .setTitle("New Location")
+                                .setItems(new String[]{ "Public Beacon", "Track", "Cancel"}, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
-                                        MessageSenderHandler.getInstance().sendPublicBeacon(latLng);
-                                        if (currentMarker != null) {
-                                            currentMarker.remove();
+                                        boolean public_beacon = false;
+                                        switch (which) {
+                                            case 0:
+                                                MessageSenderHandler.getInstance().sendPublicBeacon(latLng);
+                                                Intent publicBeaconIntent = new Intent(context, MapsActivity.class);
+                                                publicBeaconIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                publicBeaconIntent.putExtra(MapsActivity.FRIEND_REQUEST, true);
+                                                public_beacon = true;
+                                                break;
+                                            case 1:
+                                                String lat = "" + latLng.latitude;
+                                                String lon = "" + latLng.longitude;
+                                                Intent intent2 = new Intent(MapsActivity.this, ArrowActivity2.class);
+                                                intent2.putExtra(ArrowActivity2.FROM_MAP_TRACK_LAT, lat);
+                                                intent2.putExtra(ArrowActivity2.FROM_MAP_TRACK_LON, lon);
+                                                startActivity(intent2);
+                                                break;
+                                            case 2:
+                                                break;
                                         }
-                                        currentMarker = holdMarker;
+                                        if (!public_beacon) // one time track and cancel, we remove marker
+                                            holdMarker.remove();
                                     }
-                                })
-                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        //mMap.clear();
-                                        holdMarker.remove();
-                                        //dialog.cancel(); //could've left this empty
-                                    }
-                                })
-                                .show();
-
+                                }).show();
                         mMap.setOnCameraIdleListener(null);
                     }
                 });
