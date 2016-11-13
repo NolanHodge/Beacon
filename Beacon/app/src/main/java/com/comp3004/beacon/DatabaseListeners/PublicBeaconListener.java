@@ -51,6 +51,9 @@ public class PublicBeaconListener implements ChildEventListener {
                 }
             }
         }
+        PublicBeaconHandler.getInstance().removeBeacon(dataSnapshot.getKey());
+        PublicBeaconHandler.getInstance().addBeacon(dataSnapshot.getKey(), publicBeacon);
+
     }
 
 
