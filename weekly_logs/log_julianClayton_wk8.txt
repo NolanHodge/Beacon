@@ -1,0 +1,8 @@
+Julian Clayton Weekly Log #8
+=================================================
+- Fixing up the map so Beacons are displayed right away. (3 hrs)
+- Various bug-fixes in prepartion for prototype demo (3 hrs)
+- Diagram for prototype demo (1 hr)
+- Documentation for deliverable 2 (2 hrs)
+
+
