@@ -49,7 +49,9 @@ public class CurrentBeaconUser extends BeaconUser {
     }
 
     public void addMyBeaon(String beaconId, Beacon beacon) {
+        beacon.setBeaconId(beaconId);
         myBeacons.put(beaconId, beacon);
+        beacon.setBeaconId(beaconId);
     }
 
     public void removeMyBeacon(String beaconId) {

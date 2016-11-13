@@ -1,5 +1,8 @@
 package com.comp3004.beacon.User;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Created by julianclayton on 16-10-23.
  */
@@ -34,7 +37,12 @@ public class Beacon {
     }
 
     public boolean isPublicBeacon() {
-        return publicBeacon;
+        List<String> ids = Arrays.asList(beaconId.split("_"));
+        if (ids.size() == 3 && ids.get(2).equals("private")) {
+            return false;
+        }
+        else return true;
+
     }
     public void setPublicBeacon(boolean publicBeacon) {
         this.publicBeacon = publicBeacon;

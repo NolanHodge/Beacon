@@ -536,7 +536,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                         }});
                             }
                             for (Object key : currentBeaconUser.getMyBeacons().keySet()) {
-                                if (isPublicBeacon((String) key)) {
+                                if (currentBeaconUser.getMyBeacon((String) key).isPublicBeacon()) {
                                     Beacon beacon = (Beacon) currentBeaconUser.getMyBeacons().get((String) key);
                                     LatLng position = new LatLng(Double.parseDouble(beacon.getLat()), Double.parseDouble(beacon.getLon()));
                                     Marker marker =  mMap.addMarker(new MarkerOptions()
@@ -581,13 +581,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-    private boolean isPublicBeacon(String beaconId) {
-        List<String> ids = Arrays.asList(beaconId.split("_"));
-        if (ids.size() == 3 && ids.get(2).equals("private")) {
-            return false;
-        }
-        else return true;
-
-    }
 
 }
