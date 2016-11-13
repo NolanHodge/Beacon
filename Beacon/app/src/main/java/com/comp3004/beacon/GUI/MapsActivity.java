@@ -105,6 +105,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
+        findViewById(R.id.arrow_prgrs).setVisibility(View.VISIBLE);
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -434,15 +436,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 })
                                 .show();
 
-                        // dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(android.R.color.holo_red_light));
-                        //dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(android.R.color.holo_blue_light));
-
                         mMap.setOnCameraIdleListener(null);
                     }
                 });
 
             }
         });
+
+        findViewById(R.id.arrow_prgrs).setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -459,7 +460,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         }
                     }).show();
 
-            dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(android.R.color.holo_blue_light));
             return true;
         }
         AlertDialog dialog = new AlertDialog.Builder(MapsActivity.this, R.style.MyDialogTheme)
@@ -484,8 +484,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     }
                 })
                 .show();
-        dialog.getButton(dialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(this, android.R.color.holo_red_light));
-        dialog.getButton(dialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(this, android.R.color.holo_blue_light));
         return true;
     }
 

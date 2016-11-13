@@ -126,7 +126,7 @@ public class UserSearchActivity extends AppCompatActivity {
     }
 
     public void showUserSearchDialog(BeaconUser beaconUser, final int userIndex) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MyDialogTheme);
         builder.setTitle(beaconUser.getDisplayName())
                 .setItems(new String[]{"Add Friend", "Cancel"}, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
