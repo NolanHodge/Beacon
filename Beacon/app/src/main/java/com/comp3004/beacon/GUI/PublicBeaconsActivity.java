@@ -22,6 +22,7 @@ import com.comp3004.beacon.FirebaseServices.DatabaseManager;
 import com.comp3004.beacon.Networking.MessageSenderHandler;
 import com.comp3004.beacon.Networking.PublicBeaconHandler;
 import com.comp3004.beacon.R;
+import com.comp3004.beacon.User.CurrentBeaconUser;
 import com.comp3004.beacon.User.PublicBeacon;
 
 import java.util.ArrayList;
@@ -49,12 +50,13 @@ public class PublicBeaconsActivity extends AppCompatActivity {
 
         if (PublicBeaconHandler.getInstance().getBeacons() != null) {
             for (Object key : PublicBeaconHandler.getInstance().getBeacons().keySet()) {
-                PublicBeacon beacon = PublicBeaconHandler.getInstance().getBeacon(String.valueOf(key));
-                beaconsList.add(beacon);
-                beaconUsernames.add(beacon.getDisplayName());
+                if (!PublicBeaconHandler.getInstance().getBeacon((String) key).getFromUserId().equals(CurrentBeaconUser.getInstance().getUserId())) {
+                    PublicBeacon beacon = PublicBeaconHandler.getInstance().getBeacon(String.valueOf(key));
+                    beaconsList.add(beacon);
+                    beaconUsernames.add(beacon.getDisplayName());
+                }
             }
         }
-
         myBeaconsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

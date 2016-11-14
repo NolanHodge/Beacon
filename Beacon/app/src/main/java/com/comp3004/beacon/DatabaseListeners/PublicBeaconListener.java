@@ -42,7 +42,6 @@ public class PublicBeaconListener implements ChildEventListener {
     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
         PublicBeacon publicBeacon = dataSnapshot.getValue(PublicBeacon.class);
         if (!publicBeacon.getFromUserId().equals(CurrentBeaconUser.getInstance().getUserId())) {
-            System.out.println("Loc: " + publicBeacon.getLon() + publicBeacon.getLat());
             PublicBeaconHandler.getInstance().addBeacon(dataSnapshot.getKey(), publicBeacon);
             for (Beacon beacon : CurrentBeaconUser.getInstance().getBeacons().values()) {
                 if (beacon.getFromUserId().equals(publicBeacon.getFromUserId())) {
@@ -51,8 +50,10 @@ public class PublicBeaconListener implements ChildEventListener {
                 }
             }
         }
-        PublicBeaconHandler.getInstance().removeBeacon(dataSnapshot.getKey());
-        PublicBeaconHandler.getInstance().addBeacon(dataSnapshot.getKey(), publicBeacon);
+        if (getUserId(dataSnapshot.getKey()).equals(CurrentBeaconUser.getInstance().getUserId())) {
+            PublicBeaconHandler.getInstance().removeBeacon(dataSnapshot.getKey());
+            PublicBeaconHandler.getInstance().addBeacon(dataSnapshot.getKey(), publicBeacon);
+        }
 
     }
 
