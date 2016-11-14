@@ -98,6 +98,7 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/arrow_prgrs" />
 
+    <!--
     <Switch
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -109,5 +110,5 @@
         android:layout_alignRight="@+id/arrow_prgrs"
         android:layout_alignEnd="@+id/arrow_prgrs" />
 
-
+        -->
 </RelativeLayout>

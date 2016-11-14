@@ -111,7 +111,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     boolean pendingLocationRequest;
     boolean pendingBeaconRequest;
     private Location loc = null;
-    private boolean switch_on = false;
+    //private boolean switch_on = false;
     Marker currentMarker;
 
 
@@ -124,7 +124,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
 
         findViewById(R.id.arrow_prgrs).setVisibility(View.VISIBLE);
-        switch_d = (Switch) findViewById(R.id.three_d_switch);
         context = this;
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -251,7 +250,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-        switch_d.setOnClickListener(new View.OnClickListener(){
+/*        switch_d.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                     if (!switch_on) {
@@ -269,7 +268,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
                     }
                 }
-        });
+        });*/
 
         placeBeacons();
     }
