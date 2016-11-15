@@ -33,6 +33,7 @@ import android.widget.TextView;
 
 import com.comp3004.beacon.FirebaseServices.DatabaseManager;
 import com.comp3004.beacon.LocationManagement.LocationService;
+import com.comp3004.beacon.LocationManagement.MyLocationManager;
 import com.comp3004.beacon.Networking.MailBox;
 import com.comp3004.beacon.Networking.MessageSenderHandler;
 import com.comp3004.beacon.R;
@@ -136,7 +137,7 @@ public class FriendListActivity extends AppCompatActivity {
                                         }
 
 
-                                        MessageSenderHandler.getInstance().sendBeaconRequest(friendsList.get(userIndex).getUserId(), location);
+                                        MessageSenderHandler.getInstance().sendBeaconRequest(friendsList.get(userIndex).getUserId(), MyLocationManager.getInstance().getMyLocation());
                                     }
                                 };
                                 if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {

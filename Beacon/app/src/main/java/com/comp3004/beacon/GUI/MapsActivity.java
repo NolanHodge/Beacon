@@ -41,6 +41,7 @@ import android.widget.Switch;
 
 import com.comp3004.beacon.FirebaseServices.DatabaseManager;
 import com.comp3004.beacon.LocationManagement.LocationService;
+import com.comp3004.beacon.LocationManagement.MyLocationManager;
 import com.comp3004.beacon.NotificationHandlers.CurrentBeaconInvitationHandler;
 import com.comp3004.beacon.NotificationHandlers.CurrentFriendRequestsHandler;
 import com.comp3004.beacon.NotificationHandlers.CurrentLocationRequestHandler;
@@ -323,7 +324,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Location current = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER) == null ?
                         locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER) :
                         locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                MessageSenderHandler.getInstance().sendBeaconRequest(currentLocationRequestHandler.getLocationRequestMessage().getFromUserId(), current);
+                MessageSenderHandler.getInstance().sendBeaconRequest(currentLocationRequestHandler.getLocationRequestMessage().getFromUserId(), MyLocationManager.getInstance().getMyLocation());
 
             }
         });
@@ -442,10 +443,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         .position(new LatLng(location.getLatitude(), location.getLongitude()))
                         .snippet(currentBeaconUser.getDisplayName())
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.tower_icon_small)));
+                MyLocationManager.getInstance().setMyLocation(location);
+
             }
         };
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 10, locationService);
-
         // uncomment this for blue "location" icon, enable for debugging only
         //mMap.setMyLocationEnabled(true);
 
