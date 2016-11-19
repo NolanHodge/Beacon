@@ -15,10 +15,8 @@ import java.util.List;
 public class PrivateBeaconListener implements ChildEventListener {
     @Override
     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-        System.out.println("Child added");
         PrivateBeacon privateBeacon = dataSnapshot.getValue(PrivateBeacon.class);
         if (getUserId(dataSnapshot.getKey()).equals(CurrentBeaconUser.getInstance().getUserId())) {
-            System.out.println("Child added2");
             CurrentBeaconUser.getInstance().addMyBeaon(dataSnapshot.getKey(), privateBeacon);
         }
     }

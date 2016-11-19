@@ -33,14 +33,12 @@ public class BeaconRequestDataListener implements ChildEventListener {
 
         PrivateBeacon privateBeacon = new PrivateBeacon(currentBeaconInvititationHandler);
         privateBeacon.setBeaconId(dataSnapshot.getKey());
-        CurrentBeaconUser.getInstance().getBeacons().put(privateBeacon.getFromUserId(), privateBeacon);
+        CurrentBeaconUser.getInstance().getBeacons().put(dataSnapshot.getKey(), privateBeacon);
 
         if (getUserId(dataSnapshot.getKey()).equals(CurrentBeaconUser.getInstance().getUserId())) {
             privateBeacon.setBeaconId(dataSnapshot.getKey());
             CurrentBeaconUser.getInstance().addMyBeaon(dataSnapshot.getKey(), privateBeacon);
         }
-
-
 
     }
 
