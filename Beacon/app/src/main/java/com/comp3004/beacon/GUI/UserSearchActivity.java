@@ -72,7 +72,7 @@ public class UserSearchActivity extends AppCompatActivity {
                 }
             };
 
-            friendsListView.setAdapter(arrayAdapter);
+            friendsListView.setAdapter(new FriendAdapter(UserSearchActivity.this, users));
 
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("beaconUsers");
             databaseReference.orderByChild("name").addChildEventListener(new ChildEventListener() {
