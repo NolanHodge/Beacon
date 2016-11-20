@@ -124,14 +124,14 @@ public class ArrowActivity2 extends FragmentActivity implements SensorEventListe
             else {
                 String fromMapLat = extras.getString(FROM_MAP_TRACK_LAT);
                 String fromMapLon = extras.getString(FROM_MAP_TRACK_LON);
-                followingBeacon = new PrivateBeacon(fromMapLat, fromMapLon);
+                //followingBeacon = new PrivateBeacon(fromMapLat, fromMapLon);
             }
         }
 
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                DatabaseManager.getInstance().loadPhotos(followingBeacon.getFromUserId());
+//                DatabaseManager.getInstance().loadPhotos(followingBeacon.getFromUserId());
             }
         });
         t.start();

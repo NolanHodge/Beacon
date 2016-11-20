@@ -22,6 +22,7 @@ import com.comp3004.beacon.User.CurrentBeaconUser;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class BeaconsListActivity extends AppCompatActivity {
 
@@ -98,12 +99,12 @@ public class BeaconsListActivity extends AppCompatActivity {
                         switch (which) {
                             case 0:
                                 Intent intent = new Intent(BeaconsListActivity.this, ArrowActivity2.class);
-                                intent.putExtra(ArrowActivity2.CURRENT_BEACON_ID_KEY, privateBeacon.getFromUserId());
+                                intent.putExtra(ArrowActivity2.CURRENT_BEACON_ID_KEY, privateBeacon.getBeaconId());
                                 startActivity(intent);
                                 break;
                             case 1:
                                 CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
-                                currentBeaconUser.getBeacons().remove(privateBeacon.getFromUserId());
+                                currentBeaconUser.getBeacons().remove(privateBeacon.getBeaconId());
                                 DatabaseManager.getInstance().removeBeaconFromDb(privateBeacon.getBeaconId());
                                 finish();
                                 startActivity(getIntent());
@@ -128,5 +129,6 @@ public class BeaconsListActivity extends AppCompatActivity {
         else return "Public Beacon: " + displayName;
 
     }
+    
 
 }
