@@ -1,0 +1,5 @@
+presented project demo - 5 minutes
+met with group to discuss - 1 hour
+some code cleanup - 30 minutes
+implemented profile icons for users on friend lists and search results - 30 minutes
+started working on improving push notifications
