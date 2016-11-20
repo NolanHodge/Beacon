@@ -77,6 +77,9 @@ public class DatabaseManager {
     public void removeBeaconFromDb(String beaconId) {
         DatabaseReference dbNode = FirebaseDatabase.getInstance().getReference().getRoot().child("/" + CurrentBeaconUser.getInstance().getUserId() + "_beaconRequests/" + beaconId);
         dbNode.removeValue();
+
+        dbNode = FirebaseDatabase.getInstance().getReference().getRoot().child("beaconRequest/" + beaconId);
+        dbNode.removeValue();
     }
 
     public void removeYourBeaconFromDb(Beacon beacon) {

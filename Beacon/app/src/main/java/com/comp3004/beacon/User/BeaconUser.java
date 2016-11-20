@@ -88,6 +88,6 @@ public class BeaconUser {
     }
 
     public void addBeacon(PrivateBeacon privateBeacon) {
-        beacons.put(privateBeacon.getFromUserId(), privateBeacon);
+        beacons.put(privateBeacon.getBeaconId(), privateBeacon);
     }
 }
