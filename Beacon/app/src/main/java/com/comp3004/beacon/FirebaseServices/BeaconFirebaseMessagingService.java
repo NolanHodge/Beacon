@@ -5,6 +5,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
@@ -42,6 +44,9 @@ public class BeaconFirebaseMessagingService extends FirebaseMessagingService {
             title = "Friend Request Accepted";
         } else if (remoteMessage.getFrom().contains("friendRequests")) {
             title = "New Friend Request";
+        } else {
+            title = "Beacon";
+            message = remoteMessage.getNotification().getBody();
         }
         Notification n = new NotificationCompat.Builder(getApplicationContext())
                 .setContentIntent(PendingIntent.getActivity(getApplicationContext(), 0, new Intent(getApplicationContext(), LoginActivity.class), 0))
@@ -49,6 +54,7 @@ public class BeaconFirebaseMessagingService extends FirebaseMessagingService {
                 .setTicker(message)
                 .setContentText(message)
                 .setSmallIcon(R.mipmap.ic_launcher_2)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher_2))
                 .setAutoCancel(true)
                 .setVibrate(new long[]{0, 300, 100, 300}).build();
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -56,6 +62,7 @@ public class BeaconFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     public void onMessageReceived(RemoteMessage remoteMessage) {
+        sendNotification(remoteMessage);
         Log.d(TAG, "From: " + remoteMessage.getFrom());
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
