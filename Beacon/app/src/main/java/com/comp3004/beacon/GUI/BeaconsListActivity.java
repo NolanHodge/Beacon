@@ -14,16 +14,19 @@ import android.widget.TextView;
 
 import com.comp3004.beacon.FirebaseServices.DatabaseManager;
 import com.comp3004.beacon.R;
+import com.comp3004.beacon.User.Beacon;
 import com.comp3004.beacon.User.PrivateBeacon;
 import com.comp3004.beacon.User.BeaconUser;
 import com.comp3004.beacon.User.CurrentBeaconUser;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class BeaconsListActivity extends AppCompatActivity {
 
     ArrayList<PrivateBeacon> beaconsList;
-    ArrayList<String> beaconUsernames;
+    ArrayList<String> beaconTitles;
     ListView beaconsListView;
 
     @Override
@@ -32,7 +35,7 @@ public class BeaconsListActivity extends AppCompatActivity {
         setContentView(com.comp3004.beacon.R.layout.activity_beacons_list);
 
         beaconsList = new ArrayList<PrivateBeacon>();
-        beaconUsernames = new ArrayList<String>();
+        beaconTitles = new ArrayList<String>();
 
         beaconsListView = (ListView) findViewById(R.id.beaconsListView);
 
@@ -40,8 +43,9 @@ public class BeaconsListActivity extends AppCompatActivity {
 
         if (currentBeaconUser.getBeacons() != null) {
             for (Object key : CurrentBeaconUser.getInstance().getBeacons().keySet()) {
-                BeaconUser bc = (BeaconUser) CurrentBeaconUser.getInstance().getFriends().get(key);
-                beaconUsernames.add(bc.getDisplayName());
+                Beacon beacon = CurrentBeaconUser.getInstance().getBeacons().get(key);
+                BeaconUser bc = (BeaconUser) CurrentBeaconUser.getInstance().getFriends().get(beacon.getFromUserId());
+                beaconTitles.add(getTitle(beacon));
                 beaconsList.add(currentBeaconUser.getBeacons().get(key));
             }
         }
@@ -52,7 +56,7 @@ public class BeaconsListActivity extends AppCompatActivity {
 
     private void populateBeaconsListView() {
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, beaconUsernames){
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, beaconTitles){
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
@@ -103,7 +107,7 @@ public class BeaconsListActivity extends AppCompatActivity {
                                 DatabaseManager.getInstance().removeBeaconFromDb(privateBeacon.getBeaconId());
                                 finish();
                                 startActivity(getIntent());
-                                beaconUsernames.remove(index);
+                                beaconTitles.remove(index);
                                 beaconsList.remove(index);
                                 beaconsListView.invalidate();
                                 break;
@@ -114,4 +118,15 @@ public class BeaconsListActivity extends AppCompatActivity {
                 }).show();
 
     }
+
+    private String getTitle(Beacon beacon) {
+        List<String> ids = Arrays.asList(beacon.getBeaconId().split("_"));
+        String displayName = CurrentBeaconUser.getInstance().getFriend(beacon.getFromUserId()).getDisplayName();
+        if (ids.size() == 3 && ids.get(2).equals("private")) {
+            return "Private Beacon: " + displayName;
+        }
+        else return "Public Beacon: " + displayName;
+
+    }
+
 }
