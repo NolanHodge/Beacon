@@ -108,7 +108,7 @@ public class MyBeaconsActivity extends AppCompatActivity {
                                 myBeacons.remove(position);
                                 beaconTitles.remove(position);
                                 currentBeaconUser.removeMyBeacon(beacon.getBeaconId());
-                                DatabaseManager.getInstance().removeBeaconFromDb(beacon.getBeaconId());
+                                DatabaseManager.getInstance().removeYourBeaconFromDb(beacon);
                                 handler.post(new Runnable() {
                                     @Override
                                     public void run() {
