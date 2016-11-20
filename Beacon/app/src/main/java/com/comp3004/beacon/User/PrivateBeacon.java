@@ -9,7 +9,6 @@ import java.util.List;
  * Created by julianclayton on 16-10-10.
  */
 public class PrivateBeacon extends Beacon {
-    private String toUserId;
     public PrivateBeacon() {}
 
     public PrivateBeacon(CurrentBeaconInvitationHandler currentBeaconInvitationHandler) {

@@ -16,6 +16,7 @@ import com.comp3004.beacon.Networking.FriendRequestMessage;
 import com.comp3004.beacon.Networking.LocationRequestMessage;
 import com.comp3004.beacon.Networking.MessageTypes;
 import com.comp3004.beacon.Networking.PhotoSenderHandler;
+import com.comp3004.beacon.User.Beacon;
 import com.comp3004.beacon.User.BeaconUser;
 import com.comp3004.beacon.User.PrivateBeacon;
 import com.comp3004.beacon.User.CurrentBeaconUser;
@@ -78,6 +79,25 @@ public class DatabaseManager {
         dbNode.removeValue();
     }
 
+    public void removeYourBeaconFromDb(Beacon beacon) {
+        DatabaseReference ref;
+        ref = FirebaseDatabase.getInstance().getReference()
+                .getRoot()
+                .child("/" + beacon.getToUserId() + "_beaconRequests/" + beacon.getBeaconId());
+        ref.removeValue();
+
+        ref = FirebaseDatabase.getInstance().getReference()
+                .getRoot()
+                .child("/beaconRequest/" + beacon.getBeaconId());
+        ref.removeValue();
+
+        if (beacon.isPublicBeacon()) {
+            ref = FirebaseDatabase.getInstance().getReference()
+                    .getRoot()
+                    .child("/publicBeacons/" + beacon.getBeaconId());
+            ref.removeValue();
+        }
+    }
     public void subscribeToMessageThread() {
         CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
         Query query = databaseReference.child("/" + currentBeaconUser.getUserId() + "_messageRequests");

@@ -12,6 +12,7 @@ public class Beacon {
     protected String lon;
     protected String fromUserId;
     protected boolean publicBeacon;
+    protected String toUserId;
 
 
     public String getLat() {
@@ -48,4 +49,12 @@ public class Beacon {
         this.publicBeacon = publicBeacon;
     }
 
+
+    public String getToUserId() {
+        return toUserId;
+    }
+
+    public void setToUserId(String toUserId) {
+        this.toUserId = toUserId;
+    }
 }
