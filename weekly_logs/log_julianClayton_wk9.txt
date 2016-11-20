@@ -1,0 +1,6 @@
+Julian Clayton Weekly Log 9
+==========================================
+- Various bug fixes in prepartation for demo
+- Code freeze before demo so there was a stable version of the code used 
+- Separation of public and private beacons in the beacons list.
+- Fixed various crashes 
