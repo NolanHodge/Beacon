@@ -573,6 +573,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                         if (currentMarkers.containsKey(privateBeacon.getBeaconId())) {
                                             currentMarkers.get(privateBeacon.getBeaconId()).remove();
                                         }
+
                                         Marker marker = mMap.addMarker(new MarkerOptions()
                                                 .title(title)
                                                 .position(position)
@@ -580,8 +581,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.tower_icon_small)));
                                         currentMarkers.put(privateBeacon.getBeaconId(), marker);
 
+
                                     }});
 
+                            }
+                            for (String key : currentMarkers.keySet()) {
+                                if (!CurrentBeaconUser.getInstance().getBeacons().containsKey((String) key)) {
+                                    currentMarkers.get(key).remove();
+                                }
                             }
                             for (Object key : currentBeaconUser.getMyBeacons().keySet()) {
                                 if (currentBeaconUser.getMyBeacon((String) key).isPublicBeacon()) {
