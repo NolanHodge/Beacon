@@ -30,6 +30,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.comp3004.beacon.Networking.ChatMessage;
+import com.comp3004.beacon.Networking.GetImage;
 import com.comp3004.beacon.Networking.MailBox;
 import com.comp3004.beacon.Networking.MessageSenderHandler;
 import com.comp3004.beacon.R;
@@ -82,7 +83,16 @@ public class ChatActivity extends AppCompatActivity {
             getSupportActionBar().setTitle("Chat with " + CurrentBeaconUser.getInstance().getFriend(otherChatParticipantId).getDisplayName());
 
             populateChatListView();
-            new GetImage(currentBeaconUser.getPhotoUrl(), friend.getPhotoUrl()).execute();
+            new GetImage() {
+                @Override
+                protected void onPostExecute(Bitmap[] aVoid) {
+                    if (aVoid.length > 1) {
+                        adapter = new ChatActivity.ChatAdapter(chatThread, aVoid[0], aVoid[1]);
+                        chatListView.setAdapter(adapter);
+                        chatListView.setSelection(chatListView.getCount() - 1);
+                    }
+                }
+            }.execute(currentBeaconUser.getPhotoUrl(), friend.getPhotoUrl());
         }
 
         sendButton.setOnClickListener(new View.OnClickListener() {
@@ -134,48 +144,22 @@ public class ChatActivity extends AppCompatActivity {
             chats.add(friend.getDisplayName() + "\n" + chatMessage.getMessage());
 
         }
-
-        new GetImage(photoUrls.get(currentBeaconUser.getUserId()), photoUrls.get(aFriend.getUserId())).execute();
+        new GetImage() {
+            @Override
+            protected void onPostExecute(Bitmap[] aVoid) {
+                if (aVoid.length > 1) {
+                    adapter = new ChatActivity.ChatAdapter(chatThread, aVoid[0], aVoid[1]);
+                    chatListView.setAdapter(adapter);
+                    chatListView.setSelection(chatListView.getCount() - 1);
+                }
+            }
+        }.execute(photoUrls.get(currentBeaconUser.getUserId()), photoUrls.get(aFriend.getUserId()));
         getSupportActionBar().setTitle("Chat with " + CurrentBeaconUser.getInstance().getFriend(otherChatParticipantId).getDisplayName());
 
         //setAdapter();
 
     }
 
-    private class GetImage extends AsyncTask<Void, Void, Bitmap[]> {
-        String userIcon = "";
-        String friendIcon = "";
-
-        public GetImage(String userIcon, String friendIcon) {
-            this.userIcon = userIcon;
-            this.friendIcon = friendIcon;
-        }
-
-        @Override
-        protected Bitmap[] doInBackground(Void... params) {
-
-            Bitmap mIcon11 = null;
-            Bitmap mIcon12 = null;
-            try {
-                InputStream in = new java.net.URL(userIcon).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-                in.close();
-                in = new java.net.URL(friendIcon).openStream();
-                mIcon12 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return new Bitmap[]{mIcon11, mIcon12};
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap[] aVoid) {
-            adapter = new ChatAdapter(chatThread, aVoid[0], aVoid[1]);
-            chatListView.setAdapter(adapter);
-            chatListView.setSelection(chatListView.getCount() - 1);
-        }
-    }
 
     /*
         private void setAdapter() {

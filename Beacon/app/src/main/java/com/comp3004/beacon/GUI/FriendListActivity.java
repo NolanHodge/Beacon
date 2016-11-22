@@ -28,6 +28,7 @@ import android.view.ViewGroup;
 
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -84,8 +85,9 @@ public class FriendListActivity extends AppCompatActivity {
     }
 
     private void populateFriendsListView() {
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, userNames) {
+        FriendAdapter adapter = new FriendAdapter(FriendListActivity.this, friendsList);
+        /*
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.friend_list_item, userNames) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
@@ -102,7 +104,7 @@ public class FriendListActivity extends AppCompatActivity {
 
                 return view;
             }
-        };
+        };*/
         friendsListView.setAdapter(adapter);
     }
 
