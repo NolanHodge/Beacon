@@ -3,6 +3,7 @@
     android:id="@+id/fr_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
     android:orientation="horizontal"
     android:padding="5dp">
 
