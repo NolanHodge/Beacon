@@ -8,23 +8,22 @@
         android:id="@+id/friendListView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="@null"
-        android:dividerHeight="0dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:choiceMode="multipleChoiceModal"
+        android:divider="@null"
+        android:dividerHeight="0dp" />
 
-    <android.support.design.widget.FloatingActionButton
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <android.support.design.widget.FloatingActionButton xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/message_friends_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_margin="@dimen/fab_margin"
-        app:backgroundTint="@color/button_green"
         android:src="@drawable/chat_bubble2"
-         />
+        app:backgroundTint="@color/button_green" />
 
 </RelativeLayout>
