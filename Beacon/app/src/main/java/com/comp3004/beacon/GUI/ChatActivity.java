@@ -6,11 +6,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.Image;
+import android.location.LocationManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -38,13 +36,8 @@ import com.comp3004.beacon.User.BeaconUser;
 import com.comp3004.beacon.User.CurrentBeaconUser;
 
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 
 public class ChatActivity extends AppCompatActivity {
@@ -147,6 +140,7 @@ public class ChatActivity extends AppCompatActivity {
         new GetImage() {
             @Override
             protected void onPostExecute(Bitmap[] aVoid) {
+                Log.e("GETIMAGE", "SUCCESS" + aVoid.length);
                 if (aVoid.length > 1) {
                     adapter = new ChatActivity.ChatAdapter(chatThread, aVoid[0], aVoid[1]);
                     chatListView.setAdapter(adapter);
@@ -238,35 +232,54 @@ public class ChatActivity extends AppCompatActivity {
                 convertView = inflater.inflate(R.layout.chat_left, parent, false);
 
                 viewHolder.message = (TextView) convertView.findViewById(R.id.text1);
-                viewHolder.layout = convertView.findViewById(R.id.chat_layout);
-                viewHolder.icon = (ImageView) convertView.findViewById(R.id.user_icon);
+                viewHolder.leftIcon = (ImageView) convertView.findViewById(R.id.user_icon);
+                viewHolder.rightIcon = (ImageView) convertView.findViewById(R.id.other_icon);
+                viewHolder.layout = convertView.findViewById(R.id.chat_container);
                 convertView.setTag(viewHolder);
 
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
-            if (messages.get(position).getFromUserId().equals(CurrentBeaconUser.getInstance().getUserId()) && userIcon != null) {
-                viewHolder.icon.setImageBitmap(userIcon);
+            if (position == 0) {
+                if (messages.get(position).getFromUserId().equals(CurrentBeaconUser.getInstance().getUserId())) {
+                    if (userIcon != null)
+                        viewHolder.rightIcon.setImageBitmap(userIcon);
+                    viewHolder.rightIcon.setVisibility(View.VISIBLE);
+                    viewHolder.leftIcon.setVisibility(View.GONE);
+                } else {
+                    if (friendIcon != null)
+                        viewHolder.leftIcon.setImageBitmap(friendIcon);
+                    viewHolder.rightIcon.setVisibility(View.GONE);
+                    viewHolder.leftIcon.setVisibility(View.VISIBLE);
+                }
             } else {
-                if (friendIcon != null)
-                    viewHolder.icon.setImageBitmap(friendIcon);
+                //if message is from the same person, don't show the icon
+                if (messages.get(position).getFromUserId().equals(messages.get(position - 1).getFromUserId())) {
+                    viewHolder.layout.setPadding(0, 2, 0, 0);
+                    if (messages.get(position).getFromUserId().equals(CurrentBeaconUser.getInstance().getUserId())) {
+                        viewHolder.rightIcon.setVisibility(View.INVISIBLE);
+                        viewHolder.leftIcon.setVisibility(View.GONE);
+                    } else {
+                        viewHolder.leftIcon.setVisibility(View.INVISIBLE);
+                        viewHolder.rightIcon.setVisibility(View.GONE);
+                    }
+                } else {
+                    viewHolder.layout.setPadding(0, 10, 0, 0);
+                    if (messages.get(position).getFromUserId().equals(CurrentBeaconUser.getInstance().getUserId())) {
+                        if (userIcon != null)
+                            viewHolder.rightIcon.setImageBitmap(userIcon);
+                        viewHolder.rightIcon.setVisibility(View.VISIBLE);
+                        viewHolder.leftIcon.setVisibility(View.GONE);
+                    } else {
+                        if (friendIcon != null)
+                            viewHolder.leftIcon.setImageBitmap(friendIcon);
+                        viewHolder.rightIcon.setVisibility(View.GONE);
+                        viewHolder.leftIcon.setVisibility(View.VISIBLE);
+                    }
+                }
             }
 
             viewHolder.message.setText(messages.get(position).getMessage());
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) viewHolder.layout.getLayoutParams();
-
-            if (!messages.get(position).getFromUserId().equals(CurrentBeaconUser.getInstance().getUserId())) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                    params.removeRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-                }
-                params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-            } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                    params.removeRule(RelativeLayout.ALIGN_PARENT_LEFT);
-                }
-                params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            }
-            viewHolder.layout.setLayoutParams(params);
 
             return convertView;
         }
@@ -274,8 +287,9 @@ public class ChatActivity extends AppCompatActivity {
 
     private static class ViewHolder {
         public TextView message;
+        public ImageView leftIcon;
+        public ImageView rightIcon;
         public View layout;
-        public ImageView icon;
     }
 }
 

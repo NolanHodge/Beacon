@@ -4,8 +4,6 @@
     android:background="@color/background_color">
 
     <ListView
-
-        android:focusable="true"
         android:id="@+id/chatListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -14,10 +12,13 @@
         android:layout_centerHorizontal="true"
         android:clickable="true"
         android:divider="@null"
+        android:focusable="true"
         android:minHeight="100px"
+        android:paddingTop="5dp"
         android:scrollbars="vertical"
         android:scrollingCache="true"
         android:textAppearance="?android:attr/textAppearanceLarge" />
+
     <EditText
         android:id="@+id/chatEditText"
         android:layout_width="wrap_content"
