@@ -60,7 +60,8 @@
             android:parentActivityName=".GUI.MapsActivity" />
         <activity
             android:name=".GUI.ChatActivity"
-            android:label="@string/title_activity_chat" />
+            android:label="@string/title_activity_chat"
+            android:parentActivityName=".GUI.FriendListActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -78,14 +79,17 @@
             android:label="@string/title_activity_maps" />
         <activity
             android:name=".GUI.PublicBeaconsActivity"
-            android:label="@string/title_activity_public" />
+            android:label="@string/title_activity_public"
+            android:parentActivityName=".GUI.MapsActivity" />
         <activity
             android:name=".GUI.ChatMessageThreadsActivity"
-            android:label="@string/title_activity_chat_message_threads" />
+            android:label="@string/title_activity_chat_message_threads"
+            android:parentActivityName=".GUI.FriendListActivity" />
         <activity
             android:name=".GUI.UserSearchActivity"
             android:label="@string/title_activity_user_search"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:parentActivityName=".GUI.FriendListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
