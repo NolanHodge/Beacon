@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 
-import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
 
@@ -65,7 +64,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
@@ -79,9 +77,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, OnMarkerClickListener {
 
@@ -228,7 +224,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         beaconsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MapsActivity.this, BeaconsListActivity.class));
+                startActivity(new Intent(MapsActivity.this, BeaconsActivity.class));
             }
         });
 
