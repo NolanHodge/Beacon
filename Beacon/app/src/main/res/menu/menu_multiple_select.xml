@@ -6,9 +6,4 @@
         android:icon="@drawable/tower_icon_1"
         android:title="Beacon"
         app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/send_message"
-        android:icon="@drawable/chat_bubble2"
-        android:title="Message"
-        app:showAsAction="ifRoom" />
 </menu>

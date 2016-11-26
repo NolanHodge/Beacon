@@ -120,10 +120,6 @@ public class FriendListActivity extends AppCompatActivity {
                         }
                         mode.finish(); // Action picked, so close the CAB
                         return true;
-                    case R.id.send_message:
-                        //deleteSelectedItems();
-                        mode.finish(); // Action picked, so close the CAB
-                        return true;
                     default:
                         return false;
                 }
