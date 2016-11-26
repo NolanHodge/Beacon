@@ -50,7 +50,7 @@ public class BeaconsListFragment extends Fragment {
             for (Object key : CurrentBeaconUser.getInstance().getBeacons().keySet()) {
                 Beacon beacon = CurrentBeaconUser.getInstance().getBeacons().get(key);
                 BeaconUser bc = (BeaconUser) CurrentBeaconUser.getInstance().getFriends().get(beacon.getFromUserId());
-                //beaconTitles.add(getTitle(beacon));
+                beaconTitles.add(getTitle(beacon));
                 beaconsList.add(currentBeaconUser.getBeacons().get(key));
             }
         }

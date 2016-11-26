@@ -5,8 +5,8 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import com.comp3004.beacon.FirebaseServices.DatabaseManager;
+import com.comp3004.beacon.NotificationHandlers.CurrentUserPublicBeaconHandler;
 import com.comp3004.beacon.User.CurrentBeaconUser;
-import com.comp3004.beacon.User.CurrentUserPublicBeaconHandler;
 import com.comp3004.beacon.User.PrivateBeacon;
 import com.comp3004.beacon.User.PublicBeacon;
 import com.google.android.gms.maps.model.LatLng;

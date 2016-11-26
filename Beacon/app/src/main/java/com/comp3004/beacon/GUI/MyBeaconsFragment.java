@@ -22,7 +22,6 @@ import com.comp3004.beacon.Networking.PublicBeaconHandler;
 import com.comp3004.beacon.R;
 import com.comp3004.beacon.User.Beacon;
 import com.comp3004.beacon.User.CurrentBeaconUser;
-import com.comp3004.beacon.User.CurrentUserPublicBeaconHandler;
 import com.comp3004.beacon.User.PublicBeacon;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;

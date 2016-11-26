@@ -86,25 +86,7 @@ public class FriendListActivity extends AppCompatActivity {
 
     private void populateFriendsListView() {
         FriendAdapter adapter = new FriendAdapter(FriendListActivity.this, friendsList);
-        /*
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.friend_list_item, userNames) {
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                View view = super.getView(position, convertView, parent);
 
-                TextView text1 = (TextView) view.findViewById(android.R.id.text1);
-
-                if ((position % 2) == 1) {
-                    view.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
-                    text1.setTextColor(getContext().getResources().getColor(android.R.color.white));
-                } else {
-                    view.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
-                    text1.setTextColor(getContext().getResources().getColor(android.R.color.white));
-                }
-
-                return view;
-            }
-        };*/
         friendsListView.setAdapter(adapter);
     }
 

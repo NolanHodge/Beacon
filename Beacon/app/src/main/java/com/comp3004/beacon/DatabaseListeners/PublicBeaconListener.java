@@ -3,9 +3,9 @@ package com.comp3004.beacon.DatabaseListeners;
 import android.database.CursorIndexOutOfBoundsException;
 
 import com.comp3004.beacon.Networking.PublicBeaconHandler;
+import com.comp3004.beacon.NotificationHandlers.CurrentUserPublicBeaconHandler;
 import com.comp3004.beacon.User.Beacon;
 import com.comp3004.beacon.User.BeaconUser;
-import com.comp3004.beacon.User.CurrentUserPublicBeaconHandler;
 import com.comp3004.beacon.User.PrivateBeacon;
 import com.comp3004.beacon.User.CurrentBeaconUser;
 import com.comp3004.beacon.User.PublicBeacon;
