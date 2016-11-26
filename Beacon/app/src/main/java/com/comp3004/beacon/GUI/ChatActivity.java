@@ -64,6 +64,7 @@ public class ChatActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+
         chatListView = (ListView) findViewById(R.id.chatListView);
         chatTextbox = (EditText) findViewById(R.id.chatEditText);
         sendButton = (ImageButton) findViewById(R.id.sendChatMessageButton);
