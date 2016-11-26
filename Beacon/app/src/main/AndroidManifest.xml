@@ -57,7 +57,7 @@
         <activity
             android:name=".GUI.FriendListActivity"
             android:label="@string/title_activity_friend_list"
-            android:theme="@style/AppTheme" />
+            android:parentActivityName=".GUI.MapsActivity" />
         <activity
             android:name=".GUI.ChatActivity"
             android:label="@string/title_activity_chat" />
@@ -80,9 +80,6 @@
             android:name=".GUI.PublicBeaconsActivity"
             android:label="@string/title_activity_public" />
         <activity
-            android:name=".GUI.BeaconsListFragment"
-            android:label="@string/title_activity_beacons_list" />
-        <activity
             android:name=".GUI.ChatMessageThreadsActivity"
             android:label="@string/title_activity_chat_message_threads" />
         <activity
@@ -104,7 +101,6 @@
         <activity
             android:name=".GUI.NearbyPlacesActivity"
             android:label="@string/title_activity_nearby" />
-        <activity android:name=".GUI.MyBeaconsFragment" />
         <activity
             android:name=".GUI.BeaconsActivity"
             android:label="@string/title_activity_beacons"
