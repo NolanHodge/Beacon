@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -40,6 +41,11 @@ public class PublicBeaconsActivity extends AppCompatActivity {
 
         setContentView(com.comp3004.beacon.R.layout.activity_public_beacons);
         myBeaconsButton = (FloatingActionButton) findViewById(R.id.my_beacons_activity_button);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.generic_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         beaconsList = new ArrayList<PublicBeacon>();
         beaconUsernames = new ArrayList<String>();
