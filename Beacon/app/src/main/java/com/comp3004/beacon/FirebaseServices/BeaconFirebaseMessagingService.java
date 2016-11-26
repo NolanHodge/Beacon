@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 
@@ -56,6 +57,7 @@ public class BeaconFirebaseMessagingService extends FirebaseMessagingService {
                 .setSmallIcon(R.mipmap.ic_launcher_2)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher_2))
                 .setAutoCancel(true)
+                .setSound(Uri.parse("android.resource://" + getPackageName() + "/raw/snd1"))
                 .setVibrate(new long[]{0, 300, 100, 300}).build();
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(0, n);

@@ -104,6 +104,7 @@
         <activity android:name=".GUI.ArrowActivity2" />
         <activity
             android:name=".GUI.NearbyPlacesActivity"
+            android:parentActivityName=".GUI.MapsActivity"
             android:label="@string/title_activity_nearby" />
         <activity
             android:name=".GUI.BeaconsActivity"
