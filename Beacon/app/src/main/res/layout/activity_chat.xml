@@ -1,7 +1,19 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/background_color">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/chat_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            app:titleTextColor="#ffffff" />
+    </android.support.design.widget.AppBarLayout>
 
     <ListView
         android:id="@+id/chatListView"
@@ -33,12 +45,13 @@
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/white" />
 
-    <Button
+    <ImageButton
+        android:layout_gravity="bottom|right"
         android:id="@+id/sendChatMessageButton"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:background="@android:drawable/ic_menu_send" />
-</RelativeLayout>
+        android:src="@drawable/ic_search_white_24dp" />
+</android.support.design.widget.CoordinatorLayout>
