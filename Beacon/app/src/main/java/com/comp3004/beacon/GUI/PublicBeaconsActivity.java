@@ -32,20 +32,19 @@ public class PublicBeaconsActivity extends AppCompatActivity {
     ListView publicBeaconsListView;
     ArrayList<PublicBeacon> beaconsList;
     ArrayList beaconUsernames;
-    FloatingActionButton myBeaconsButton;
+    //FloatingActionButton myBeaconsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(com.comp3004.beacon.R.layout.activity_public_beacons);
-        myBeaconsButton = (FloatingActionButton) findViewById(R.id.my_beacons_activity_button);
+        setContentView(R.layout.activity_generic_list);
+        //myBeaconsButton = (FloatingActionButton) findViewById(R.id.my_beacons_activity_button);
 
         beaconsList = new ArrayList<PublicBeacon>();
         beaconUsernames = new ArrayList<String>();
 
         DatabaseManager.getInstance().loadPublicBeacons();
-        publicBeaconsListView = (ListView) findViewById(R.id.publicBeaconListView);
-
+        publicBeaconsListView = (ListView) findViewById(R.id.generic_listview);
 
 
         if (PublicBeaconHandler.getInstance().getBeacons() != null) {
@@ -57,12 +56,12 @@ public class PublicBeaconsActivity extends AppCompatActivity {
                 }
             }
         }
-        myBeaconsButton.setOnClickListener(new View.OnClickListener() {
+        /*myBeaconsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(PublicBeaconsActivity.this, MyBeaconsFragment.class));
             }
-        });
+        });*/
 
 
         populateBeaconsListView();
@@ -72,19 +71,17 @@ public class PublicBeaconsActivity extends AppCompatActivity {
 
     private void populateBeaconsListView() {
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, beaconUsernames){
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, beaconUsernames) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
 
                 TextView text1 = (TextView) view.findViewById(android.R.id.text1);
 
-                if((position % 2) == 1)
-                {
+                if ((position % 2) == 1) {
                     view.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
                     text1.setTextColor(getContext().getResources().getColor(android.R.color.white));
-                }
-                else{
+                } else {
                     view.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
                     text1.setTextColor(getContext().getResources().getColor(android.R.color.white));
                 }
@@ -97,7 +94,7 @@ public class PublicBeaconsActivity extends AppCompatActivity {
     }
 
     private void registerFriendsListviewCallback() {
-        publicBeaconsListView = (ListView) findViewById(R.id.publicBeaconListView);
+        publicBeaconsListView = (ListView) findViewById(R.id.generic_listview);
         final Context context = this;
 
         publicBeaconsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

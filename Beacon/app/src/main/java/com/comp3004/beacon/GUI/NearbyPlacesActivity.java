@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,12 +43,17 @@ public class NearbyPlacesActivity extends AppCompatActivity {
 
     private Location myLocation;
     Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_nearby_places);
+        setContentView(R.layout.activity_generic_list);
 
-        findViewById(R.id.arrow_prgrs).setVisibility(View.VISIBLE);
+        setSupportActionBar((Toolbar) findViewById(R.id.generic_toolbar));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setTitle(getTitle());
+        findViewById(R.id.generic_progress_bar).setVisibility(View.VISIBLE);
         context = this;
         final LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         final LocationService locationService = new LocationService() {
@@ -158,11 +164,11 @@ public class NearbyPlacesActivity extends AppCompatActivity {
                 Log.w("Map", "list size: " + list.size());
                 // Clears all the existing markers;
 
-                ListView listView = (ListView) findViewById(R.id.nearby_place_listview);
+                ListView listView = (ListView) findViewById(R.id.generic_listview);
 
                 listView.setAdapter(new NearbyAdapter(list));
 
-                findViewById(R.id.arrow_prgrs).setVisibility(View.INVISIBLE);
+                findViewById(R.id.generic_progress_bar).setVisibility(View.INVISIBLE);
 
             } catch (NullPointerException e) {
 
@@ -240,18 +246,17 @@ public class NearbyPlacesActivity extends AppCompatActivity {
             TextView text2 = (TextView) convertView.findViewById(R.id.txt_place_name);
             TextView text3 = (TextView) convertView.findViewById(R.id.txt_address);
 
-            if((position % 2) == 1)
-            {
+            if ((position % 2) == 1) {
                 convertView.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
                 text1.setTextColor(getContext().getResources().getColor(android.R.color.white));
                 text2.setTextColor(getContext().getResources().getColor(android.R.color.white));
                 text3.setTextColor(getContext().getResources().getColor(android.R.color.white));
-            }
-            else{
+            } else {
                 convertView.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
                 text1.setTextColor(getContext().getResources().getColor(android.R.color.white));
                 text2.setTextColor(getContext().getResources().getColor(android.R.color.white));
-                text3.setTextColor(getContext().getResources().getColor(android.R.color.white));            }
+                text3.setTextColor(getContext().getResources().getColor(android.R.color.white));
+            }
 
             return convertView;
         }
