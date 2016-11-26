@@ -355,7 +355,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onClick(DialogInterface dialog, int id) {
                 CurrentBeaconInvitationHandler.getInstance().setCurrentInvitationExists(false);
                 DatabaseManager.getInstance().removeBeaconFromDb(CurrentBeaconInvitationHandler.getInstance().getBeaconId());
-
+                CurrentBeaconUser.getInstance().getMyBeacons().remove(CurrentBeaconInvitationHandler.getInstance().getBeaconId());
             }
         });
 
