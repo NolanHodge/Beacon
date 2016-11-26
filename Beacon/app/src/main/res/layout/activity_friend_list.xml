@@ -1,30 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/background_color">
 
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            app:titleTextColor="#ffffff"
+            android:id="@+id/friend_list_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize" />
+    </android.support.design.widget.AppBarLayout>
+
     <ListView
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:id="@+id/friendListView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:choiceMode="multipleChoiceModal"
         android:divider="@null"
-        android:dividerHeight="0dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true" />
+        android:dividerHeight="0dp" />
 
-    <android.support.design.widget.FloatingActionButton
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    <android.support.design.widget.FloatingActionButton xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/message_friends_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_gravity="bottom|right"
         android:layout_margin="@dimen/fab_margin"
-        app:backgroundTint="@color/button_green"
         android:src="@drawable/chat_bubble2"
-         />
-
-</RelativeLayout>
+        app:backgroundTint="@color/button_green" />
+</android.support.design.widget.CoordinatorLayout>

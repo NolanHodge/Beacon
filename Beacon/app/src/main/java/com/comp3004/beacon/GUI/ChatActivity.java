@@ -14,12 +14,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.AsyncTask;
 
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -46,7 +48,7 @@ public class ChatActivity extends AppCompatActivity {
     ArrayList<String> chats;
     ListView chatListView;
     EditText chatTextbox;
-    Button sendButton;
+    ImageButton sendButton;
     String otherChatParticipantId, chatWith = "";
     //ArrayAdapter<String> adapter = null;
     ChatAdapter adapter;
@@ -58,9 +60,14 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.chat_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
         chatListView = (ListView) findViewById(R.id.chatListView);
         chatTextbox = (EditText) findViewById(R.id.chatEditText);
-        sendButton = (Button) findViewById(R.id.sendChatMessageButton);
+        sendButton = (ImageButton) findViewById(R.id.sendChatMessageButton);
         chatListView.setTranscriptMode(ListView.TRANSCRIPT_MODE_NORMAL);
 
         Bundle extras = getIntent().getExtras();
@@ -73,7 +80,7 @@ public class ChatActivity extends AppCompatActivity {
             CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
             BeaconUser friend = currentBeaconUser.getFriend(otherChatParticipantId);
 
-            getSupportActionBar().setTitle("Chat with " + CurrentBeaconUser.getInstance().getFriend(otherChatParticipantId).getDisplayName());
+            toolbar.setTitle("Chat with " + CurrentBeaconUser.getInstance().getFriend(otherChatParticipantId).getDisplayName());
 
             populateChatListView();
             new GetImage() {

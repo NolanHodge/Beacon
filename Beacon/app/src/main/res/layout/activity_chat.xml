@@ -1,44 +1,51 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/background_color">
 
-    <ListView
-        android:id="@+id/chatListView"
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/chat_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/sendChatMessageButton"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:clickable="true"
-        android:divider="@null"
-        android:focusable="true"
-        android:minHeight="100px"
-        android:paddingTop="5dp"
-        android:scrollbars="vertical"
-        android:scrollingCache="true"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <EditText
-        android:id="@+id/chatEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/sendChatMessageButton"
-        android:layout_toStartOf="@+id/sendChatMessageButton"
-        android:hint="Enter Here..."
-        android:shadowColor="@android:color/white"
-        android:textColor="@android:color/white"
-        android:textColorHint="@android:color/white" />
+        <ListView
+            android:id="@+id/chatListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/chatEditText"
+            android:divider="@null"
+            android:paddingTop="5dp"
+            android:scrollingCache="true" />
 
-    <Button
-        android:id="@+id/sendChatMessageButton"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:background="@android:drawable/ic_menu_send" />
-</RelativeLayout>
+        <EditText
+            android:id="@+id/chatEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/sendChatMessageButton"
+            android:hint="Enter Here..."
+            android:shadowColor="@android:color/white"
+            android:textColor="@android:color/white"
+            android:textColorHint="@android:color/white" />
+
+        <ImageButton
+            android:id="@+id/sendChatMessageButton"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_send_white_24dp" />
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>
