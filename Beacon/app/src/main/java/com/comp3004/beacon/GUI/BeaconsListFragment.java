@@ -2,9 +2,11 @@ package com.comp3004.beacon.GUI;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -22,23 +24,25 @@ import com.comp3004.beacon.User.CurrentBeaconUser;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
-public class BeaconsListActivity extends AppCompatActivity {
+public class BeaconsListFragment extends Fragment {
 
     ArrayList<PrivateBeacon> beaconsList;
     ArrayList<String> beaconTitles;
     ListView beaconsListView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(com.comp3004.beacon.R.layout.activity_beacons_list);
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+        return inflater.inflate(R.layout.fragment_beacons_list, container, false);
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        getActivity().setTitle("your title");
         beaconsList = new ArrayList<PrivateBeacon>();
         beaconTitles = new ArrayList<String>();
 
-        beaconsListView = (ListView) findViewById(R.id.beaconsListView);
+        beaconsListView = (ListView) getView().findViewById(R.id.beaconsListView);
 
         CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
 
@@ -46,7 +50,7 @@ public class BeaconsListActivity extends AppCompatActivity {
             for (Object key : CurrentBeaconUser.getInstance().getBeacons().keySet()) {
                 Beacon beacon = CurrentBeaconUser.getInstance().getBeacons().get(key);
                 BeaconUser bc = (BeaconUser) CurrentBeaconUser.getInstance().getFriends().get(beacon.getFromUserId());
-                beaconTitles.add(getTitle(beacon));
+                //beaconTitles.add(getTitle(beacon));
                 beaconsList.add(currentBeaconUser.getBeacons().get(key));
             }
         }
@@ -54,10 +58,13 @@ public class BeaconsListActivity extends AppCompatActivity {
         registerBeaconsListviewCallback();
 
     }
-
+    public static BeaconsListFragment newInstance() {
+        BeaconsListFragment fragment = new BeaconsListFragment();;
+        return fragment;
+    }
     private void populateBeaconsListView() {
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, beaconTitles){
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, beaconTitles){
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
@@ -82,7 +89,7 @@ public class BeaconsListActivity extends AppCompatActivity {
     }
 
     private void registerBeaconsListviewCallback() {
-        beaconsListView = (ListView) findViewById(R.id.beaconsListView);
+        beaconsListView = (ListView) getView().findViewById(R.id.beaconsListView);
         beaconsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -92,13 +99,13 @@ public class BeaconsListActivity extends AppCompatActivity {
         });
     }
     public void showBeaconOptionDialog(final PrivateBeacon privateBeacon, final int index) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MyDialogTheme);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.MyDialogTheme);
         builder .setTitle(beaconsListView.getItemAtPosition(index).toString())
                 .setItems(new String[]{"Track", "Delete", "Cancel"}, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case 0:
-                                Intent intent = new Intent(BeaconsListActivity.this, ArrowActivity2.class);
+                                Intent intent = new Intent(getActivity(), ArrowActivity2.class);
                                 intent.putExtra(ArrowActivity2.CURRENT_BEACON_ID_KEY, privateBeacon.getBeaconId());
                                 startActivity(intent);
                                 break;
@@ -106,8 +113,8 @@ public class BeaconsListActivity extends AppCompatActivity {
                                 CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
                                 currentBeaconUser.getBeacons().remove(privateBeacon.getBeaconId());
                                 DatabaseManager.getInstance().removeBeaconFromDb(privateBeacon.getBeaconId());
-                                finish();
-                                startActivity(getIntent());
+                                getActivity().finish();
+                                startActivity(getActivity().getIntent());
                                 beaconTitles.remove(index);
                                 beaconsList.remove(index);
                                 beaconsListView.invalidate();

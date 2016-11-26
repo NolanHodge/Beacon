@@ -80,7 +80,7 @@
             android:name=".GUI.PublicBeaconsActivity"
             android:label="@string/title_activity_public" />
         <activity
-            android:name=".GUI.BeaconsListActivity"
+            android:name=".GUI.BeaconsListFragment"
             android:label="@string/title_activity_beacons_list" />
         <activity
             android:name=".GUI.ChatMessageThreadsActivity"
@@ -101,10 +101,14 @@
             android:name=".GUI.ImageViewActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".GUI.ArrowActivity2" />
-        <activity android:name=".GUI.NearbyPlacesActivity"
-            android:label="@string/title_activity_nearby"
-            ></activity>
-        <activity android:name=".GUI.MyBeaconsActivity"></activity>
+        <activity
+            android:name=".GUI.NearbyPlacesActivity"
+            android:label="@string/title_activity_nearby" />
+        <activity android:name=".GUI.MyBeaconsFragment" />
+        <activity
+            android:name=".GUI.BeaconsActivity"
+            android:label="@string/title_activity_beacons"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

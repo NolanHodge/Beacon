@@ -60,7 +60,7 @@ public class PublicBeaconsActivity extends AppCompatActivity {
         myBeaconsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(PublicBeaconsActivity.this, MyBeaconsActivity.class));
+                startActivity(new Intent(PublicBeaconsActivity.this, MyBeaconsFragment.class));
             }
         });
 
