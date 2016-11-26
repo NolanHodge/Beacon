@@ -1,4 +1,6 @@
-package com.comp3004.beacon.User;
+package com.comp3004.beacon.NotificationHandlers;
+
+import com.comp3004.beacon.User.PublicBeacon;
 
 /**
  * Created by julianclayton on 2016-11-05.

@@ -131,7 +131,7 @@ public class ArrowActivity2 extends FragmentActivity implements SensorEventListe
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-//                DatabaseManager.getInstance().loadPhotos(followingBeacon.getFromUserId());
+                DatabaseManager.getInstance().loadPhotos(followingBeacon.getFromUserId());
             }
         });
         t.start();
