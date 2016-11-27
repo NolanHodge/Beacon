@@ -33,14 +33,12 @@ public class PublicBeaconsActivity extends AppCompatActivity {
     ListView publicBeaconsListView;
     ArrayList<PublicBeacon> beaconsList;
     ArrayList beaconUsernames;
-    FloatingActionButton myBeaconsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(com.comp3004.beacon.R.layout.activity_public_beacons);
-        myBeaconsButton = (FloatingActionButton) findViewById(R.id.my_beacons_activity_button);
+        setContentView(R.layout.activity_generic_list);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.generic_toolbar);
         setSupportActionBar(toolbar);
@@ -63,12 +61,6 @@ public class PublicBeaconsActivity extends AppCompatActivity {
                 }
             }
         }
-        myBeaconsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(PublicBeaconsActivity.this, MyBeaconsFragment.class));
-            }
-        });
 
 
         populateBeaconsListView();
@@ -98,6 +90,7 @@ public class PublicBeaconsActivity extends AppCompatActivity {
         };
         publicBeaconsListView.setAdapter(adapter);
 
+        findViewById(R.id.generic_progress_bar).setVisibility(View.INVISIBLE);
     }
 
     private void registerFriendsListviewCallback() {
