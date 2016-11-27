@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AlertDialog;
 
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -34,26 +35,30 @@ import java.util.ArrayList;
 
 public class UserSearchActivity extends AppCompatActivity {
 
-    ArrayList<String>     userNames;
+    ArrayList<String> userNames;
     ArrayList<BeaconUser> users;
-    ListView              friendsListView;
-    String                query;
+    ListView friendsListView;
+    String query;
     ArrayAdapter<String> arrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_search);
+        setContentView(R.layout.activity_generic_list);
+
+        setSupportActionBar((Toolbar) findViewById(R.id.generic_toolbar));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         userNames = new ArrayList<>();
-        friendsListView = (ListView) findViewById(R.id.user_searchList);
+        friendsListView = (ListView) findViewById(R.id.generic_listview);
         users = new ArrayList<>();
 
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-             query = intent.getStringExtra(SearchManager.QUERY);
-             arrayAdapter = new ArrayAdapter<String>(UserSearchActivity.this,
-                    android.R.layout.simple_list_item_1, userNames){
+            query = intent.getStringExtra(SearchManager.QUERY);
+            arrayAdapter = new ArrayAdapter<String>(UserSearchActivity.this,
+                    android.R.layout.simple_list_item_1, userNames) {
                 @Override
                 public View getView(int position, View convertView, ViewGroup parent) {
                     View view = super.getView(position, convertView, parent);
@@ -114,7 +119,7 @@ public class UserSearchActivity extends AppCompatActivity {
     }
 
     public void registerUserSearchDialog() {
-        final ListView friendsListView = (ListView) findViewById(R.id.user_searchList);
+        final ListView friendsListView = (ListView) findViewById(R.id.generic_listview);
 
         friendsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

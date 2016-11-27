@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -35,7 +36,13 @@ public class ChatMessageThreadsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(com.comp3004.beacon.R.layout.activity_chat_message_threads);
+        setContentView(R.layout.activity_generic_list);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.generic_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
         chatTitles = new ArrayList<String>();
         chatIds = new ArrayList<String>();
 
@@ -47,14 +54,14 @@ public class ChatMessageThreadsActivity extends AppCompatActivity {
             }
         }
 
-        conversationsListView = (ListView) findViewById(R.id.conversationsListView);
+        conversationsListView = (ListView) findViewById(R.id.generic_listview);
 
         DatabaseManager.getInstance().subscribeToMessageThread();
 
         CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
         MailBox mailBox = MailBox.getInstance();
 
-        if (mailBox.getInbox() != null ) {
+        if (mailBox.getInbox() != null) {
             for (Object key : mailBox.getInbox().keySet()) {
                 ArrayList<ChatMessage> thread = (ArrayList) mailBox.getInbox().get(key);
                 //Below will be better when multi-user messaging is enabled
@@ -74,22 +81,21 @@ public class ChatMessageThreadsActivity extends AppCompatActivity {
         }
         populateFriendsListView();
         registerChatMessageListviewCallback();
-   }
+    }
+
     private void populateFriendsListView() {
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, chatTitles){
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, chatTitles) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
 
                 TextView text1 = (TextView) view.findViewById(android.R.id.text1);
 
-                if((position % 2) == 1)
-                {
+                if ((position % 2) == 1) {
                     view.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
                     text1.setTextColor(getContext().getResources().getColor(android.R.color.white));
-                }
-                else{
+                } else {
                     view.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
                     text1.setTextColor(getContext().getResources().getColor(android.R.color.white));
                 }
@@ -102,7 +108,7 @@ public class ChatMessageThreadsActivity extends AppCompatActivity {
     }
 
     private void registerChatMessageListviewCallback() {
-        conversationsListView = (ListView) findViewById(R.id.conversationsListView);
+        conversationsListView = (ListView) findViewById(R.id.generic_listview);
         final Context context = this;
 
         conversationsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -111,7 +117,7 @@ public class ChatMessageThreadsActivity extends AppCompatActivity {
                 String chatId = chatIds.get(position);
                 Intent intent = new Intent(ChatMessageThreadsActivity.this, ChatActivity.class);
                 intent.putExtra("CHAT_ID", chatId);
-                List<String> chatParticipantIds =  Arrays.asList(chatId.split("_"));
+                List<String> chatParticipantIds = Arrays.asList(chatId.split("_"));
                 intent.putExtra("CHAT_PARTICIPANT", chatParticipantIds.get(1));
                 startActivity(intent);
             }

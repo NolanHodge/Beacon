@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -36,14 +37,19 @@ public class PublicBeaconsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(com.comp3004.beacon.R.layout.activity_public_beacons);
+
+        setContentView(R.layout.activity_generic_list);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.generic_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         beaconsList = new ArrayList<PublicBeacon>();
         beaconUsernames = new ArrayList<String>();
 
         DatabaseManager.getInstance().loadPublicBeacons();
-        publicBeaconsListView = (ListView) findViewById(R.id.publicBeaconListView);
-
+        publicBeaconsListView = (ListView) findViewById(R.id.generic_listview);
 
 
         if (PublicBeaconHandler.getInstance().getBeacons() != null) {
@@ -64,19 +70,17 @@ public class PublicBeaconsActivity extends AppCompatActivity {
 
     private void populateBeaconsListView() {
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, beaconUsernames){
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, beaconUsernames) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
 
                 TextView text1 = (TextView) view.findViewById(android.R.id.text1);
 
-                if((position % 2) == 1)
-                {
+                if ((position % 2) == 1) {
                     view.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
                     text1.setTextColor(getContext().getResources().getColor(android.R.color.white));
-                }
-                else{
+                } else {
                     view.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
                     text1.setTextColor(getContext().getResources().getColor(android.R.color.white));
                 }
@@ -86,10 +90,11 @@ public class PublicBeaconsActivity extends AppCompatActivity {
         };
         publicBeaconsListView.setAdapter(adapter);
 
+        findViewById(R.id.generic_progress_bar).setVisibility(View.INVISIBLE);
     }
 
     private void registerFriendsListviewCallback() {
-        publicBeaconsListView = (ListView) findViewById(R.id.publicBeaconListView);
+        publicBeaconsListView = (ListView) findViewById(R.id.generic_listview);
         final Context context = this;
 
         publicBeaconsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

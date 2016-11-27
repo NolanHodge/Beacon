@@ -16,16 +16,25 @@ import android.location.LocationManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 
 import android.os.Bundle;
 
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.util.SparseBooleanArray;
+import android.view.ActionMode;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -54,10 +63,74 @@ public class FriendListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_list);
+
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.friend_list_toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
         DatabaseManager.getInstance().subscribeToMessageThread();
         friendsList = new ArrayList<BeaconUser>();
         userNames = new ArrayList<String>();
         friendsListView = (ListView) findViewById(R.id.friendListView);
+        friendsListView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+
+            @Override
+            public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
+            }
+
+            @Override
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                MenuInflater inflater = mode.getMenuInflater();
+                inflater.inflate(R.menu.menu_multiple_select, menu);
+                return true;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.send_beacon:
+
+                        SparseBooleanArray sparseBooleanArray = friendsListView.getCheckedItemPositions();
+                        for (int i = 0; i < friendsList.size(); i++) {
+                            if (sparseBooleanArray.get(i)) {
+                                final BeaconUser user = friendsList.get(i);
+                                final LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+                                LocationService locationService = new LocationService() {
+                                    @Override
+                                    public void onLocationChanged(Location location) {
+                                        try {
+                                            locationManager.removeUpdates(this);
+                                        } catch (SecurityException e) {
+                                        }
+
+                                        MessageSenderHandler.getInstance().sendBeaconRequest(user.getUserId(), MyLocationManager.getInstance().getMyLocation());
+                                    }
+                                };
+                                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 10, locationService);
+
+                                System.out.println(user.getDisplayName());
+                            }
+                        }
+                        mode.finish(); // Action picked, so close the CAB
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode mode) {
+
+            }
+
+        });
         FloatingActionButton messageButton = (FloatingActionButton) findViewById(R.id.message_friends_button);
         context = this;
         //Add friends to list for GUI
@@ -161,5 +234,12 @@ public class FriendListActivity extends AppCompatActivity {
         ComponentName componentName = new ComponentName(this, UserSearchActivity.class);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName));
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_multiple_select, menu);
+        super.onCreateContextMenu(menu, v, menuInfo);
     }
 }
