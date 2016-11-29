@@ -85,6 +85,7 @@ public class ArrowActivity2 extends FragmentActivity implements SensorEventListe
         public static String CURRENT_BEACON_ID_KEY = "CURRENT_BEACON_ID";
         public static String FROM_MAP_TRACK_LAT = "FROM_MAP_TRACK_LAT";
         public static String FROM_MAP_TRACK_LON = "FROM_MAP_TRACK_LON";
+        public static String FROM_NEARBY_LOCATION = "FROM_NEARBY_LOCATION";
 
         private PrivateBeacon followingBeacon;
         private GeomagneticField geoField;
@@ -96,6 +97,7 @@ public class ArrowActivity2 extends FragmentActivity implements SensorEventListe
         private float[] mOrientation = new float[3];
         private boolean accelerometerValuesSet = false;
         private boolean geomagneticValuesSet = false;
+        private boolean nearby_location = false;
 
         static long MIN_TIME  = 1000;
         static float MIN_DIST = 1;
@@ -124,14 +126,18 @@ public class ArrowActivity2 extends FragmentActivity implements SensorEventListe
             else {
                 String fromMapLat = extras.getString(FROM_MAP_TRACK_LAT);
                 String fromMapLon = extras.getString(FROM_MAP_TRACK_LON);
-                //followingBeacon = new PrivateBeacon(fromMapLat, fromMapLon);
+                followingBeacon = new PrivateBeacon(fromMapLat, fromMapLon);
+                if (extras.getString(FROM_NEARBY_LOCATION).equals("nearby_location"))
+                    nearby_location = true;
             }
         }
 
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                DatabaseManager.getInstance().loadPhotos(followingBeacon.getFromUserId());
+                // In case we are tracking a non-Beacon user (i.e a public location, etc)
+                if (!nearby_location)
+                    DatabaseManager.getInstance().loadPhotos(followingBeacon.getFromUserId());
             }
         });
         t.start();
@@ -155,8 +161,8 @@ public class ArrowActivity2 extends FragmentActivity implements SensorEventListe
              distance = results[0];
             final int compass_bearing = (int) (results[2] + 360) % 360;
             String s = results[0] > 1100 ? String.format("%.1f km", results[0] / 1000) : String.format("%.1f m", results[0]);
-            TextView textView = (TextView) findViewById(R.id.txt_distance);
-            textView.setText(s);
+            TextView distance_tv = (TextView) findViewById(R.id.txt_distance);
+             distance_tv.setText(s);
         }
     };
 

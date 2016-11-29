@@ -78,7 +78,8 @@ public class ImageViewActivity extends AppCompatActivity {
                             imageProgressBar.setVisibility(View.GONE);
                             imageView.setImageDrawable(Drawable.createFromPath(PhotoSenderHandler.getInstance().getFile(userId).getPath()));
                         } else {
-                            Toast.makeText(context, "User has no photo", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "No Photo Available", Toast.LENGTH_SHORT).show();
+                            finish();
                         }}});
             }}).start();
     }

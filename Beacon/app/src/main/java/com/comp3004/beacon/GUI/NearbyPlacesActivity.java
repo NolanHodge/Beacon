@@ -229,9 +229,11 @@ public class NearbyPlacesActivity extends AppCompatActivity {
                                             LatLng latlng = place.getLocation();
                                             String lat = "" + latlng.latitude;
                                             String lon = "" + latlng.longitude;
+                                            String nbyloc = "nearby_location";
                                             Intent intent2 = new Intent(NearbyPlacesActivity.this, ArrowActivity2.class);
                                             intent2.putExtra(ArrowActivity2.FROM_MAP_TRACK_LAT, lat);
                                             intent2.putExtra(ArrowActivity2.FROM_MAP_TRACK_LON, lon);
+                                            intent2.putExtra(ArrowActivity2.FROM_NEARBY_LOCATION, nbyloc);
                                             startActivity(intent2);
                                             break;
                                         case 2:
