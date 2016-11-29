@@ -30,8 +30,13 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import android.widget.Toast;
@@ -80,7 +85,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import java.io.File;
 import java.util.HashMap;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, OnMarkerClickListener {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, OnMarkerClickListener {
     Intent serviceIntent = new Intent(this, MyService.class);
     public static boolean RUNNING = false;
     private GoogleMap mMap;
@@ -119,10 +124,41 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     Handler mHandler;
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_beacons_item:
+                startActivity(new Intent(MapsActivity.this, BeaconsActivity.class));
+                return true;
+            case R.id.menu_camera_item:
+                Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                File file = getFile();
+                camera_intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+                startActivityForResult(camera_intent, CAM_REQUEST);
+                return true;
+            case R.id.menu_friend_item:
+                startActivity(new Intent(MapsActivity.this, FriendListActivity.class));
+                return true;
+            case R.id.menu_nearby_item:
+                startActivity(new Intent(this, NearbyPlacesActivity.class));
+                return true;
+
+            case R.id.menu_public_item:
+                startActivity(new Intent(MapsActivity.this, PublicBeaconsActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         RUNNING = true;
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.map_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         findViewById(R.id.arrow_prgrs).setVisibility(View.VISIBLE);
         context = this;
@@ -213,7 +249,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         .build();
 
         //GUI
-        FloatingActionButton messageButton = (FloatingActionButton) findViewById(R.id.message_button);
+        /*FloatingActionButton messageButton = (FloatingActionButton) findViewById(R.id.message_button);
         FloatingActionButton beaconsButton = (FloatingActionButton) findViewById(R.id.beacons_button);
         FloatingActionButton publicBeaconsButton = (FloatingActionButton) findViewById(R.id.public_beacons_button);
         FloatingActionButton cameraButon = (FloatingActionButton) findViewById(R.id.photo_activity_button);
@@ -249,7 +285,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 startActivityForResult(camera_intent, CAM_REQUEST);
 
             }
-        });
+        });*/
 
 /*        switch_d.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -668,6 +704,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onPause() {
         startService(serviceIntent);
         super.onPause();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_maps, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
 
