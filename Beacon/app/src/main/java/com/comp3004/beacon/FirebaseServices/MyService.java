@@ -26,6 +26,8 @@ public class MyService extends Service {
     public void onCreate() {
         Log.e(TAG, "onCreate");
         DatabaseManager.getInstance().registerFriendRequestListener(getApplicationContext());
+        DatabaseManager.getInstance().registerPrivateBeaconListener(getApplicationContext());
+        DatabaseManager.getInstance().subscribeToMessageThread(getApplicationContext());
     }
 
     @Override

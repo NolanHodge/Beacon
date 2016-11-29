@@ -110,6 +110,13 @@ public class DatabaseManager {
         query.addChildEventListener(newMessageThreadListener);
     }
 
+    public void subscribeToMessageThread(Context c) {
+        CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
+        Query query = databaseReference.child("/" + currentBeaconUser.getUserId() + "_messageRequests");
+        NewMessageThreadListener newMessageThreadListener = new NewMessageThreadListener(c);
+        query.addChildEventListener(newMessageThreadListener);
+    }
+
     public void createMessageThreadListener(String threadId) {
         Query query = databaseReference.child(threadId);
         MessageThreadListener messageThreadListener = new MessageThreadListener();
@@ -147,6 +154,12 @@ public class DatabaseManager {
     public void registerPrivateBeaconListener() {
         Query query = databaseReference.child("beaconRequest/");
         PrivateBeaconListener privateBeaconListener = new PrivateBeaconListener();
+        query.addChildEventListener(privateBeaconListener);
+    }
+
+    public void registerPrivateBeaconListener(Context c) {
+        Query query = databaseReference.child("beaconRequest/");
+        PrivateBeaconListener privateBeaconListener = new PrivateBeaconListener(c);
         query.addChildEventListener(privateBeaconListener);
     }
 

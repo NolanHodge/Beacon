@@ -88,8 +88,7 @@
         <activity
             android:name=".GUI.UserSearchActivity"
             android:label="@string/title_activity_user_search"
-            android:launchMode="singleTop"
-            android:parentActivityName=".GUI.FriendListActivity">
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -114,7 +113,11 @@
         <service
             android:name=".FirebaseServices.MyService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+
+        <activity
+            android:name=".GUI.GenericActivity"
+            android:parentActivityName=".GUI.MapsActivity"></activity>
     </application>
 
 </manifest>

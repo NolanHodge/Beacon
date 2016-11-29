@@ -35,54 +35,26 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
-public class UserSearchActivity extends AppCompatActivity {
+public class UserSearchActivity extends GenericActivity {
 
-    ArrayList<String> userNames;
-    ArrayList<BeaconUser> users;
+    ArrayList<BeaconUser> users = new ArrayList<>();
     ListView friendsListView;
-    String query;
-    ArrayAdapter<String> arrayAdapter;
+    String query = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_generic_list);
 
-        setSupportActionBar((Toolbar) findViewById(R.id.generic_toolbar));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-
-        userNames = new ArrayList<>();
         friendsListView = (ListView) findViewById(R.id.generic_listview);
-        users = new ArrayList<>();
-
+        final FriendAdapter friendAdapter = new FriendAdapter(UserSearchActivity.this, users);
+        friendsListView.setAdapter(friendAdapter);
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             query = intent.getStringExtra(SearchManager.QUERY);
-            arrayAdapter = new ArrayAdapter<String>(this,
-                    android.R.layout.simple_list_item_1, userNames) {
-                @Override
-                public View getView(int position, View convertView, ViewGroup parent) {
-                    View view = super.getView(position, convertView, parent);
 
-                    TextView text1 = (TextView) view.findViewById(android.R.id.text1);
 
-                    if ((position % 2) == 1) {
-                        view.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
-                        text1.setTextColor(ContextCompat.getColor(getContext(), android.R.color.white));
-                    } else {
-                        view.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark));
-                        text1.setTextColor(ContextCompat.getColor(getContext(), android.R.color.white));
-                    }
-
-                    return view;
-                }
-            };
-
-            friendsListView.setAdapter(new FriendAdapter(UserSearchActivity.this, users));
             DatabaseReference dbr = DatabaseManager.getInstance().databaseReference.child("beaconUsers");
 
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("beaconUsers");
             dbr.orderByChild("name").addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -92,8 +64,8 @@ public class UserSearchActivity extends AppCompatActivity {
                     if (user.getDisplayName().toLowerCase().contains(query.toLowerCase()) &&
                             !user.getDisplayName().equals(CurrentBeaconUser.getInstance().getDisplayName())) {
                         users.add(user);
-                        userNames.add(user.getDisplayName());
-                        arrayAdapter.notifyDataSetChanged();
+                        friendAdapter.notifyDataSetChanged();
+                        showProgressBar(false);
                     }
                 }
 
@@ -117,6 +89,7 @@ public class UserSearchActivity extends AppCompatActivity {
 
                 }
             });
+
         }
         registerUserSearchDialog();
     }
@@ -128,7 +101,9 @@ public class UserSearchActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 BeaconUser selectedBeaconUser = users.get(position);
-                showUserSearchDialog(selectedBeaconUser, position);
+                if (CurrentBeaconUser.getInstance().getFriend(selectedBeaconUser.getDisplayName()) == null) {
+                    showUserSearchDialog(selectedBeaconUser, position);
+                }
             }
         });
     }
