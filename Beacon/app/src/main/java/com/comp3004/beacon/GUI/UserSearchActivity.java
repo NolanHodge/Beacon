@@ -7,6 +7,7 @@ import android.content.Intent;
 
 import android.os.Bundle;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AlertDialog;
 
@@ -19,6 +20,7 @@ import android.widget.ListView;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
+import com.comp3004.beacon.FirebaseServices.DatabaseManager;
 import com.comp3004.beacon.NotificationHandlers.CurrentFriendRequestsHandler;
 import com.comp3004.beacon.Networking.MessageSenderHandler;
 import com.comp3004.beacon.R;
@@ -57,7 +59,7 @@ public class UserSearchActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             query = intent.getStringExtra(SearchManager.QUERY);
-            arrayAdapter = new ArrayAdapter<String>(UserSearchActivity.this,
+            arrayAdapter = new ArrayAdapter<String>(this,
                     android.R.layout.simple_list_item_1, userNames) {
                 @Override
                 public View getView(int position, View convertView, ViewGroup parent) {
@@ -66,11 +68,11 @@ public class UserSearchActivity extends AppCompatActivity {
                     TextView text1 = (TextView) view.findViewById(android.R.id.text1);
 
                     if ((position % 2) == 1) {
-                        view.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
-                        text1.setTextColor(getContext().getResources().getColor(android.R.color.white));
+                        view.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
+                        text1.setTextColor(ContextCompat.getColor(getContext(), android.R.color.white));
                     } else {
-                        view.setBackgroundColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
-                        text1.setTextColor(getContext().getResources().getColor(android.R.color.white));
+                        view.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark));
+                        text1.setTextColor(ContextCompat.getColor(getContext(), android.R.color.white));
                     }
 
                     return view;
@@ -78,9 +80,10 @@ public class UserSearchActivity extends AppCompatActivity {
             };
 
             friendsListView.setAdapter(new FriendAdapter(UserSearchActivity.this, users));
+            DatabaseReference dbr = DatabaseManager.getInstance().databaseReference.child("beaconUsers");
 
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("beaconUsers");
-            databaseReference.orderByChild("name").addChildEventListener(new ChildEventListener() {
+            dbr.orderByChild("name").addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     BeaconUser user = dataSnapshot.getValue(BeaconUser.class);

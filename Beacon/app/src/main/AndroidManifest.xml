@@ -104,12 +104,17 @@
         <activity android:name=".GUI.ArrowActivity2" />
         <activity
             android:name=".GUI.NearbyPlacesActivity"
-            android:parentActivityName=".GUI.MapsActivity"
-            android:label="@string/title_activity_nearby" />
+            android:label="@string/title_activity_nearby"
+            android:parentActivityName=".GUI.MapsActivity" />
         <activity
             android:name=".GUI.BeaconsActivity"
             android:label="@string/title_activity_beacons"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <service
+            android:name=".FirebaseServices.MyService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>
