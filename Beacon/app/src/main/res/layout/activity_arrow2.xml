@@ -58,6 +58,7 @@
         android:textAppearance="@android:style/TextAppearance.Large"
         android:textStyle="normal|bold"
         android:layout_gravity="right|bottom"
+        android:textColor="@color/colorPrimary"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
