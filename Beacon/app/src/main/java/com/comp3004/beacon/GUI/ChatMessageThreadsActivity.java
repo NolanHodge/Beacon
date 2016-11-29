@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ChatMessageThreadsActivity extends AppCompatActivity {
+public class ChatMessageThreadsActivity extends GenericActivity {
 
     ListView conversationsListView;
     ArrayList<String> chatTitles;
@@ -36,12 +36,6 @@ public class ChatMessageThreadsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_generic_list);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.generic_toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
 
         chatTitles = new ArrayList<String>();
         chatIds = new ArrayList<String>();
@@ -105,6 +99,7 @@ public class ChatMessageThreadsActivity extends AppCompatActivity {
         };
 
         conversationsListView.setAdapter(adapter);
+        showProgressBar(false);
     }
 
     private void registerChatMessageListviewCallback() {

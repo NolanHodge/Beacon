@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_friend_item"
+        android:icon="@drawable/ic_people_white_24dp"
+        android:title="Friends"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_public_item"
+        android:icon="@drawable/ic_public_white_24dp"
+        android:title="Public Beacons"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_beacons_item"
+        android:icon="@drawable/ic_settings_input_antenna_white_24dp"
+        android:title="My Beacons"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_nearby_item"
+        android:icon="@drawable/ic_place_white_24dp"
+        android:title="Nearby Places"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_camera_item"
+        android:icon="@drawable/ic_photo_camera_white_24dp"
+        android:title="Take Picture"
+        app:showAsAction="always" />
+</menu>
