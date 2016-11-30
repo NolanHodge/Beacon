@@ -123,32 +123,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     Handler mHandler;
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_beacons_item:
-                startActivity(new Intent(MapsActivity.this, BeaconsActivity.class));
-                return true;
-            case R.id.menu_camera_item:
-                Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                File file = getFile();
-                camera_intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-                startActivityForResult(camera_intent, CAM_REQUEST);
-                return true;
-            case R.id.menu_friend_item:
-                startActivity(new Intent(MapsActivity.this, FriendListActivity.class));
-                return true;
-            case R.id.menu_nearby_item:
-                startActivity(new Intent(this, NearbyPlacesActivity.class));
-                return true;
-
-            case R.id.menu_public_item:
-                startActivity(new Intent(MapsActivity.this, PublicBeaconsActivity.class));
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,11 +130,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_maps);
         RUNNING = true;
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.map_toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        findViewById(R.id.arrow_prgrs).setVisibility(View.VISIBLE);
         context = this;
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -443,6 +412,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(final GoogleMap googleMap) {
         mMap = googleMap;
         mMap.clear();
+        mMap.setMyLocationEnabled(true);
         DatabaseManager.getInstance().loadCurrentUser();
         mMap.setOnMarkerClickListener(this);
         final CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
@@ -544,7 +514,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-        findViewById(R.id.arrow_prgrs).setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -706,17 +675,28 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onPause();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_maps, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
 
     public void openNearby(View v) {
         startActivity(new Intent(this, NearbyPlacesActivity.class));
     }
 
+    public void openFriends(View v) {
+        startActivity(new Intent(MapsActivity.this, FriendListActivity.class));
 
+    }
+
+    public void openPublic(View v) {
+        startActivity(new Intent(MapsActivity.this, PublicBeaconsActivity.class));
+    }
+
+    public void openBeacons(View v) {
+        startActivity(new Intent(MapsActivity.this, BeaconsActivity.class));
+    }
+
+    public void openCamera(View v) {
+        Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        File file = getFile();
+        camera_intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+        startActivityForResult(camera_intent, CAM_REQUEST);
+    }
 }
