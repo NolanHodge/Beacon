@@ -242,4 +242,13 @@ public class FriendListActivity extends AppCompatActivity {
         inflater.inflate(R.menu.menu_multiple_select, menu);
         super.onCreateContextMenu(menu, v, menuInfo);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.chat_threads) {
+            Intent intent = new Intent(FriendListActivity.this, ChatMessageThreadsActivity.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

@@ -30,8 +30,13 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import android.widget.Toast;
@@ -39,6 +44,7 @@ import android.widget.Toast;
 import android.widget.Switch;
 
 import com.comp3004.beacon.FirebaseServices.DatabaseManager;
+import com.comp3004.beacon.FirebaseServices.MyService;
 import com.comp3004.beacon.LocationManagement.LocationService;
 import com.comp3004.beacon.LocationManagement.MyLocationManager;
 import com.comp3004.beacon.NotificationHandlers.CurrentBeaconInvitationHandler;
@@ -79,8 +85,9 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import java.io.File;
 import java.util.HashMap;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, OnMarkerClickListener {
-
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, OnMarkerClickListener {
+    Intent serviceIntent = new Intent(this, MyService.class);
+    public static boolean RUNNING = false;
     private GoogleMap mMap;
 
     public static final String ANONYMOUS = "anonymous";
@@ -115,10 +122,43 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     HashMap<String, Marker> currentMarkers;
 
     Handler mHandler;
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_beacons_item:
+                startActivity(new Intent(MapsActivity.this, BeaconsActivity.class));
+                return true;
+            case R.id.menu_camera_item:
+                Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                File file = getFile();
+                camera_intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+                startActivityForResult(camera_intent, CAM_REQUEST);
+                return true;
+            case R.id.menu_friend_item:
+                startActivity(new Intent(MapsActivity.this, FriendListActivity.class));
+                return true;
+            case R.id.menu_nearby_item:
+                startActivity(new Intent(this, NearbyPlacesActivity.class));
+                return true;
+
+            case R.id.menu_public_item:
+                startActivity(new Intent(MapsActivity.this, PublicBeaconsActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        RUNNING = true;
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.map_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         findViewById(R.id.arrow_prgrs).setVisibility(View.VISIBLE);
         context = this;
@@ -129,7 +169,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
         mHandler = new Handler();
 
-        currentMarkers  = new HashMap<String, Marker>();
+        currentMarkers = new HashMap<String, Marker>();
         pendingFriendRequest = false;
 
         Bundle extras = getIntent().getExtras();
@@ -209,7 +249,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         .build();
 
         //GUI
-        FloatingActionButton messageButton = (FloatingActionButton) findViewById(R.id.message_button);
+        /*FloatingActionButton messageButton = (FloatingActionButton) findViewById(R.id.message_button);
         FloatingActionButton beaconsButton = (FloatingActionButton) findViewById(R.id.beacons_button);
         FloatingActionButton publicBeaconsButton = (FloatingActionButton) findViewById(R.id.public_beacons_button);
         FloatingActionButton cameraButon = (FloatingActionButton) findViewById(R.id.photo_activity_button);
@@ -245,7 +285,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 startActivityForResult(camera_intent, CAM_REQUEST);
 
             }
-        });
+        });*/
 
 /*        switch_d.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -302,6 +342,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onResume();
         placeBeacons();
     }
+
     public void openLocationRequestDialog() {
         final Context context = this;
         final CurrentLocationRequestHandler currentLocationRequestHandler = CurrentLocationRequestHandler.getInstance();
@@ -467,7 +508,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     public void onCameraIdle() {
                         AlertDialog dialog = new AlertDialog.Builder(MapsActivity.this, R.style.MyDialogTheme)
                                 .setTitle("New Location")
-                                .setItems(new String[]{ "Public Beacon", "Track", "Cancel"}, new DialogInterface.OnClickListener() {
+                                .setItems(new String[]{"Public Beacon", "Track", "Cancel"}, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         boolean public_beacon = false;
                                         switch (which) {
@@ -546,67 +587,72 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .show();
         return true;
     }
+
     public void placeBeacons() {
 
         new Thread(new Runnable() {
 
             @Override
             public void run() {
-                    mHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            final CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
-                            for (final PrivateBeacon privateBeacon : currentBeaconUser.getBeacons().values()) {
-                                if (privateBeacon == null) break;
-                                final LatLng position = new LatLng(Double.parseDouble(privateBeacon.getLat()), Double.parseDouble(privateBeacon.getLon()));
-                                final String userId = privateBeacon.getFromUserId();
-                                final String title;
-                                if (privateBeacon.isPublicBeacon()) {  title = "Public Beacon";}
-                                else {title = "Private Beacon";}
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        if (currentMarkers.containsKey(privateBeacon.getBeaconId())) {
-                                            currentMarkers.get(privateBeacon.getBeaconId()).remove();
-                                        }
-
-                                        Marker marker = mMap.addMarker(new MarkerOptions()
-                                                .title(title)
-                                                .position(position)
-                                                .snippet(currentBeaconUser.getFriend(userId).getDisplayName())
-                                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.tower_icon_small)));
-                                        currentMarkers.put(privateBeacon.getBeaconId(), marker);
-
-
-                                    }});
-
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        final CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
+                        for (final PrivateBeacon privateBeacon : currentBeaconUser.getBeacons().values()) {
+                            if (privateBeacon == null) break;
+                            final LatLng position = new LatLng(Double.parseDouble(privateBeacon.getLat()), Double.parseDouble(privateBeacon.getLon()));
+                            final String userId = privateBeacon.getFromUserId();
+                            final String title;
+                            if (privateBeacon.isPublicBeacon()) {
+                                title = "Public Beacon";
+                            } else {
+                                title = "Private Beacon";
                             }
-                            for (String key : currentMarkers.keySet()) {
-                                if (!CurrentBeaconUser.getInstance().getBeacons().containsKey((String) key)) {
-                                    currentMarkers.get(key).remove();
-                                }
-                            }
-                            for (Object key : currentBeaconUser.getMyBeacons().keySet()) {
-                                if (currentBeaconUser.getMyBeacon((String) key).isPublicBeacon()) {
-                                    Beacon beacon = (Beacon) currentBeaconUser.getMyBeacons().get((String) key);
-                                    LatLng position = new LatLng(Double.parseDouble(beacon.getLat()), Double.parseDouble(beacon.getLon()));
-                                    Marker marker =  mMap.addMarker(new MarkerOptions()
-                                    .title("Your public beacon")
-                                    .snippet(currentBeaconUser.getDisplayName())
-                                    .position(position)
-                                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.tower_icon_small)));
-                                    if (currentMarker != null) {
-                                        currentMarker.remove();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (currentMarkers.containsKey(privateBeacon.getBeaconId())) {
+                                        currentMarkers.get(privateBeacon.getBeaconId()).remove();
                                     }
-                                    currentMarker = marker;
+
+                                    Marker marker = mMap.addMarker(new MarkerOptions()
+                                            .title(title)
+                                            .position(position)
+                                            .snippet(currentBeaconUser.getFriend(userId).getDisplayName())
+                                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.tower_icon_small)));
+                                    currentMarkers.put(privateBeacon.getBeaconId(), marker);
+
 
                                 }
-                            }
-                        }});
-                }
-            }).start();
-    }
+                            });
 
+                        }
+                        for (String key : currentMarkers.keySet()) {
+                            if (!CurrentBeaconUser.getInstance().getBeacons().containsKey((String) key)) {
+                                currentMarkers.get(key).remove();
+                            }
+                        }
+                        for (Object key : currentBeaconUser.getMyBeacons().keySet()) {
+                            if (currentBeaconUser.getMyBeacon((String) key).isPublicBeacon()) {
+                                Beacon beacon = (Beacon) currentBeaconUser.getMyBeacons().get((String) key);
+                                LatLng position = new LatLng(Double.parseDouble(beacon.getLat()), Double.parseDouble(beacon.getLon()));
+                                Marker marker = mMap.addMarker(new MarkerOptions()
+                                        .title("Your public beacon")
+                                        .snippet(currentBeaconUser.getDisplayName())
+                                        .position(position)
+                                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.tower_icon_small)));
+                                if (currentMarker != null) {
+                                    currentMarker.remove();
+                                }
+                                currentMarker = marker;
+
+                            }
+                        }
+                    }
+                });
+            }
+        }).start();
+    }
 
 
     private File getFile() {
@@ -627,10 +673,50 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         File file = new File(path);
         MessageSenderHandler.getInstance().sendPhotoMessage(file);
     }
+
+    @Override
+    protected void onDestroy() {
+
+        RUNNING = false;
+        startService(serviceIntent);
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onStop() {
+        startService(serviceIntent);
+        super.onStop();
+    }
+
+    @Override
+    protected void onRestart() {
+        stopService(serviceIntent);
+        super.onRestart();
+    }
+
+    @Override
+    protected void onStart() {
+        stopService(serviceIntent);
+        super.onStart();
+    }
+
+    @Override
+    protected void onPause() {
+        startService(serviceIntent);
+        super.onPause();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_maps, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
     public void openNearby(View v) {
         startActivity(new Intent(this, NearbyPlacesActivity.class));
     }
-
 
 
 }

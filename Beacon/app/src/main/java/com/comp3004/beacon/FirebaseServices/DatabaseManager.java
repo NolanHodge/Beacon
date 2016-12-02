@@ -1,5 +1,6 @@
 package com.comp3004.beacon.FirebaseServices;
 
+import android.content.Context;
 import android.database.CursorIndexOutOfBoundsException;
 import android.support.annotation.NonNull;
 
@@ -38,7 +39,7 @@ import java.util.HashMap;
 public class DatabaseManager {
 
     static DatabaseManager databaseManager;
-    DatabaseReference databaseReference;
+    public DatabaseReference databaseReference;
     Query query;
 
     HashMap<String, PrivateBeacon> publicBeacons;
@@ -101,10 +102,18 @@ public class DatabaseManager {
             ref.removeValue();
         }
     }
+
     public void subscribeToMessageThread() {
         CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
         Query query = databaseReference.child("/" + currentBeaconUser.getUserId() + "_messageRequests");
         NewMessageThreadListener newMessageThreadListener = new NewMessageThreadListener();
+        query.addChildEventListener(newMessageThreadListener);
+    }
+
+    public void subscribeToMessageThread(Context c) {
+        CurrentBeaconUser currentBeaconUser = CurrentBeaconUser.getInstance();
+        Query query = databaseReference.child("/" + currentBeaconUser.getUserId() + "_messageRequests");
+        NewMessageThreadListener newMessageThreadListener = new NewMessageThreadListener(c);
         query.addChildEventListener(newMessageThreadListener);
     }
 
@@ -129,12 +138,12 @@ public class DatabaseManager {
     }
 
     public void registerLocationRequestListener() {
-        Query query =  databaseReference.child(CurrentBeaconUser.getInstance().getUserId() + "_locationRequests");
+        Query query = databaseReference.child(CurrentBeaconUser.getInstance().getUserId() + "_locationRequests");
         LocationRequestListener locationRequestListener = new LocationRequestListener();
         query.addChildEventListener(locationRequestListener);
     }
 
-    public void addFriend(BeaconUser beaconUser)  {
+    public void addFriend(BeaconUser beaconUser) {
         databaseReference.child("beaconUsers/" + CurrentBeaconUser.getInstance().getUserId() + "/friends").child(beaconUser.getUserId()).setValue(beaconUser);
     }
 
@@ -147,12 +156,27 @@ public class DatabaseManager {
         PrivateBeaconListener privateBeaconListener = new PrivateBeaconListener();
         query.addChildEventListener(privateBeaconListener);
     }
+
+    public void registerPrivateBeaconListener(Context c) {
+        Query query = databaseReference.child("beaconRequest/");
+        PrivateBeaconListener privateBeaconListener = new PrivateBeaconListener(c);
+        query.addChildEventListener(privateBeaconListener);
+    }
+
     public void registerFriendRequestListener() {
         Query query = databaseReference.child(CurrentBeaconUser.getInstance().getUserId() + "_friendRequests");
         FriendRequestDataListener friendRequestDataListener = new FriendRequestDataListener();
         query.addChildEventListener(friendRequestDataListener);
 
     }
+
+    public void registerFriendRequestListener(Context c) {
+        Query query = databaseReference.child(CurrentBeaconUser.getInstance().getUserId() + "_friendRequests");
+        FriendRequestDataListener friendRequestDataListener = new FriendRequestDataListener(c);
+        query.addChildEventListener(friendRequestDataListener);
+
+    }
+
     public File loadPhotos(final String userId) {
 
         File localFile;

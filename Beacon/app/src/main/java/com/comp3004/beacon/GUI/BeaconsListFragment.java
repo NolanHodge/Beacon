@@ -38,7 +38,6 @@ public class BeaconsListFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        getActivity().setTitle("your title");
         beaconsList = new ArrayList<PrivateBeacon>();
         beaconTitles = new ArrayList<String>();
 
