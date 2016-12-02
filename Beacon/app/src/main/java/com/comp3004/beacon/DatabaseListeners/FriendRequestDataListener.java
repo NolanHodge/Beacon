@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.support.v7.app.NotificationCompat;
 
 import com.comp3004.beacon.GUI.LoginActivity;
+import com.comp3004.beacon.GUI.MapsActivity;
 import com.comp3004.beacon.Networking.FriendRequestMessage;
 import com.comp3004.beacon.NotificationHandlers.CurrentFriendRequestsHandler;
 import com.comp3004.beacon.R;
@@ -39,18 +40,31 @@ public class FriendRequestDataListener implements ChildEventListener {
         CurrentFriendRequestsHandler.getInstance().setCurrentFriendRequestExist(true);
         CurrentFriendRequestsHandler.getInstance().setFriendRequestMessage(friendRequestMessage);
 
-        Notification n = new NotificationCompat.Builder(context)
-                .setContentIntent(PendingIntent.getActivity(context, 0, new Intent(context, LoginActivity.class), 0))
-                .setContentTitle("Beacon")
-                .setTicker("Fried request")
-                .setContentText("Friend request")
-                .setSmallIcon(R.mipmap.ic_launcher_2)
-                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher_2))
-                .setAutoCancel(true)
-                .setSound(Uri.parse("android.resource://" + context.getPackageName() + "/raw/snd1"))
-                .setVibrate(new long[]{0, 300, 100, 300}).build();
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.notify(0, n);
+        if (context != null) {
+            Intent dialogIntent = new Intent(context, MapsActivity.class);
+            dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            dialogIntent.putExtra(MapsActivity.FRIEND_REQUEST, true);
+
+            PendingIntent resultPendingIntent =
+                    PendingIntent.getActivity(
+                            context,
+                            0,
+                            dialogIntent,
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                    );
+            Notification n = new NotificationCompat.Builder(context)
+                    .setContentIntent(resultPendingIntent)
+                    .setContentTitle("Beacon")
+                    .setTicker("Fried Request")
+                    .setContentText("Friend request from " + friendRequestMessage.getDisplayName())
+                    .setSmallIcon(R.mipmap.ic_launcher_2)
+                    .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_launcher_2))
+                    .setAutoCancel(true)
+                    .setSound(Uri.parse("android.resource://" + context.getPackageName() + "/raw/snd1"))
+                    .setVibrate(new long[]{0, 300, 100, 300}).build();
+            NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+            notificationManager.notify(0, n);
+        }
 
     }
 

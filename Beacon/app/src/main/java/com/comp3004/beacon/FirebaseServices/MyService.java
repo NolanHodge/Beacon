@@ -28,6 +28,7 @@ public class MyService extends Service {
         DatabaseManager.getInstance().registerFriendRequestListener(getApplicationContext());
         DatabaseManager.getInstance().registerPrivateBeaconListener(getApplicationContext());
         DatabaseManager.getInstance().subscribeToMessageThread(getApplicationContext());
+        DatabaseManager.getInstance().registerLocationRequestListener(getApplicationContext());
     }
 
     @Override

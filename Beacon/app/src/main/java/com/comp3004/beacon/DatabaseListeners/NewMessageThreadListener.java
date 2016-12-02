@@ -12,6 +12,7 @@ import android.provider.ContactsContract;
 import android.support.v7.app.NotificationCompat;
 
 import com.comp3004.beacon.FirebaseServices.DatabaseManager;
+import com.comp3004.beacon.GUI.FriendListActivity;
 import com.comp3004.beacon.GUI.LoginActivity;
 import com.comp3004.beacon.Networking.MailBox;
 import com.comp3004.beacon.Networking.SubscriptionHandler;
@@ -47,7 +48,7 @@ public class NewMessageThreadListener implements ChildEventListener {
         MailBox.getInstance().createNewMessageThread(dataSnapshot.getKey());
         if (context != null) {
             Notification n = new NotificationCompat.Builder(context)
-                    .setContentIntent(PendingIntent.getActivity(context, 0, new Intent(context, LoginActivity.class), 0))
+                    .setContentIntent(PendingIntent.getActivity(context, 0, new Intent(context, FriendListActivity.class), 0))
                     .setContentTitle("Beacon")
                     .setTicker("New Message")
                     .setContentText("New Message")

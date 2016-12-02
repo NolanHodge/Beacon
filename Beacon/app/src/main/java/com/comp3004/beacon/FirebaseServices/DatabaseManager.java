@@ -143,6 +143,12 @@ public class DatabaseManager {
         query.addChildEventListener(locationRequestListener);
     }
 
+    public void registerLocationRequestListener(Context c) {
+        Query query = databaseReference.child(CurrentBeaconUser.getInstance().getUserId() + "_locationRequests");
+        LocationRequestListener locationRequestListener = new LocationRequestListener(c);
+        query.addChildEventListener(locationRequestListener);
+    }
+
     public void addFriend(BeaconUser beaconUser) {
         databaseReference.child("beaconUsers/" + CurrentBeaconUser.getInstance().getUserId() + "/friends").child(beaconUser.getUserId()).setValue(beaconUser);
     }

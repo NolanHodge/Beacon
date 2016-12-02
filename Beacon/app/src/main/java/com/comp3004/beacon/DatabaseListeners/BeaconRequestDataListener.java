@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.support.v7.app.NotificationCompat;
 
 import com.comp3004.beacon.GUI.LoginActivity;
+import com.comp3004.beacon.GUI.MapsActivity;
 import com.comp3004.beacon.Networking.BeaconInvitationMessage;
 import com.comp3004.beacon.NotificationHandlers.CurrentBeaconInvitationHandler;
 import com.comp3004.beacon.R;
@@ -60,8 +61,21 @@ public class BeaconRequestDataListener implements ChildEventListener {
             CurrentBeaconUser.getInstance().addMyBeaon(dataSnapshot.getKey(), privateBeacon);
         }
         if (context != null) {
+            Intent dialogIntent = new Intent(context, MapsActivity.class);
+            dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            dialogIntent.putExtra(MapsActivity.BEACON_REQUEST, true);
+
+
+            PendingIntent resultPendingIntent =
+                    PendingIntent.getActivity(
+                            context,
+                            0,
+                            dialogIntent,
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                    );
+
             Notification n = new NotificationCompat.Builder(context)
-                    .setContentIntent(PendingIntent.getActivity(context, 0, new Intent(context, LoginActivity.class), 0))
+                    .setContentIntent(resultPendingIntent)
                     .setContentTitle("Beacon")
                     .setTicker("Beacon Request")
                     .setContentText("Someone requested a beacon")
