@@ -3,7 +3,7 @@
 Beacon is a location-broadcasting application for you and your friends. The application is a standalone, fast and light way to share your location with your friends so they can find you at concerts, school, shopping malls, or anywhere else GPS functionality can be used. In addition as well, Beacon can be used to track your friend’s locations, so you can find them.
 The idea for Beacon was conceived out of the need for an application to find friends at large events, such as music festivals. Specifically we thought that an application that would guide a user to their friend’s location would be especially useful. Moreover, getting directions to your friend’s location, or letting your friend find your location, should be as easy as setting up a “beacon” for guidance.
 
-##Funtional Properties
+##Functional Properties
 ### Beacon Broadcasts a User's Location 
 Beacon broadcasts a user’s location in the following ways:
 1. Friend-List Broadcast
