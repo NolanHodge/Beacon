@@ -375,6 +375,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 //Add friend
                 DatabaseManager.getInstance().addFriend(currentFriendRequestsHandler.getFriendRequestMessage().getBeaconUser());
                 MessageSenderHandler.getInstance().sendFriendRequestAcceptMessage(currentFriendRequestsHandler.getFriendRequestMessage().getBeaconUser().getUserId());
+                CurrentBeaconUser.getInstance().getFriends().put(currentFriendRequestsHandler.getFriendRequestMessage().getBeaconUser().getUserId(), CurrentFriendRequestsHandler.getInstance().getDisplayName());
             }
         });
         builder.setNegativeButton("Decline", new DialogInterface.OnClickListener() {

@@ -129,6 +129,7 @@ public class ArrowActivity2 extends FragmentActivity implements SensorEventListe
                 followingBeacon = new PrivateBeacon(fromMapLat, fromMapLon);
                 if (extras.getString(FROM_NEARBY_LOCATION).equals("nearby_location"))
                     nearby_location = true;
+
             }
         }
 
