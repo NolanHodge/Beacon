@@ -7,4 +7,10 @@
         android:title="Search"
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="ifRoom|collapseActionView" />
+
+    <item
+        android:id="@+id/chat_threads"
+        android:icon="@drawable/chat_bubble2"
+        android:title="Messages"
+        app:showAsAction="ifRoom" />
 </menu>

@@ -136,7 +136,6 @@ public class ArrowActivity2 extends FragmentActivity implements SensorEventListe
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                // In case we are tracking a non-Beacon user (i.e a public location, etc)
                 if (!nearby_location)
                     DatabaseManager.getInstance().loadPhotos(followingBeacon.getFromUserId());
             }
