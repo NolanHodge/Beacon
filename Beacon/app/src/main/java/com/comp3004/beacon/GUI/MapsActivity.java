@@ -86,7 +86,7 @@ import java.io.File;
 import java.util.HashMap;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, OnMarkerClickListener {
-    Intent serviceIntent = new Intent(this, MyService.class);
+    Intent serviceIntent;
     public static boolean RUNNING = false;
     private GoogleMap mMap;
 
@@ -129,7 +129,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         RUNNING = true;
-
+        serviceIntent = new Intent(this, MyService.class);
         context = this;
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.

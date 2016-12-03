@@ -40,7 +40,7 @@ public class FriendRequestDataListener implements ChildEventListener {
         CurrentFriendRequestsHandler.getInstance().setCurrentFriendRequestExist(true);
         CurrentFriendRequestsHandler.getInstance().setFriendRequestMessage(friendRequestMessage);
 
-        if (context != null) {
+        /*if (context != null) {
             Intent dialogIntent = new Intent(context, MapsActivity.class);
             dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             dialogIntent.putExtra(MapsActivity.FRIEND_REQUEST, true);
@@ -64,7 +64,7 @@ public class FriendRequestDataListener implements ChildEventListener {
                     .setVibrate(new long[]{0, 300, 100, 300}).build();
             NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
             notificationManager.notify(0, n);
-        }
+        }*/
 
     }
 
