@@ -1,102 +1,151 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_weight="1"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context="com.comp3004.beacon.GUI.MapsActivity" />
 
-    <android.support.design.widget.FloatingActionButton
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/message_button"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/friends"
-        app:backgroundTint="@color/button_green"
-        android:layout_alignWithParentIfMissing="true"
-        android:layout_above="@+id/textView3"
-        android:layout_alignLeft="@+id/photo_activity_button"
-        android:layout_alignStart="@+id/photo_activity_button" />
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal">
 
-    <android.support.design.widget.FloatingActionButton
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/beacons_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/tower_icon_1"
-        app:backgroundTint="@color/button_green"
-        android:layout_alignWithParentIfMissing="false"
-        android:layout_above="@+id/textView3"
-        android:layout_alignLeft="@+id/textView4"
-        android:layout_alignStart="@+id/textView4" />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?selectableItemBackground"
+            android:onClick="openNearby"
+            android:padding="15dp"
+            android:src="@drawable/ic_place_white_24dp" />
 
-    <android.support.design.widget.FloatingActionButton
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/map"
-        android:onClick="openNearby"
-        app:backgroundTint="@color/button_green"
-        android:layout_alignWithParentIfMissing="false"
-        android:layout_alignTop="@+id/photo_activity_button"
-        android:layout_alignLeft="@+id/textView4"
-        android:layout_alignStart="@+id/textView4"
-        android:id="@+id/view" />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?selectableItemBackground"
+            android:onClick="openPublic"
+            android:padding="15dp"
+            android:src="@drawable/ic_public_white_24dp" />
 
-    <android.support.design.widget.FloatingActionButton
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/public_beacons_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/earth"
-        app:backgroundTint="@color/button_green"
-        android:layout_above="@+id/textView3"
-        android:layout_centerHorizontal="true" />
 
-    <android.support.design.widget.FloatingActionButton
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/photo_activity_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_margin="@dimen/fab_margin"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/camera_icon"
-        app:backgroundTint="@color/button_green"
-        />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?selectableItemBackground"
+            android:onClick="openBeacons"
+            android:padding="15dp"
+            android:src="@drawable/ic_settings_input_antenna_white_24dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/textView3"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?selectableItemBackground"
+            android:onClick="openFriends"
+            android:padding="15dp"
+            android:src="@drawable/ic_people_white_24dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView4"
-        android:layout_alignTop="@+id/photo_activity_button"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_margin="@dimen/fab_margin"
-        android:singleLine="true" />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?selectableItemBackground"
+            android:onClick="openCamera"
+            android:padding="15dp"
+            android:src="@drawable/ic_photo_camera_white_24dp" />
 
-    <ProgressBar
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/arrow_prgrs" />
+
+    </LinearLayout>
+</LinearLayout>
+
+
+    <!--
+        <android.support.design.widget.FloatingActionButton xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/message_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/textView3"
+            android:layout_alignLeft="@+id/photo_activity_button"
+            android:layout_alignStart="@+id/photo_activity_button"
+            android:layout_alignWithParentIfMissing="true"
+            android:src="@drawable/friends"
+            app:backgroundTint="@color/button_green" />
+
+        <android.support.design.widget.FloatingActionButton xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/beacons_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/textView3"
+            android:layout_alignLeft="@+id/textView4"
+            android:layout_alignStart="@+id/textView4"
+            android:layout_alignWithParentIfMissing="false"
+            android:src="@drawable/tower_icon_1"
+            app:backgroundTint="@color/button_green" />
+
+        <android.support.design.widget.FloatingActionButton xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textView4"
+            android:layout_alignStart="@+id/textView4"
+            android:layout_alignTop="@+id/photo_activity_button"
+            android:layout_alignWithParentIfMissing="false"
+            android:onClick="openNearby"
+            android:src="@drawable/map"
+            app:backgroundTint="@color/button_green" />
+
+        <android.support.design.widget.FloatingActionButton xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/public_beacons_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/textView3"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/earth"
+            app:backgroundTint="@color/button_green" />
+
+        <android.support.design.widget.FloatingActionButton xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/photo_activity_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_margin="@dimen/fab_margin"
+            android:src="@drawable/camera_icon"
+            app:backgroundTint="@color/button_green" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentStart="true"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/photo_activity_button"
+            android:layout_margin="@dimen/fab_margin"
+            android:singleLine="true" />
+    -->
 
     <!--
     <Switch
@@ -111,4 +160,3 @@
         android:layout_alignEnd="@+id/arrow_prgrs" />
 
         -->
-</RelativeLayout>

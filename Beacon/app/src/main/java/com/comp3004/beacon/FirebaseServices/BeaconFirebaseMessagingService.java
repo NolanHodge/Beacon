@@ -64,7 +64,7 @@ public class BeaconFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        sendNotification(remoteMessage);
+        //sendNotification(remoteMessage);
         Log.d(TAG, "From: " + remoteMessage.getFrom());
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {

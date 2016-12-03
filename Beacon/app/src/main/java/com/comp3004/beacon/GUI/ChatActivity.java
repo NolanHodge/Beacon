@@ -1,14 +1,18 @@
 package com.comp3004.beacon.GUI;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -16,7 +20,11 @@ import android.os.AsyncTask;
 
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -29,6 +37,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.comp3004.beacon.LocationManagement.LocationService;
+import com.comp3004.beacon.LocationManagement.MyLocationManager;
 import com.comp3004.beacon.Networking.ChatMessage;
 import com.comp3004.beacon.Networking.GetImage;
 import com.comp3004.beacon.Networking.MailBox;
@@ -155,7 +165,7 @@ public class ChatActivity extends AppCompatActivity {
                 }
             }
         }.execute(photoUrls.get(currentBeaconUser.getUserId()), photoUrls.get(aFriend.getUserId()));
-        getSupportActionBar().setTitle("Chat with " + CurrentBeaconUser.getInstance().getFriend(otherChatParticipantId).getDisplayName());
+        getSupportActionBar().setTitle(CurrentBeaconUser.getInstance().getFriend(otherChatParticipantId).getDisplayName());
 
         //setAdapter();
 
@@ -297,6 +307,42 @@ public class ChatActivity extends AppCompatActivity {
         public ImageView leftIcon;
         public ImageView rightIcon;
         public View layout;
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_chat, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_request_beacon) {
+            MessageSenderHandler.getInstance().sendLocationRequest(otherChatParticipantId);
+            return true;
+        } else if (item.getItemId() == R.id.menu_send_beacon) {
+            final LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+            LocationService locationService = new LocationService() {
+                @Override
+                public void onLocationChanged(Location location) {
+                    try {
+                        locationManager.removeUpdates(this);
+                    } catch (SecurityException e) {
+                    }
+
+
+                    MessageSenderHandler.getInstance().sendBeaconRequest(otherChatParticipantId, MyLocationManager.getInstance().getMyLocation());
+                }
+            };
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 10, locationService);
+            return true;
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
 
