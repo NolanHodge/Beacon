@@ -128,13 +128,13 @@ public class BeaconsListFragment extends Fragment {
 
     private String getTitle(Beacon beacon) {
         List<String> ids = Arrays.asList(beacon.getBeaconId().split("_"));
-        String displayName = CurrentBeaconUser.getInstance().getFriend(beacon.getFromUserId()).getDisplayName();
-        if (ids.size() == 3 && ids.get(2).equals("private")) {
-            return "Private Beacon: " + displayName;
+        String displayName;
+        if (CurrentBeaconUser.getInstance().getFriend(beacon.getFromUserId()) != null) {
+            displayName = CurrentBeaconUser.getInstance().getFriend(beacon.getFromUserId()).getDisplayName();
+            if (ids.size() == 3 && ids.get(2).equals("private")) {
+                return "Private Beacon: " + displayName;
+            } else return "Public Beacon: " + displayName;
         }
-        else return "Public Beacon: " + displayName;
-
+        return "Public Beacon Unknown User";
     }
-    
-
 }
