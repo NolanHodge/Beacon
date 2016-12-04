@@ -486,8 +486,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                                 String lat = "" + latLng.latitude;
                                                 String lon = "" + latLng.longitude;
                                                 Intent intent2 = new Intent(MapsActivity.this, ArrowActivity2.class);
+                                                String nbyloc = "nearby_location";
                                                 intent2.putExtra(ArrowActivity2.FROM_MAP_TRACK_LAT, lat);
                                                 intent2.putExtra(ArrowActivity2.FROM_MAP_TRACK_LON, lon);
+                                                intent2.putExtra(ArrowActivity2.FROM_NEARBY_LOCATION, nbyloc);
                                                 startActivity(intent2);
                                                 break;
                                             case 2:
@@ -570,13 +572,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                             currentMarkers.get(privateBeacon.getBeaconId()).remove();
                                         }
 
-                                        Marker marker = mMap.addMarker(new MarkerOptions()
-                                                .title(title)
-                                                .position(position)
-                                                .snippet(currentBeaconUser.getFriend(userId).getDisplayName())
-                                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.tower_icon_small)));
-                                        currentMarkers.put(privateBeacon.getBeaconId(), marker);
-
+                                        if (currentBeaconUser.getFriend(userId) != null) {
+                                            Marker marker = mMap.addMarker(new MarkerOptions()
+                                                    .title(title)
+                                                    .position(position)
+                                                    .snippet(currentBeaconUser.getFriend(userId).getDisplayName())
+                                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.tower_icon_small)));
+                                            currentMarkers.put(privateBeacon.getBeaconId(), marker);
+                                        }
 
                                     }});
 
