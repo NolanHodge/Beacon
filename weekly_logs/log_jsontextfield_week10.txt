@@ -1,0 +1,3 @@
+filmed and edited video for deliverabe 4 - 2 hours
+continuing work on background notifications - 10 minutes
+some UI changes and code cleanup - 10 minutes
