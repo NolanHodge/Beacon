@@ -46,7 +46,7 @@ public class NewMessageThreadListener implements ChildEventListener {
         DatabaseManager.getInstance().createMessageThreadListener(dbPath);
         SubscriptionHandler.getInstance().subscribeToTopic(dataSnapshot.getKey());
         MailBox.getInstance().createNewMessageThread(dataSnapshot.getKey());
-        if (context != null) {
+        /*if (context != null) {
             Notification n = new NotificationCompat.Builder(context)
                     .setContentIntent(PendingIntent.getActivity(context, 0, new Intent(context, FriendListActivity.class), 0))
                     .setContentTitle("Beacon")
@@ -59,7 +59,7 @@ public class NewMessageThreadListener implements ChildEventListener {
                     .setVibrate(new long[]{0, 300, 100, 300}).build();
             NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
             notificationManager.notify(0, n);
-        }
+        }*/
     }
 
     @Override

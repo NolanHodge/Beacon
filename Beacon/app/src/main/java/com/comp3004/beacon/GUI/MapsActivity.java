@@ -547,13 +547,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .setPositiveButton("Track", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        LatLng latlng = marker.getPosition();
-                        String lat = "" + latlng.latitude;
-                        String lon = "" + latlng.longitude;
-                        Intent intent2 = new Intent(MapsActivity.this, ArrowActivity2.class);
-                        intent2.putExtra(ArrowActivity2.FROM_MAP_TRACK_LAT, lat);
-                        intent2.putExtra(ArrowActivity2.FROM_MAP_TRACK_LON, lon);
-                        startActivity(intent2);
+                        for (String markerKey : currentMarkers.keySet()) {
+                            if (marker.equals(currentMarkers.get(markerKey))) {
+                                Intent intent = new Intent(MapsActivity.this, ArrowActivity2.class);
+                                intent.putExtra(ArrowActivity2.CURRENT_BEACON_ID_KEY, markerKey);
+                                startActivity(intent);
+                            }
+                        }
                     }
                 })
                 .show();

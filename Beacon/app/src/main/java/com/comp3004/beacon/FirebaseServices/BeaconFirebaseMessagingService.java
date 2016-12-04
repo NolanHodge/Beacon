@@ -33,7 +33,7 @@ public class BeaconFirebaseMessagingService extends FirebaseMessagingService {
 
     Context context;
 
-    public void sendNotification(RemoteMessage remoteMessage) {
+   /* public void sendNotification(RemoteMessage remoteMessage) {
         String title = "", message = "";
         if (remoteMessage.getFrom().contains("beaconRequests")) {
             title = "Beacon Request";
@@ -61,7 +61,7 @@ public class BeaconFirebaseMessagingService extends FirebaseMessagingService {
                 .setVibrate(new long[]{0, 300, 100, 300}).build();
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(0, n);
-    }
+    }*/
 
     public void onMessageReceived(RemoteMessage remoteMessage) {
         //sendNotification(remoteMessage);
