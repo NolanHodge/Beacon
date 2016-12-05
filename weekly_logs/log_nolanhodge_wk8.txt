@@ -1,0 +1,2 @@
+working on chat bubble functionality
+image rotation causing app to crash
