@@ -1,0 +1,2 @@
+App testing, Looking for crashes, checking logs and fixing
+Arrow Activity not the best it could be, but works
