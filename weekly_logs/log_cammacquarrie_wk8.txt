@@ -1,0 +1,5 @@
+Beacon - Cameron MacQuarrie - Week 8 (Nov 10-Nov 16) Development log
+
+Script for Prototype demo (1 hour)
+Rebase of NavigationDrawer branch + fix merge errors (3 hours)
+Rework off new branch NavDraw - create Navigation Drawer activity (1 hour)

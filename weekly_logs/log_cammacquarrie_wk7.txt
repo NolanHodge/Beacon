@@ -1,0 +1,5 @@
+Beacon - Cameron MacQuarrie - Week 7 (Nov 3 - Nov 9) Development log
+
+Converted Public Beacon to fragment (1 hour)
+Fixed nagivation draw icons and layout (1 hour)
+Fix beacons not appearing in MapFragment (2 hours)

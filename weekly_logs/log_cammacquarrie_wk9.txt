@@ -1,0 +1,6 @@
+Beacon - Cameron MacQuarrie - Week 9 (Nov 17-Nov 23) Development log
+
+Convert MapActivity to Fragment (1 hour)
+Attempt fix of Beacons not showing (1 hours)
+Convert FriendsList to fragment (1 hour)
+Convert Public to fragment (1 hour)

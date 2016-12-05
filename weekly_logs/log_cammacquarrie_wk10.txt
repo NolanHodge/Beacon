@@ -1,0 +1,7 @@
+Beacon - Cameron MacQuarrie - Week 10 (Nov 24-Nov 30) Development log
+
+
+Convert MyBeacons + BeaconList to fragments (1 hour)
+Create BeaconActivity as tabed activity (1 hour)
+Integrating BeaconActivity to main branch (1 hour)
+Diagrams for D3 (2 hours)
