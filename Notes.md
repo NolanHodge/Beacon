@@ -1,51 +1,51 @@
-**COMP3004 FINAL OVERVIEW**
+##COMP3004 FINAL OVERVIEW##
 
 
-**9 – Questions /100 marks**  
+##9 – Questions /100 marks##  
 
-**Fill in gaps.**  
+##Fill in gaps.##  
 
-**True/False Answers**  
+##True/False Answers##  
 
-	*Domain models, use cases, development processes, design patterns, testing*  
+	#Domain models, use cases, development processes, design patterns, testing#  
 
-**Short Answers.**  
+##Short Answers.##  
 
-	*- “Give an example of X” and “What is the difference between X and Y?”*  
-	*- Domain model: classes (different kind of domain objects), association attributes*  
-	*- Functional vs non Functional requirements – MULTIPLE TIMES*  
-	*- Incidental vs essential difficulties*   
+	#- “Give an example of X” and “What is the difference between X and Y?”#  
+	#- Domain model: classes (different kind of domain objects), association attributes#  
+	#- Functional vs non Functional requirements – MULTIPLE TIMES#  
+	#- Incidental vs essential difficulties#   
 
-**Domain Modeling.**  
+##Domain Modeling.##  
 
-	*- Draw a domain model (classes, association, multiplicity)*  
+	#- Draw a domain model (classes, association, multiplicity)#  
 
-**Design patterns.**  
+##Design patterns.##  
 
-	*- Patterns that support encapsulation, wrappers (decorator, adaptor) observer, MVC*  
+	#- Patterns that support encapsulation, wrappers (decorator, adaptor) observer, MVC#  
 
-	*- Key aspects, class diagram, how each promotes changeability*  
+	#- Key aspects, class diagram, how each promotes changeability#  
 
-	*- given code snippet, identify a pattern used and explain benefits and downside of using patterns*  
+	#- given code snippet, identify a pattern used and explain benefits and downside of using patterns#  
 
-**Architecture.**  
+##Architecture.##  
 
-	*- Architectural design*  
+	#- Architectural design#  
 
-	*- Drift erosion, conceptual vs concrete*  
+	#- Drift erosion, conceptual vs concrete#  
 
-**Multiple Choice.**  
+##Multiple Choice.##  
 
-	*- Krutchens 4+1 views*  
+	#- Krutchens 4+1 views#  
 
-	*- Architectural design*  
+	#- Architectural design#  
 
-**Refactoring.**  
+#Refactoring.##  
 
-	*- Code smell and their impact on system quality*
-	*- Identify code smells and apply to refactoring code*
-**Professional ethics**
-	*- Given a scenario, what ethical principles are being violated*
+	#- Code smell and their impact on system quality#
+	#- Identify code smells and apply to refactoring code#
+##Professional ethics##
+	#- Given a scenario, what ethical principles are being violated#
 
 # COMP 3004 Notes
 
