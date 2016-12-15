@@ -2,10 +2,10 @@
 
 #9 – Questions /100 marks  
 
-*Fill in gaps.
-
-#True/False Answers 
-	#Domain models, use cases, development processes, design patterns, testing#  
+#Fill in gaps.
+Section             What to know. 
+----------------- | -----------------
+True/False Answers |Domain models, use cases, development processes, design patterns, testing#  
 
 #Short Answers. 
 	#- “Give an example of X” and “What is the difference between X and Y?”#  
