@@ -3,8 +3,12 @@
 #9 – Questions /100 marks  
 
 #Fill in gaps.
-Section             What to know. 
------------------ | -----------------
+
+rst Header | Second Header
+------------ | -------------
+Content from cell 1 | Content from cell 2
+Content in the first column | Content in the second column
+
 True/False Answers |Domain models, use cases, development processes, design patterns, testing#  
 
 #Short Answers. 
