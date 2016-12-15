@@ -1,11 +1,11 @@
-##COMP3004 FINAL OVERVIEW##
+##COMP3004 FINAL OVERVIEW
 
 
-##9 – Questions /100 marks##  
+##9 – Questions /100 marks  
 
-##Fill in gaps.##  
+##Fill in gaps.
 
-##True/False Answers##  
+##True/False Answers 
 
 	#Domain models, use cases, development processes, design patterns, testing#  
 
