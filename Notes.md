@@ -1,55 +1,49 @@
-##COMP3004 FINAL OVERVIEW
+**COMP3004 FINAL OVERVIEW**
 
 
-##9 – Questions /100 marks  
+**9 – Questions /100 marks**
 
-##Fill in gaps.
-
-##True/False Answers 
-
-	#Domain models, use cases, development processes, design patterns, testing#  
-
-##Short Answers.##  
-
-	#- “Give an example of X” and “What is the difference between X and Y?”#  
-	#- Domain model: classes (different kind of domain objects), association attributes#  
-	#- Functional vs non Functional requirements – MULTIPLE TIMES#  
-	#- Incidental vs essential difficulties#   
-
-##Domain Modeling.##  
-
-	#- Draw a domain model (classes, association, multiplicity)#  
-
-##Design patterns.##  
-
-	#- Patterns that support encapsulation, wrappers (decorator, adaptor) observer, MVC#  
-
-	#- Key aspects, class diagram, how each promotes changeability#  
-
-	#- given code snippet, identify a pattern used and explain benefits and downside of using patterns#  
-
-##Architecture.##  
-
-	#- Architectural design#  
-
-	#- Drift erosion, conceptual vs concrete#  
-
-##Multiple Choice.##  
-
-	#- Krutchens 4+1 views#  
-
-	#- Architectural design#  
-
-#Refactoring.##  
-
-	#- Code smell and their impact on system quality#
-	#- Identify code smells and apply to refactoring code#
-##Professional ethics##
-	#- Given a scenario, what ethical principles are being violated#
+**Fill in gaps.**
+**True/False Answers**
+	*Domain models, use cases, development processes, design patterns, testing*
+**Short Answers.**
+	*- “Give an example of X” and “What is the difference between X and Y?”*	
+	*- Domain model: classes (different kind of domain objects), association attributes*
+	*- Functional vs non Functional requirements – MULTIPLE TIMES*
+	*- Incidental vs essential difficulties*
+**Domain Modeling.**
+	*- Draw a domain model (classes, association, multiplicity)*
+**Design patterns.**
+	*- Patterns that support encapsulation, wrappers (decorator, adaptor) observer, MVC*
+	*- Key aspects, class diagram, how each promotes changeability*
+	*- given code snippet, identify a pattern used and explain benefits and downside of using patterns*
+**Architecture.**
+	*- Architectural design*
+	*- Drift erosion, conceptual vs concrete*
+**Multiple Choice.**
+	*- Krutchens 4+1 views*
+	*- Architectural design*
+**Refactoring.**
+	*- Code smell and their impact on system quality*
+	*- Identify code smells and apply to refactoring code*
+**Professional ethics**
+	*- Given a scenario, what ethical principles are being violated*
 
 # COMP 3004 Notes
 
 ## Use Cases
+
+## Requirements Engineering
+requirement - a task that needs to be completed to solve a problem
+
+elicitation - acquisition of info for requirements
+
+req spec - sys def client understands
+
+architecture - what parts are there and how they fit together
+
+software architecture - set of principal design decisions governing a system
+
 
 ## User Stories
 
@@ -60,8 +54,6 @@
 ## Lightwieght Processes
 ## Heavyweight Processes
 
-## Incremental Processes
-### Spiral Model
 
 Validation: Are we building the right product?
 
@@ -71,6 +63,9 @@ Essential Difficulties - essential part of an object/problem
 
 Accidental Difficulties - Parts or properties of an object/problem that can be removed
 
+
+## Incremental Processes
+## Spiral Model
 
 ## Waterfall Model
 
