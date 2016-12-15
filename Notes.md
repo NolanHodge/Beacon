@@ -8,8 +8,7 @@ Topic | What to know.
 ------------ | -------------
 Content from cell 1 | Content from cell 2
 Content in the first column | Content in the second column
-
-True/False Answers |Domain models, use cases, development processes, design patterns, testing#  
+True/False Answers | Domain models, use cases, development processes, design patterns, testing#  
 
 #Short Answers. 
 	#- “Give an example of X” and “What is the difference between X and Y?”#  
