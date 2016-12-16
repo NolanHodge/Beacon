@@ -31,9 +31,40 @@ Professional ethics | Given a scenario, what ethical principles are being violat
 A domain model is a representation of a real world entity, and related abstract constructs from a chosen domain plus their relationship. (basically an abstract UML diagram)
 
 [!Domain Model]
-[!Image of Yaktocat]
-(https://octodex.github.com/images/yaktocat.png)
+(http://cakebaker.42dh.com/wp-content/uploads/2007/02/domain_model.png
+Consists of: 
 
+- Conceptual classes (kinds of objects in the problem domain)
+  - Real world concepts, information that the system stores etc.
+  - Kinds of classes
+    - Actors
+    - Boundary objects
+    - Domain objects
+  - Actors
+    - Entities external to the system. (Users, External hardware, etc.)
+  - Boundary Objects
+    - Model aspects of real world entities that the system interacts with. (User input, Mouse clicks, any interface object, etc.)
+  - Domain Objects
+    - Pure abstraction of the domain we are able to model manage and store. (Bank accounts, Overdraft Policy, etc).
+
+  - How to find Domain Entities 
+    - Larmans 3 approaches
+      - Refine an existing Domain Model (Use a previously created one, or a well understood one)
+      - Use a conceptual class category list (Brainstorm about all entities relevent to the system)
+      - Identify noun phrases (i.e Business Transactions -> FlightReservation, FlightPurchase)
+    
+- Associations between conceptual classes
+  - Relationship between two classes 
+  - Typically a short verb
+  - Represents an "important" relatonship between two conceptual classes
+ 
+- Attributes of conceptual classes
+  - Simple subpart of a project  
+  - Store would have an address, or phone number attribute
+  
+- Inheritance in Domain Models
+  - Works the same as UML with skinny and thick arrow
+  
 ## Use Cases
 ## User Stories
 ## Ethics
