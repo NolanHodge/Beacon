@@ -31,7 +31,8 @@ Professional ethics | Given a scenario, what ethical principles are being violat
 A domain model is a representation of a real world entity, and related abstract constructs from a chosen domain plus their relationship. (basically an abstract UML diagram)
 
 [!Domain Model]
-(http://cakebaker.42dh.com/2007/03/04/baking-a-cake-from-the-domain-model-to-cake-models/)
+[!Image of Yaktocat]
+(https://octodex.github.com/images/yaktocat.png)
 
 ## Use Cases
 ## User Stories
