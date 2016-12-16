@@ -14,10 +14,17 @@ Short Answers. | Functional vs non Functional requirements (WILL BE ASKED MULTIP
 Short Answers. | Incidental vs essential difficulties
                |           
 Domain Modeling | Draw a domain model (classes, association, multiplicity)  
-Design patterns | Patterns that support encapsulation, wrappers (decorator, adaptor) observer, MVC, Key aspects, class diagram, how each promotes changeability , given code snippet, identify a pattern used and explain benefits and downside of using patterns 
+Design patterns | Patterns that support encapsulation, wrappers (decorator, adaptor) observer, MVC, Key aspects, 
+Design patterns | class diagram, how each promotes changeability , 
+Design patterns | given code snippet, identify a pattern used and explain benefits and downside of using patterns 
+                |
 Architecture | Architectural design, Drift erosion, conceptual vs concrete
+             |
 Multiple Choice | Krutchens 4+1 views , Architectural design  
-Refactoring | Code smell and their impact on system quality            Identify code smells and apply to refactoring code#
+            |
+Refactoring | Code smell and their impact on system quality 
+Refactoring | Identify code smells and apply to refactoring code#
+            | 
 Professional ethics | Given a scenario, what ethical principles are being violated
 
 # COMP 3004 Notes
