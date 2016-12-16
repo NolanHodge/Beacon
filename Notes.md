@@ -89,15 +89,18 @@ Accidental Difficulties - Parts or properties of an object/problem that can be r
 ### XP (Extreme Programming)
 ### Scrum
 ## Architectural Styles
-| Type | Style | Pros | Cons | Components | Connexions | Data Elements | Topology (Config) |
-|------|-------|------|------|------------|------------|---------------|-------------------|
+| Type | Style |
+|------|-------|
 |Language-based|Main program and subroutines|
 |Language-based|Object oriented|
 |Layered|Client-Server|
 |Dataflow|Batch sequential|
 |Dataflow|Pipe and filter|
 |Shared State|Blackboard|
-|Interpreter|
+|Interpreter|Mobile code|
+|Implicit Invocation|Publish-Subscribe|
+|Implicit Invocation|Event-based|
+|Peer to Peer|P2P|
 
 ## Architechural Patterns
 
