@@ -27,6 +27,9 @@ Refactoring | Identify code smells and apply to refactoring code#
             | 
 Professional ethics | Given a scenario, what ethical principles are being violated
 
+## Domain Model
+A domain model is a representation of a real world entity, and related abstract constructs from a chosen domain plus their relationship. (basically an abstract UML diagram)
+(http://www.comptechdoc.org/independent/uml/begin/domainmodel.gif)
 ## Use Cases
 ## User Stories
 ## Ethics
