@@ -27,16 +27,10 @@ Refactoring | Identify code smells and apply to refactoring code#
             | 
 Professional ethics | Given a scenario, what ethical principles are being violated
 
-# COMP 3004 Notes
-
 ## Use Cases
-
 ## User Stories
-
 ## Ethics
-
 ## Software Engineering Processes
-
 ## Lightwieght Processes
 ## Heavyweight Processes
 
@@ -51,15 +45,11 @@ Essential Difficulties - essential part of an object/problem
 
 Accidental Difficulties - Parts or properties of an object/problem that can be removed
 
-
 ## Waterfall Model
-
 ## Agile Processes
 ### RUP (Rational Unified Process)
 ### XP (Extreme Programming)
 ### Scrum
-
 ## Architectural Styles
-
 ## Architechural Patterns
 
