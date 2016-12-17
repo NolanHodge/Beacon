@@ -101,3 +101,11 @@ Accidental Difficulties - Parts or properties of an object/problem that can be r
 
 ## Architechural Patterns
 
+## Krutchents 4+1 Views
+|View | Style | 
+|------|------|
+|Logical View | Analysts & Designers produce "Structure"| 
+|Implementation View | Programmers produce "Software Management" |
+|Process View | System Integrators produce "Performance, Scalability, and Throughput"|
+|Deployment View| System Engineers produce "System topology, Delivery, Installation, and Communication"| 
+
