@@ -65,7 +65,29 @@ Consists of:
 - Inheritance in Domain Models
   - Works the same as UML with skinny and thick arrow
   
-  
+
+## Incidental vs essential difficulties
+  - Incidental (Easy to Overcome)
+    - Problems which engineers create and can fix.
+  - Essential  (Difficult to Overcome)
+    - Caused by the problem to be solved, and nothing can remove it. (Users want it? Have to have it!)
+    
+## Functional vs non Functional requirements 
+  - Requirement: A statement about the proposed system that all stakeholders agree must be made true in order for the customer’s problem to be adequately solved
+  <br/>  
+  - Short and concise piece of information
+  - Says something about the system
+  - All the stakeholders have agreed that it is valid
+  - It helps solve the customer’s problem 
+  <br/>
+    - Functional
+      - What is the system supposed to do?
+      - Mapping from input to output
+    - Non Functional
+      - Process: standards, delivery, etc.
+      - Product: usability, efficiency, reliability, etc.
+      - External: cost
+      
 
 Validation: Are we building the right product?
 
@@ -74,7 +96,7 @@ Verification: Are we building the product right?
 Essential Difficulties - essential part of an object/problem
 
 Accidental Difficulties - Parts or properties of an object/problem that can be removed
-  
+
 ## Use Cases
 ## User Stories
 ## Ethics
@@ -220,5 +242,13 @@ defects - missing reqs, wrong spec, infeasible req, faulty system design, wrong 
 reliability - measure of success with which observed behaviour conforms to spec, the probability that system will not fail
 
 fault avoidance - prevent faults before system is released
-
 fault detection - identify error states and faults before release
+
+## Krutchents 4+1 Views
+|View | Style | 
+|------|------|
+|Logical View | Analysts & Designers produce "Structure"| 
+|Implementation View | Programmers produce "Software Management" |
+|Process View | System Integrators produce "Performance, Scalability, and Throughput"|
+|Deployment View| System Engineers produce "System topology, Delivery, Installation, and Communication"| 
+
