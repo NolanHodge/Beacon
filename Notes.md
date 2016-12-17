@@ -65,6 +65,7 @@ Consists of:
 - Inheritance in Domain Models
   - Works the same as UML with skinny and thick arrow
   
+
 ## Incidental vs essential difficulties
   - Incidental (Easy to Overcome)
     - Problems which engineers create and can fix.
@@ -87,15 +88,6 @@ Consists of:
       - Product: usability, efficiency, reliability, etc.
       - External: cost
       
-## Use Cases
-## User Stories
-## Ethics
-## Software Engineering Processes
-## Lightwieght Processes
-## Heavyweight Processes
-
-## Incremental Processes
-### Spiral Model
 
 Validation: Are we building the right product?
 
@@ -105,23 +97,152 @@ Essential Difficulties - essential part of an object/problem
 
 Accidental Difficulties - Parts or properties of an object/problem that can be removed
 
+## Use Cases
+## User Stories
+## Ethics
+## Software Engineering Processes
+* roles and workflows
+* milestones
+* guidelines
+* incremental and agile development processes are better than waterfall approach
+
+## Lightweight Processes
+* focus on working code
+* communication between developers and customer
+
+## Heavyweight Processes
+* document driven
+* many roles, checkpoitns
+* bureaucratic, high management overhead
+
+## Incremental Processes
+
+### Spiral Model
+* risk driven
+* guides a team to adopt elements of one or more process models
+* reqs, design, construction, testing/debugging, deplyoment, maintenance
+* choices based on a project's risks generate an appropriate process model for the project
+
 ## Waterfall Model
+* non-iterative
+* bad because software is too complex to be specified in advance and too complicated to build without errors
+* after the fact changes are costly
+
+### Stages
+* requirements
+* analysis
+* design
+* coding
+* testing/verification
+* deployment/maintenance
+* move to next phase only when preceding phase is reviewed and verified
+* places emphasis on documentation - new team members can get familiar using documents
+
 ## Agile Processes
+
 ### RUP (Rational Unified Process)
+* iterative, incremental
+* use-case driven
+* architecture centric
+* uses uml as modelling notation
+
+#### 4 steps
+* inception - define scope of project
+* elaboration - planning
+* construction - building
+* transition - release
+
 ### XP (Extreme Programming)
+
 ### Scrum
+
 ## Architectural Styles
-| Type | Style | Pros | Cons | Components | Connexions | Data Elements | Topology (Config) |
-|------|-------|------|------|------------|------------|---------------|-------------------|
+* collection of architectural design decisions
+* creates beneficial qualities in system
+
+| Type | Style |
+|------|-------|
 |Language-based|Main program and subroutines|
 |Language-based|Object oriented|
 |Layered|Client-Server|
 |Dataflow|Batch sequential|
 |Dataflow|Pipe and filter|
 |Shared State|Blackboard|
-|Interpreter|
+|Interpreter|Mobile code|
+|Implicit Invocation|Publish-Subscribe|
+|Implicit Invocation|Event-based|
+|Peer to Peer|P2P|
 
 ## Architechural Patterns
+* collection of design decisions that are applicable to recurring problem and parameterized based on contexts in which problem appears
+
+|Type|Pattern|
+|----|-------|
+|Creational|Singleton|
+|Behavoural|Iterator|
+|Behavioural|Observer|
+|Behavioural|Strategy|
+|Behavioural|Template(Abstract)|
+|Structural|Adapter|
+|Structural|Composite|
+|Structural|Facade|
+
+## Architectural Design in Absence of Experience
+* Analogy searching
+* Brainstorming
+* Literature searching
+* Morphological charts
+* Remove mental blocks
+
+## Referential architecture
+#### defines fundamental components of the domain and relations between them
+
+### properties
+### domain
+### fundamental abstractions - applicable across the domain 
+### template
+
+benefits - captures main ideas and components across domain, provides abstraction for arch, assists in comparing archs in the same domain
+
+### deriving ref arch
+* step 1: derive conceptual arch
+* step 2: derive ref arch sing conceptual arch
+
+* ref arch must be flexible enough to encompass many product archs
+* does not determine implementation
+* does not depend on dev methodology, platform or implementation concerns
+
+### conceptual arch
+#### in mind of devs, decompose system without going into details of interface spec
+* includes - what a system does, responsibilites, ineractions, control and data flow
+* examine existing documentation to obtain
+
+### concrete arch
+#### actual relationships, real arch based on code, harder to understand, created manually
+* includes - what a system does and how it will do it
+* inspect code to obtain
+
+concrete arch should be used to refine conceptual arch
+
+
+## Testing
+* finding differences between expected and observed behaviour, systematic attempt to find faults in a planned manner
+* goal is to show program meets its spec
+
+failure - when expected behaviour deviates from specified behaviour
+
+error state - system in a state where furthor processing will lead to failure
+
+fault - defect/bug, the mechanical/algorithmic cause of an error
+
+defect vs failure - defects may lead to failures but failures may show up elsewhere
+
+defects - missing reqs, wrong spec, infeasible req, faulty system design, wrong algorithms, syntax, precision faults, bounds checking, timing faults
+
+reliability - measure of success with which observed behaviour conforms to spec, the probability that system will not fail
+
+fault avoidance - prevent faults before system is released
+fault detection - identify error states and faults before release
 
 ## Krutchents 4+1 Views
 |View | Style | 
