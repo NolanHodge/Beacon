@@ -165,6 +165,17 @@ A User Story is a unit of work to develop functionality that:
   - Repeat until the smell is gone
   
 ## Ethics
+- IEEE Code of Ethics.
+  - 1. to accept responsibility
+  - 2. to avoid real or perceived conflicts of interest
+  - 3. to be honest and realistic in stating claims
+  - 4. to reject bribery in all its forms
+  - 5. to improve the understanding of technology, its appropriate application, and potential consequences
+  - 6. to maintain and improve our technical competence
+  - 7. to seek, accept, and offer honest criticism of technical work, to acknowledge and correct errors, and to credit properly the contributions of others
+  - 8. to treat fairly all persons
+  - 9. to avoid injuring others, their property, reputation, or employment by false or malicious action
+  - 10. 10. to assist colleagues and co-workers in their professional development and to support them in following this code of ethics.
 ## Software Engineering Processes
 * roles and workflows
 * milestones
