@@ -129,29 +129,30 @@ A User Story is a unit of work to develop functionality that:
 
 ## Refactoring
 
-- Code Smell? What is it?
-`double potentialEnergy(double mass, double height) 
- {
-    return mass * height * 9.81;
- }
-`9.81 should be declared as a static variable.
- int MAGIC_NUMBER = 9.81;
-` 
-if (date.before(SUMMER_START) || date.after(SUMMER_END)) 
-{
-  charge = quantity * winterRate + winterServiceCharge;
-}
-else 
-{
-  charge = quantity * summerRate;
-}` 
-Bad if-statement, should be easy to understand
-
-  - if (date.equals(SUMMER)){charge = this else charge == that}
-    - or 
-  - charge = date.equals(SUMMER) ? this :  that;
-- Large Class
-  - Does the work of two classes
+  - Code Smell? What is it?
+    - double potentialEnergy(double mass, double height) 
+    - {
+    -   return mass * height * 9.81;
+    - }
+      - 9.81 should be declared as a static variable.
+      - int MAGIC_NUMBER = 9.81;
+    <br/>
+    - if (date.before(SUMMER_START) || date.after(SUMMER_END)) 
+    - {
+    -   charge = quantity * winterRate + winterServiceCharge;
+    - }
+    - else 
+    - {
+    -   charge = quantity * summerRate;
+    - } 
+       - Bad if-statement, should be easy to understand
+       - if (date.equals(SUMMER)){charge = this else charge == that}
+       - or 
+       - charge = date.equals(SUMMER) ? this :  that;
+    <br/>
+  
+ - Large Class
+    - Does the work of two classes
     - Example: Person.class also returns Office phone number of person
       - Should be Person.class has-a Office.class
       
