@@ -70,6 +70,23 @@ Consists of:
     - Problems which engineers create and can fix.
   - Essential  (Difficult to Overcome)
     - Caused by the problem to be solved, and nothing can remove it. (Users want it? Have to have it!)
+    
+## Functional vs non Functional requirements 
+  - Requirement: A statement about the proposed system that all stakeholders agree must be made true in order for the customer’s problem to be adequately solved
+  <br/>  
+  - Short and concise piece of information
+  - Says something about the system
+  - All the stakeholders have agreed that it is valid
+  - It helps solve the customer’s problem 
+  <br/>
+    - Functional
+      - What is the system supposed to do?
+      - Mapping from input to output
+    - Non Functional
+      - Process: standards, delivery, etc.
+      - Product: usability, efficiency, reliability, etc.
+      - External: cost
+      
 ## Use Cases
 ## User Stories
 ## Ethics
