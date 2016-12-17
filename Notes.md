@@ -99,7 +99,12 @@ Accidental Difficulties - Parts or properties of an object/problem that can be r
 
 ## Use Cases
 
-
+- Use cases are informal descriptions of the system’s basic functionality and its interactions with the environment
+  - System-level functionality
+  - User’s point of view
+  - Textual, not formal
+  - Low tech, low detail
+  
 ## User Stories
 
 A User Story is a unit of work to develop functionality that:
