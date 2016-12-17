@@ -288,37 +288,33 @@ benefits - captures main ideas and components across domain, provides abstractio
 * does not determine implementation
 * does not depend on dev methodology, platform or implementation concerns
 
-### conceptual arch
-#### in mind of devs, decompose system without going into details of interface spec
-* includes - what a system does, responsibilites, ineractions, control and data flow
-* examine existing documentation to obtain
+## Conceptual Architecture
+  - in mind of devs, decompose system without going into details of interface spec
+    - * includes - what a system does, responsibilites, ineractions, control and data flow
+    - * examine existing documentation to obtain
 
-### concrete arch
-#### actual relationships, real arch based on code, harder to understand, created manually
-* includes - what a system does and how it will do it
-* inspect code to obtain
+## Concrete Architecture
+  - actual relationships, real arch based on code, harder to understand, created manually
+    - * includes - what a system does and how it will do it
+    - * inspect code to obtain
 
-concrete arch should be used to refine conceptual arch
+Concrete Architecture should be used to refine Conceptual Architecture
 
 
 ## Testing
-* finding differences between expected and observed behaviour, systematic attempt to find faults in a planned manner
-* goal is to show program meets its spec
 
-failure - when expected behaviour deviates from specified behaviour
+finding differences between expected and observed behaviour, systematic attempt to find faults in a planned manner\
+goal is to show program meets its spec
 
-error state - system in a state where furthor processing will lead to failure
-
-fault - defect/bug, the mechanical/algorithmic cause of an error
-
-defect vs failure - defects may lead to failures but failures may show up elsewhere
-
-defects - missing reqs, wrong spec, infeasible req, faulty system design, wrong algorithms, syntax, precision faults, bounds checking, timing faults
-
-reliability - measure of success with which observed behaviour conforms to spec, the probability that system will not fail
-
-fault avoidance - prevent faults before system is released
-fault detection - identify error states and faults before release
+Terms
+ - Failure - When expected behaviour deviates from specified behaviour
+ - Error State - system in a state where furthor processing will lead to failure
+ - Fault - Defect/bug, the mechanical/algorithmic cause of an error
+ - Defect vs Failure - defects may lead to failures but failures may show up elsewhere
+ - Defects - Missing reqs, wrong spec, infeasible req, faulty system design, wrong algorithms, syntax, precision faults, bounds checking, timing faults
+ - Reliability - measure of success with which observed behaviour conforms to spec, the probability that system will not fail
+ - Fault Avoidance - Prevent faults before system is released
+ - Fault Detection - Identify error states and faults before release
 
 ## Krutchents 4+1 Views
 |View | Style | 
