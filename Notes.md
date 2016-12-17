@@ -65,15 +65,7 @@ Consists of:
 - Inheritance in Domain Models
   - Works the same as UML with skinny and thick arrow
   
-## Use Cases
-## User Stories
-## Ethics
-## Software Engineering Processes
-## Lightwieght Processes
-## Heavyweight Processes
-
-## Incremental Processes
-### Spiral Model
+  
 
 Validation: Are we building the right product?
 
@@ -82,10 +74,52 @@ Verification: Are we building the product right?
 Essential Difficulties - essential part of an object/problem
 
 Accidental Difficulties - Parts or properties of an object/problem that can be removed
+  
+## Use Cases
+## User Stories
+## Ethics
+## Software Engineering Processes
+* roles and workflows
+* milestones
+* guidelines
+* incremental and agile development processes are better than waterfall approach
+
+## Lightwieght Processes
+* focus on working code
+* communication between developers and customer
+
+## Heavyweight Processes
+* document driven
+* many roles, checkpoitns
+* bureaucratic, high management overhead
+
+## Incremental Processes
+
+### Spiral Model
+* risk driven
+* guides a team to adopt elements of one or more process models
+* reqs, design, construction, testing/debugging, deplyoment, maintenance
+* choices based on a project's risks generate an appropriate process model for the project
 
 ## Waterfall Model
+* non-iterative
+* bad because software is too complex to be specified in advance and too complicated to build without errors
+* after the fact changes are costly
+* requirements
+* analysis
+* design
+* coding
+* testing/verification
+* deployment/maintenance
+* move to next phase only when preceding phase is reviewed and verified
+* places emphasis on documentation - new team members can get familiar using documents
 ## Agile Processes
 ### RUP (Rational Unified Process)
+* iterative, incremental
+* use-case driven
+* architecture centric
+* uses uml as modelling notation
+
 ### XP (Extreme Programming)
 ### Scrum
 ## Architectural Styles
@@ -103,4 +137,22 @@ Accidental Difficulties - Parts or properties of an object/problem that can be r
 |Peer to Peer|P2P|
 
 ## Architechural Patterns
+|Type|Pattern|
+|----|-------|
+|Creational|Singleton|
+|Behavoural|Iterator|
+|Behavioural|Observer|
+|Behavioural|Strategy|
+|Behavioural|Template(Abstract)|
+|Structural|Adapter|
+|Structural|Composite|
+|Structural|Facade|
+
+## Architectural Design in Absence of Experience
+* Analogy searching
+* Brainstorming
+* Literature searching
+* Morphological charts
+* Remove mental blocks
+
 
