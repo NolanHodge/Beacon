@@ -65,6 +65,11 @@ Consists of:
 - Inheritance in Domain Models
   - Works the same as UML with skinny and thick arrow
   
+## Incidental vs essential difficulties
+  - Incidental (Easy to Overcome)
+    - Problems which engineers create and can fix.
+  - Essential  (Difficult to Overcome)
+    - Caused by the problem to be solved, and nothing can remove it. (Users want it? Have to have it!)
 ## Use Cases
 ## User Stories
 ## Ethics
