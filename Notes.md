@@ -119,10 +119,17 @@ Accidental Difficulties - Parts or properties of an object/problem that can be r
 * use-case driven
 * architecture centric
 * uses uml as modelling notation
+* inception - define scope of project
+* elaboration - planning
+* construction - building
+* transition - release
 
 ### XP (Extreme Programming)
 ### Scrum
 ## Architectural Styles
+* collection of architectural design decisions
+* creates beneficial qualities in system
+
 | Type | Style |
 |------|-------|
 |Language-based|Main program and subroutines|
@@ -137,6 +144,7 @@ Accidental Difficulties - Parts or properties of an object/problem that can be r
 |Peer to Peer|P2P|
 
 ## Architechural Patterns
+* collection of design decisions that are applicable to recurring problem and parameterized based on contexts in which problem appears
 |Type|Pattern|
 |----|-------|
 |Creational|Singleton|
@@ -154,5 +162,7 @@ Accidental Difficulties - Parts or properties of an object/problem that can be r
 * Literature searching
 * Morphological charts
 * Remove mental blocks
+
+
 
 
