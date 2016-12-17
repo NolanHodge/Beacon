@@ -108,14 +108,19 @@ A User Story is a unit of work to develop functionality that:
   - Can be tested independently 
   - Can be finished ina  sing iteration
   
-A user can:
-- Generate an invoice for a subscription charge.
-- Generate an invoice that includes usage-based charges.
-- Finalize a customer’s invoice and send it to them.
-- Generate invoices for all customers.
-- Generate invoices for all customers in a single billing cycle.
-- Maintain customer data
-- Select customers for invoice finalization using drag & drop.
+- Examples of scenarios considered a "User Story"
+
+  - Assume you are a developer for a billing company
+    - Create ways for customers to
+    - Generate an invoice for a subscription charge.
+    - Generate an invoice that includes usage-based charges.
+    - Finalize a customer’s invoice and send it to them.
+    - Generate invoices for all customers.
+    - Generate invoices for all customers in a single billing cycle.
+    - Maintain customer data
+    - Select customers for invoice finalization using drag & drop.
+
+(Each one of these
 
 ## Ethics
 ## Software Engineering Processes
