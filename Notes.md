@@ -109,13 +109,13 @@ A User Story is a unit of work to develop functionality that:
   - Can be finished ina  sing iteration
   
 A user can:
-• Generate an invoice for a subscription charge.
-• Generate an invoice that includes usage-based charges.
-• Finalize a customer’s invoice and send it to them.
-• Generate invoices for all customers.
-• Generate invoices for all customers in a single billing cycle.
-• Maintain customer data
-• Select customers for invoice finalization using drag & drop.
+- Generate an invoice for a subscription charge.
+- Generate an invoice that includes usage-based charges.
+- Finalize a customer’s invoice and send it to them.
+- Generate invoices for all customers.
+- Generate invoices for all customers in a single billing cycle.
+- Maintain customer data
+- Select customers for invoice finalization using drag & drop.
 
 ## Ethics
 ## Software Engineering Processes
