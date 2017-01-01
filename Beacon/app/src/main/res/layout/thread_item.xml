@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="10dp"
+    android:paddingLeft="14dp"
+    android:paddingRight="14dp"
+    android:paddingTop="10dp">
+
+    <ImageView
+        android:layout_centerVertical="true"
+        android:id="@+id/icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:src="@color/colorPrimary" />
+
+    <LinearLayout
+        android:layout_centerVertical="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/icon"
+        android:orientation="vertical"
+        android:paddingLeft="10dp">
+
+        <TextView
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:id="@+id/chat_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:padding="1dp"
+            android:text="name" />
+
+        <TextView
+            android:id="@+id/chat_last_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:padding="1dp"
+            android:text="message" />
+
+        <TextView
+            android:id="@+id/chat_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:padding="1dp"
+            android:text="date" />
+    </LinearLayout>
+
+</RelativeLayout>

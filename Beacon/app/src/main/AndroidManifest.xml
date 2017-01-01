@@ -122,6 +122,14 @@
         <service
             android:name=".MessageService"
             android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".GUI.NewThreadActivity" />
+        <activity android:name=".GUI.NewChatActivity" />
+
+        <service
+            android:name=".ListenerService"
+            android:enabled="true"
             android:exported="true"></service>
     </application>
 

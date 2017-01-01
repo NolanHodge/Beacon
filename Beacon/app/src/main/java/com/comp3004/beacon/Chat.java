@@ -69,6 +69,8 @@ public class Chat implements Parcelable {
     }
 
     public Message getLastMessage() {
-        return messages.get(messages.size() - 1);
+        if (messages.size() > 1)
+            return messages.get(messages.size() - 1);
+        return null;
     }
 }
