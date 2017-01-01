@@ -117,7 +117,12 @@
 
         <activity
             android:name=".GUI.GenericActivity"
-            android:parentActivityName=".GUI.MapsActivity"></activity>
+            android:parentActivityName=".GUI.MapsActivity" />
+
+        <service
+            android:name=".MessageService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>
