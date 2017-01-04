@@ -41,14 +41,23 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.comp3004.beacon.BeaconDatabase;
+import com.comp3004.beacon.Chat;
 import com.comp3004.beacon.FirebaseServices.DatabaseManager;
 import com.comp3004.beacon.LocationManagement.LocationService;
 import com.comp3004.beacon.LocationManagement.MyLocationManager;
+import com.comp3004.beacon.Message;
 import com.comp3004.beacon.Networking.MailBox;
 import com.comp3004.beacon.Networking.MessageSenderHandler;
 import com.comp3004.beacon.R;
+import com.comp3004.beacon.User.Beacon;
 import com.comp3004.beacon.User.BeaconUser;
 import com.comp3004.beacon.User.CurrentBeaconUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -204,6 +213,47 @@ public class FriendListActivity extends AppCompatActivity {
 
                                 break;
                             case 1:
+                                final ArrayList<String> members = new ArrayList<>();
+                                members.add(friendsList.get(userIndex).getUserId());
+                                members.add(CurrentBeaconUser.getInstance().getUserId());
+
+                                BeaconDatabase.getChats().addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        Intent intent = new Intent(FriendListActivity.this, NewChatActivity.class);
+                                        //if there already exists a chat load that one instead of a new chat
+                                        boolean keepGoing = true;
+                                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                            Chat chat = snapshot.getValue(Chat.class);
+                                            if (chat.getMembers().equals(members)) {
+                                                intent.putExtra("chat", chat);
+                                                startActivity(intent);
+                                                keepGoing = false;
+                                                break;
+                                            }
+                                        }
+                                        if (keepGoing) {
+                                            Chat chat = new Chat();
+                                            chat.setMessages(new ArrayList<Message>());
+                                            chat.setMembers(members);
+
+                                            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("chats").push();
+                                            chat.setKey(ref.getKey());
+                                            ref.setValue(chat);
+
+                                            startActivity(intent);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+
+
+
+/*
                                 String chatId = CurrentBeaconUser.getInstance().getUserId() + "_" + friendsList.get(userIndex).getUserId();
                                 if (!MailBox.getInstance().getInbox().containsKey(chatId)) {
                                     MailBox.getInstance().initializeThread(chatId);
@@ -213,7 +263,7 @@ public class FriendListActivity extends AppCompatActivity {
                                 intent.putExtra("CHAT_ID", CurrentBeaconUser.getInstance().getUserId() + "_" + friendsList.get(userIndex).getUserId());
                                 intent.putExtra("CHAT_PARTICIPANT", friendsList.get(userIndex).getUserId());
                                 intent.putExtra("CHAT_WITH", friendsListView.getItemAtPosition(userIndex).toString());
-                                startActivity(intent);
+                                startActivity(intent);*/
                                 break;
                             case 2:
                                 MessageSenderHandler.getInstance().sendLocationRequest(friendsList.get(userIndex).getUserId());
@@ -246,7 +296,7 @@ public class FriendListActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.chat_threads) {
-            Intent intent = new Intent(FriendListActivity.this, ChatMessageThreadsActivity.class);
+            Intent intent = new Intent(FriendListActivity.this, NewThreadActivity.class);
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);

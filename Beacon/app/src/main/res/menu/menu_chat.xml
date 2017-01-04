@@ -9,4 +9,10 @@
         android:id="@+id/menu_request_beacon"
         android:title="Request Beacon"
         app:showAsAction="never" />
+
+    <item
+        android:icon="@drawable/ic_photo_camera_black_24dp"
+        android:id="@+id/add_person"
+        android:title="Request Beacon"
+        app:showAsAction="never" />
 </menu>
