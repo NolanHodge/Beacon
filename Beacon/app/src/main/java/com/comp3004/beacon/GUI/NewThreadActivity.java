@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +35,8 @@ public class NewThreadActivity extends GenericActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_generic_list);
+
+        getSupportActionBar().setTitle("Messages");
 
         threadAdapter = new ThreadAdapter();
         final ListView listView = (ListView) findViewById(R.id.generic_listview);
@@ -119,7 +121,6 @@ public class NewThreadActivity extends GenericActivity {
     private static class ViewHolder {
         TextView participants, lastMessage, timeSent;
         ImageView icon;
-
     }
 
     public static String getElapsedTime(long milliseconds) {

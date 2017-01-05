@@ -6,8 +6,10 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.comp3004.beacon.GUI.ChatActivity;
+import com.comp3004.beacon.GUI.NewChatActivity;
 import com.comp3004.beacon.User.CurrentBeaconUser;
 import com.facebook.Profile;
 import com.google.firebase.database.ChildEventListener;
@@ -28,14 +30,20 @@ public class MessageService extends Service {
 
     @Override
     public void onCreate() {
+        Log.e("MESSAGE_SERVICE", "CREATE");
         FirebaseDatabase.getInstance().getReference("chats").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 final Chat chat = dataSnapshot.getValue(Chat.class);
                 if (chat.getMembers().get(CurrentBeaconUser.getInstance().getUserId()) != null) {
                     //get beacon user that sent the message and display their name?
 
-                    Intent resultIntent = new Intent(MessageService.this, ChatActivity.class);
+                    Intent resultIntent = new Intent(MessageService.this, NewChatActivity.class);
                     resultIntent.putExtra("chat", chat);
                     PendingIntent resultPendingIntent =
                             PendingIntent.getActivity(
@@ -48,9 +56,12 @@ public class MessageService extends Service {
 
                     Notification n = new Notification.Builder(getApplicationContext())
                             .setContentIntent(resultPendingIntent)
-                            .setContentTitle("").setTicker("New Message")
-                            .setContentText(chat.getLastMessage().getBody()).setSmallIcon(R.mipmap.ic_launcher)
+                            .setContentTitle(chat.getMembers().get(chat.getLastMessage().getFrom()))
+                            .setTicker("New Message")
+                            .setContentText(chat.getLastMessage().getBody())
+                            .setSmallIcon(R.mipmap.ic_launcher_2)
                             .setAutoCancel(true).setContentIntent(resultPendingIntent)
+                            .setPriority(Notification.PRIORITY_MAX)
                             .setVibrate(new long[]{0, 100, 100, 100}).build();
 
 
@@ -59,12 +70,6 @@ public class MessageService extends Service {
 
 
                 }
-
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
             }
 
             @Override
@@ -83,5 +88,11 @@ public class MessageService extends Service {
             }
         });
         super.onCreate();
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.e("MESSAGE_SERVICE", "START");
+        return START_STICKY;
     }
 }
