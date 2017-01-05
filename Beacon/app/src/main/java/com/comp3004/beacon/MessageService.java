@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.IBinder;
 
 import com.comp3004.beacon.GUI.ChatActivity;
+import com.comp3004.beacon.User.CurrentBeaconUser;
 import com.facebook.Profile;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -31,7 +32,7 @@ public class MessageService extends Service {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 final Chat chat = dataSnapshot.getValue(Chat.class);
-                if (chat.getMembers().contains(Profile.getCurrentProfile().getId())) {
+                if (chat.getMembers().get(CurrentBeaconUser.getInstance().getUserId()) != null) {
                     //get beacon user that sent the message and display their name?
 
                     Intent resultIntent = new Intent(MessageService.this, ChatActivity.class);
@@ -46,12 +47,11 @@ public class MessageService extends Service {
 
 
                     Notification n = new Notification.Builder(getApplicationContext())
-                                .setContentIntent(resultPendingIntent)
-                                .setContentTitle("").setTicker("New Message")
-                                .setContentText(chat.getLastMessage().getBody()).setSmallIcon(R.mipmap.ic_launcher)
-                                .setAutoCancel(true).setContentIntent(resultPendingIntent)
-                                .setVibrate(new long[]{0, 100, 100, 100}).build();
-
+                            .setContentIntent(resultPendingIntent)
+                            .setContentTitle("").setTicker("New Message")
+                            .setContentText(chat.getLastMessage().getBody()).setSmallIcon(R.mipmap.ic_launcher)
+                            .setAutoCancel(true).setContentIntent(resultPendingIntent)
+                            .setVibrate(new long[]{0, 100, 100, 100}).build();
 
 
                     NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);

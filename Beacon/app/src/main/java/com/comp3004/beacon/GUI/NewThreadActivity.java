@@ -20,7 +20,6 @@ import com.comp3004.beacon.Message;
 import com.comp3004.beacon.R;
 import com.comp3004.beacon.User.BeaconUser;
 import com.comp3004.beacon.User.CurrentBeaconUser;
-import com.facebook.Profile;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -28,16 +27,17 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class NewThreadActivity extends AppCompatActivity {
+public class NewThreadActivity extends GenericActivity {
     ArrayList<Chat> chats = new ArrayList<>();
     ThreadAdapter threadAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_thread);
+        setContentView(R.layout.activity_generic_list);
+
         threadAdapter = new ThreadAdapter();
-        final ListView listView = (ListView) findViewById(R.id.thread_listview);
+        final ListView listView = (ListView) findViewById(R.id.generic_listview);
         listView.setAdapter(threadAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -54,11 +54,13 @@ public class NewThreadActivity extends AppCompatActivity {
                 threadAdapter.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Chat chat = snapshot.getValue(Chat.class);
-                    if (chat.getMembers().contains(CurrentBeaconUser.getInstance().getUserId())) {
+
+                    if (chat.getMembers().get(CurrentBeaconUser.getInstance().getUserId()) != null) {
                         threadAdapter.add(chat);
                     }
                 }
                 threadAdapter.notifyDataSetChanged();
+                showProgressBar(false);
             }
 
             @Override
@@ -90,13 +92,18 @@ public class NewThreadActivity extends AppCompatActivity {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
             Chat chat = getItem(position);
-            String members = "abcd";
+            String members = "";
+            for (String key : chat.getMembers().keySet()) {
+                if (!key.equals(CurrentBeaconUser.getInstance().getUserId())) {
+                    members += chat.getMembers().get(key) + ", ";
+                }
+            }
             Message lastMessage = chat.getMessages().get(chat.getMessages().size() - 1);
             viewHolder.participants.setText(members.substring(0, members.length() - 2));
-            if (lastMessage.getFrom().equals(Profile.getCurrentProfile().getId())) {
+            if (lastMessage.getFrom().equals(CurrentBeaconUser.getInstance().getUserId())) {
                 viewHolder.lastMessage.setText("You: " + lastMessage.getBody());
             } else {
-                viewHolder.lastMessage.setText(": " + lastMessage.getBody());
+                viewHolder.lastMessage.setText(chat.getMembers().get(lastMessage.getFrom()) + ": " + lastMessage.getBody());
             }
             if (!lastMessage.getRead()) {
                 viewHolder.lastMessage.setTypeface(Typeface.DEFAULT_BOLD);
@@ -104,7 +111,7 @@ public class NewThreadActivity extends AppCompatActivity {
                 viewHolder.lastMessage.setTypeface(Typeface.create("sans-serif-light", Typeface.NORMAL));
             }
             //convert this to readable time
-            viewHolder.timeSent.setText(Long.toString(new Date().getTime() - lastMessage.getDateSent()));
+            viewHolder.timeSent.setText(getElapsedTime(new Date().getTime() - lastMessage.getDateSent()));
             return convertView;
         }
     }
@@ -113,5 +120,31 @@ public class NewThreadActivity extends AppCompatActivity {
         TextView participants, lastMessage, timeSent;
         ImageView icon;
 
+    }
+
+    public static String getElapsedTime(long milliseconds) {
+        long elapsedTime = milliseconds / 1000;
+        long[] times = new long[4];
+        times[3] = elapsedTime; //seconds
+        times[2] = times[3] / 60; //minutes
+        times[1] = times[2] / 60; //hours
+        times[0] = times[1] / 24; //days
+        String results = "";
+        for (int i = 0; i < times.length; i++) {
+            if (times[i] > 0) {
+
+                if (i == 0) results += times[i] + " day";
+                else if (i == 1) results += times[i] + " hour";
+                else if (i == 2) results += times[i] + " minute";
+                else results += times[i] + " second";
+
+                if (times[i] != 1) results += "s";
+
+                results += " ago";
+                break;
+            }
+        }
+
+        return results;
     }
 }
