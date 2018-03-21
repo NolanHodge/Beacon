@@ -1,8 +1,0 @@
-WEEK 6 LOG, Julian Clayton
-==================================
-- Fixed various isues including seeing duplicates of public beacons (3 hrs)
-- Photo sharing. Each beacon can have a photo of users location attached to it. This took a little while to figure out the best way to do this. There are a few little bugs still 
-  left with it. I will fix this in the coming week. This is the last of our major features and the remaining time will be used to clean up the application and make 
-  it more user friendly (8 hrs)
-
-

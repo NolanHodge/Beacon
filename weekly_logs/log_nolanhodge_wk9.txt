@@ -1,3 +1,0 @@
-Polishing application UI
-Handed chat over to Jason
-fixing upp arrow activity

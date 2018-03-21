@@ -1,4 +1,0 @@
-field tested app - 10 mintes
-fixing arrow pointing, ongoing - 30 minutes
-adding user search capability, ongoing - 20 minutes
-met with group to discuss - 1 hour

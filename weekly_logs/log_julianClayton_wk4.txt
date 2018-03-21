@@ -1,6 +1,0 @@
-Julian Clayton Weekly Log 4
-------------------------------------
-- Can now share locations between friends.(6 hours)
-- Can view beacons on a list.(2 hours)
-- Locations are accurate to about 2 meters (This is good)
-

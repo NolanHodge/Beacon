@@ -1,7 +1,0 @@
-Julian Clayton Weekly Log 5
-==========================================
-
-- Instant messaging between users completely done. Took a long time.  (12 hours)
-- Public Beacons that anyone can see and follow. (5 hours)
-
-

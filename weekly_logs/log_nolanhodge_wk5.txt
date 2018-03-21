@@ -1,4 +1,0 @@
-UI changes
-UI refactoring for the app
-added more chat functionality
-discovered my commits were under the name "nolanhodge" instead of "NolanHodge" will try and fix this

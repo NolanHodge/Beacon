@@ -1,7 +1,0 @@
-Julian Clayton Log 7
-====================================
-- implemented ability  send friend-requests through the client now- before it had to be done through Firebase
-- Beacons now have consistent ID creation, this is important to track them down within the DB
-- Implemented the ability to request your friend's locations, when the location is requested the friend can send their location with the push of a button
-- Began ListView for viewing your own beacons. This is why we neede consistent IDs for Beacons. 
-Over 9 days probably 15hrs 

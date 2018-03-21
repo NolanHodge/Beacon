@@ -1,3 +1,0 @@
-finished implementing setting up beacons at nearby places - 1 hour
-cleaned up request for permissions on login page - 1 hour
-worked on improving chat feature - 3 hours

@@ -1,3 +1,0 @@
-Meeting with group
-Refactoring Chat to handle REST API's 
-Bailed on REST API's, to use MongoDB style chat features
